@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "931610236572",
+    "firebase_url": "https://dogphin-app.firebaseio.com",
+    "project_id": "dogphin-app",
+    "storage_bucket": "dogphin-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:931610236572:android:2ee64186c64ebe3f797f59",
+        "android_client_info": {
+          "package_name": "com.dogphin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "931610236572-gvn6cb6qjqnmvah1nn824g8lk79bal90.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dogphin",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "931610236572-betpi524hlbovob3gs95bamhd7ccp9t9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXUagD7IS661liv8ICdWJ0h1seBt6b-o0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "931610236572-betpi524hlbovob3gs95bamhd7ccp9t9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "931610236572-b74bqhnp8j0gd580u5vnlm51n47rahc1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dogphin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

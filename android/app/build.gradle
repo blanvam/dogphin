@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: "com.google.gms.google-services"
 
 import com.android.build.OutputFile
 
@@ -183,6 +184,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.google.firebase:firebase-analytics:17.2.2"
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     if (enableHermes) {
