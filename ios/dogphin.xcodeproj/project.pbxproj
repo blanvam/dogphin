@@ -19,6 +19,7 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* dogphinTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* dogphinTests.m */; };
 		937102B1AF09326A2B7657FC /* libPods-dogphin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E29F9AA4C143417FD3BC3AF2 /* libPods-dogphin.a */; };
+		E28410E0240462E00061F61C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E28410DF240462E00061F61C /* GoogleService-Info.plist */; };
 		F1AE936496C2CE92CE629830 /* libPods-dogphinTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8640622AE43CBF48EAC38F1D /* libPods-dogphinTests.a */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,7 @@
 		90F40465BCA218D37A1B13AF /* Pods-dogphin-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dogphin-tvOS.release.xcconfig"; path = "Target Support Files/Pods-dogphin-tvOS/Pods-dogphin-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		DE82AC3C8EC55A882B6B95FA /* Pods-dogphin-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dogphin-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-dogphin-tvOSTests/Pods-dogphin-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DF8426289C803990D55019DB /* Pods-dogphin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dogphin.release.xcconfig"; path = "Target Support Files/Pods-dogphin/Pods-dogphin.release.xcconfig"; sourceTree = "<group>"; };
+		E28410DF240462E00061F61C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E29F9AA4C143417FD3BC3AF2 /* libPods-dogphin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dogphin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E77230A4611517F1F0B3967A /* libPods-dogphin-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dogphin-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -125,6 +127,7 @@
 		13B07FAE1A68108700A75B9A /* dogphin */ = {
 			isa = PBXGroup;
 			children = (
+				E28410DF240462E00061F61C /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -161,7 +164,6 @@
 				72323B19146E64ACC6A85B9A /* Pods-dogphinTests.debug.xcconfig */,
 				6CD1D4FAC6B2B694DA5F588C /* Pods-dogphinTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -309,6 +311,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -339,6 +342,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				E28410E0240462E00061F61C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -646,7 +650,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.dogphin;
 				PRODUCT_NAME = dogphin;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -665,7 +669,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.dogphin;
 				PRODUCT_NAME = dogphin;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
