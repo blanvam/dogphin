@@ -8,11 +8,14 @@
 
 import React, { Component } from 'react';
 
+import { Provider } from 'react-redux';
+
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 // import firebase from '@react-native-firebase/app';
 
+import store from './src/store/index'
 import LoadingScreen from './src/loading/LoadingScreen';
 import HomeScreen from './src/home/HomeScreen';
 import ProfileScreen from './src/profile/ProfileScreen';
@@ -29,16 +32,18 @@ const Stack = createStackNavigator();
 export default class App extends Component {
   render() {
     return (
-      <NavigationContainer initialRouteName="Loading">
-        <Stack.Navigator>
-          <Stack.Screen name="Loading">
-            {props => <LoadingScreen {...props} />}
-          </Stack.Screen>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          
-          <Stack.Screen name="Profile" component={ProfileScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer initialRouteName="Loading">
+          <Stack.Navigator>
+            <Stack.Screen name="Loading">
+              {props => <LoadingScreen {...props} />}
+            </Stack.Screen>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            
+            <Stack.Screen name="Profile" component={ProfileScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
     )
   }
 }
