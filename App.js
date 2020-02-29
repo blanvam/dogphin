@@ -9,6 +9,7 @@
 import React, { Component } from 'react';
 
 import { Provider } from 'react-redux';
+import { Container } from 'native-base';
 
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
@@ -32,18 +33,19 @@ const Stack = createStackNavigator();
 export default class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <NavigationContainer initialRouteName="Loading">
-          <Stack.Navigator>
-            <Stack.Screen name="Loading">
-              {props => <LoadingScreen {...props} />}
-            </Stack.Screen>
-            <Stack.Screen name="Home" component={HomeScreen} />
-            
-            <Stack.Screen name="Profile" component={ProfileScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </Provider>
+      <Container>
+        <Provider store={store}>
+          <NavigationContainer initialRouteName="Loading">
+            <Stack.Navigator>
+              <Stack.Screen name="Loading">
+                {props => <LoadingScreen {...props} />}
+              </Stack.Screen>
+              <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'My home' }} />
+              <Stack.Screen name="Profile" component={ProfileScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </Provider>
+      </Container>
     )
   }
 }
