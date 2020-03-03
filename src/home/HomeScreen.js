@@ -48,24 +48,6 @@ export default class HomeScreen extends Component {
                         <Button last rounded light onPress={() => this.props.navigation.navigate('Alert')} >
                             <Icon type="Octicons" name="issue-opened" style={{ fontSize: 40, color: 'orange' }} />
                         </Button>
-                        <Fab
-                            active={this.state.active}
-                            direction="down"
-                            containerStyle={{ }}
-                            style={{ backgroundColor: '#5067FF' }}
-                            position="topRight"
-                            onPress={() => this.setState({ active: !this.state.active })}>
-                            <Icon name="share" />
-                            <Button style={{ backgroundColor: '#34A34F' }}>
-                                <Icon name="logo-whatsapp" />
-                            </Button>
-                            <Button style={{ backgroundColor: '#3B5998' }}>
-                                <Icon name="logo-facebook" />
-                            </Button>
-                            <Button disabled style={{ backgroundColor: '#DD5144' }}>
-                                <Icon name="mail" />
-                            </Button>
-                        </Fab>
                     </View>
                     <Image source={image} style={[styles.backgroundImage, {height:height, width: width}]}/>
                 </Content>
