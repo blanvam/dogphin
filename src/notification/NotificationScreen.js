@@ -4,22 +4,22 @@ import { Container, Header, Content } from 'native-base';
 import { Footer, FooterTab } from 'native-base';
 
 
-export default class ProfileScreen extends Component {
+export default class NotificationScreen extends Component {
     render () {
         return(
             <Container>
                 <Header searchBar rounded>
-                    <Text> Profile </Text>
+                    <Text> Notifications </Text>
                 </Header>
                 <Content>
                     <View style={styles.container}>
-                        <Text> Profile... </Text>
+                        <Text> Notifications... </Text>
                         <ActivityIndicator size='large'></ActivityIndicator>
                     </View>
                 </Content>
                 <Footer>
                     <FooterTab>
-                        <Text> Profile... </Text>
+                        <Text> Notifications... </Text>
                     </FooterTab>
                 </Footer>
             </Container>

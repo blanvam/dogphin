@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Dimensions, Image } from 'react-native'; 
 import { Container, Header, Right, Content } from 'native-base'; 
 import { Footer, FooterTab, Item } from 'native-base';
-import { Icon, View, Button, Text } from 'native-base';
+import { Icon, Button, Text, View, Badge, Fab } from 'native-base';
 
 const styles = StyleSheet.create({
     backgroundImage: {
@@ -14,6 +14,12 @@ const styles = StyleSheet.create({
 })
 
 export default class HomeScreen extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+          active: false
+        };
+      }
     render () {
         let {height, width} = Dimensions.get('window');
         let image = require('../img/map.png');
@@ -26,7 +32,7 @@ export default class HomeScreen extends Component {
                         <Text placeholder="Notifications"> Hello! Today is a good day for sailing... </Text>
                     </Item>
                     <Right  style={{flex: null}}>
-                        <Button transparent onPress={() => this.props.navigation.navigate('Recommended')}>
+                        <Button transparent onPress={() => this.props.navigation.navigate('Profile')}>
                         <Icon type="MaterialIcons" name="person" />
                         </Button>
                     </Right>
@@ -42,12 +48,30 @@ export default class HomeScreen extends Component {
                         <Button last rounded light onPress={() => this.props.navigation.navigate('Alert')} >
                             <Icon type="Octicons" name="issue-opened" style={{ fontSize: 40, color: 'orange' }} />
                         </Button>
+                        <Fab
+                            active={this.state.active}
+                            direction="down"
+                            containerStyle={{ }}
+                            style={{ backgroundColor: '#5067FF' }}
+                            position="topRight"
+                            onPress={() => this.setState({ active: !this.state.active })}>
+                            <Icon name="share" />
+                            <Button style={{ backgroundColor: '#34A34F' }}>
+                                <Icon name="logo-whatsapp" />
+                            </Button>
+                            <Button style={{ backgroundColor: '#3B5998' }}>
+                                <Icon name="logo-facebook" />
+                            </Button>
+                            <Button disabled style={{ backgroundColor: '#DD5144' }}>
+                                <Icon name="mail" />
+                            </Button>
+                        </Fab>
                     </View>
                     <Image source={image} style={[styles.backgroundImage, {height:height, width: width}]}/>
                 </Content>
                 <Footer>
                     <FooterTab>
-                        <Button>
+                        <Button active>
                             <Icon type="MaterialIcons" name="explore" />
                             <Text> Home </Text>
                         </Button>
@@ -55,8 +79,9 @@ export default class HomeScreen extends Component {
                             <Icon type="MaterialCommunityIcons" name="weather-partlycloudy" />
                             <Text>Weather</Text>         
                         </Button>
-                        <Button>
-                        <Icon type="MaterialCommunityIcons" name="bell-outline" />
+                        <Button active badge vertical onPress={() => this.props.navigation.navigate("Notifications")} >
+                            <Badge ><Text>13</Text></Badge>
+                            <Icon type="MaterialCommunityIcons" name="bell-outline" />
                             <Text>Notifications</Text>
                         </Button>
                     </FooterTab>
