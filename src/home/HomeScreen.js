@@ -4,6 +4,8 @@ import { Container, Header, Right, Content } from 'native-base';
 import { Footer, FooterTab, Item } from 'native-base';
 import { Icon, Button, Text, View, Badge, Fab } from 'native-base';
 
+import MapView from 'react-native-maps';
+
 const styles = StyleSheet.create({
     backgroundImage: {
         flex: 1,
@@ -49,7 +51,14 @@ export default class HomeScreen extends Component {
                             <Icon type="Octicons" name="issue-opened" style={{ fontSize: 40, color: 'orange' }} />
                         </Button>
                     </View>
-                    <Image source={image} style={[styles.backgroundImage, {height:height, width: width}]}/>
+                    <MapView
+                        initialRegion={{
+                        latitude: 37.78825,
+                        longitude: -122.4324,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                        }}
+                    />
                 </Content>
                 <Footer>
                     <FooterTab>
