@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, Image } from 'react-native'; 
+import { StyleSheet } from 'react-native'; 
 import { Container, Header, Right, Content } from 'native-base'; 
 import { Footer, FooterTab, Item } from 'native-base';
 import { Icon, Button, Text, View, Badge, Fab } from 'native-base';
 
-import MapView from 'react-native-maps';
+import Map from './map/Map'
 
 const styles = StyleSheet.create({
     alertBar: { 
@@ -13,10 +13,7 @@ const styles = StyleSheet.create({
         margin:15,
         alignSelf:'center',
         flexDirection:'row'
-    },
-    map: {
-        ...StyleSheet.absoluteFillObject,
-  },
+    }
 })
 
 export default class HomeScreen extends Component {
@@ -27,8 +24,6 @@ export default class HomeScreen extends Component {
         };
       }
     render () {
-        let {height, width} = Dimensions.get('window');
-        let image = require('../img/map.png');
         return(
             <Container>
                 <Header searchBar rounded>
@@ -55,18 +50,7 @@ export default class HomeScreen extends Component {
                             <Icon type="Octicons" name="issue-opened" style={{ fontSize: 40, color: 'orange' }} />
                         </Button>
                     </View>
-                    <View style={{height:height, width: width}}>
-                        <MapView
-                            style={[styles.map]}
-                            region={{
-                                latitude: 37.78825,
-                                longitude: -122.4324,
-                                latitudeDelta: 0.015,
-                                longitudeDelta: 0.0121,
-                            }}
-                        >
-                        </MapView> 
-                    </View>
+                    <Map/>
                 </Content>
                 <Footer>
                     <FooterTab>
