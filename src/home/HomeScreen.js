@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, Image } from 'react-native'; 
-import { Container, Header, Right, Content } from 'native-base'; 
+import { StyleSheet, Dimensions, Image, Linking } from 'react-native';
+import { Container, Header, Right, Content } from 'native-base';
 import { Footer, FooterTab, Item } from 'native-base';
 import { Icon, Button, Text, View, Badge, Fab } from 'native-base';
 
@@ -20,6 +20,19 @@ export default class HomeScreen extends Component {
           active: false
         };
       }
+
+    openURL(url) {
+      Linking.canOpenURL(url)
+        .then((supported) => {
+          if (!supported) {
+            console.log("Can't handle url: " + url);
+          } else {
+            return Linking.openURL(url);
+          }
+        })
+        .catch((err) => console.error('An error occurred', err));
+    }
+
     render () {
         let {height, width} = Dimensions.get('window');
         let image = require('../img/map.png');
@@ -57,9 +70,9 @@ export default class HomeScreen extends Component {
                             <Icon type="MaterialIcons" name="explore" />
                             <Text> Home </Text>
                         </Button>
-                        <Button active>
+                        <Button active onPress={() => this.openURL("http://weather.com")}>
                             <Icon type="MaterialCommunityIcons" name="weather-partlycloudy" />
-                            <Text>Weather</Text>         
+                            <Text>Weather</Text>
                         </Button>
                         <Button active badge vertical onPress={() => this.props.navigation.navigate("Notifications")} >
                             <Badge ><Text>13</Text></Badge>
