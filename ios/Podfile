@@ -41,7 +41,11 @@ target 'dogphin' do
   pod 'Firebase/Analytics'
 
   pod 'react-native-maps', :path => '../node_modules/react-native-maps'
-
+  
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+  pod 'Permission-LocationAlways', :path => "../node_modules/react-native-permissions/ios/LocationAlways.podspec"
+  pod 'Permission-LocationWhenInUse', :path => "../node_modules/react-native-permissions/ios/LocationWhenInUse.podspec"
+  
   target 'dogphinTests' do
     inherit! :search_paths
     # Pods for testing
