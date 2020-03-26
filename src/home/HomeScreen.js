@@ -64,13 +64,13 @@ export default class HomeScreen extends Component {
         <Content>
           <View style={styles.alertBar}>
             <Button first rounded danger onPress={() => this.props.navigation.navigate('Alert')} >
-              <Icon type="Octicons" name="alert" style={{ fontSize: 35, color: 'white' }} />
+              <Icon type="Octicons" name="alert" style={{ fontSize: 30, color: 'white' }} />
             </Button>
             <Button block rounded success style={{ width: '55%', marginLeft: 20, marginRight: 20 }} >
               <Text> Salida </Text>
             </Button>
             <Button last rounded light onPress={() => this.props.navigation.navigate('Alert')} >
-              <Icon type="Octicons" name="issue-opened" style={{ fontSize: 40, color: 'orange' }} />
+              <Icon type="Octicons" name="issue-opened" style={{ fontSize: 30, color: 'orange' }} />
             </Button>
           </View>
           <Map />
