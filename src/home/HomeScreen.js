@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { AppState, StyleSheet } from 'react-native';
+import { StyleSheet, Linking } from 'react-native';
 import { Container, Header, Right, Content } from 'native-base';
 import { Footer, FooterTab, Item } from 'native-base';
 import { Icon, Button, Text, View, Badge } from 'native-base';
@@ -43,6 +44,18 @@ export default class HomeScreen extends Component {
     }
     this.setState({appState: nextAppState})
   }
+
+  openURL(url) {
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (!supported) {
+          console.log("Can't handle url: " + url);
+        } else {
+          return Linking.openURL(url);
+        }
+      })
+      .catch((err) => console.error('An error occurred', err));
+  }
   
   render() {
     return (
@@ -82,7 +95,7 @@ export default class HomeScreen extends Component {
               <Icon type="MaterialIcons" name="explore" />
               <Text> Home </Text>
             </Button>
-            <Button active>
+            <Button active onPress={() => this.openURL("http://weather.com")}>
               <Icon type="MaterialCommunityIcons" name="weather-partlycloudy" />
               <Text>Weather</Text>
             </Button>
