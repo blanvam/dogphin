@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { AppState, StyleSheet } from 'react-native';
-import { StyleSheet, Linking } from 'react-native';
+import { AppState, StyleSheet, Linking } from 'react-native';
 import { Container, Header, Right, Content } from 'native-base';
 import { Footer, FooterTab, Item } from 'native-base';
 import { Icon, Button, Text, View, Badge } from 'native-base';
 
 import { checkPermissions } from './permission/checkPermissions'
 import ExitModal from './permission/ExitModal'
-
 import Map from './map/Map'
 
 const styles = StyleSheet.create({
@@ -25,7 +23,9 @@ export default class HomeScreen extends Component {
     super(props)
     this.state = {
       appState: AppState.currentState,
-      permissionsGranted: true
+      permissionsGranted: false,
+      latitude: 36.374665,
+      longitude: -6.240144
     }
   }
 
@@ -86,7 +86,12 @@ export default class HomeScreen extends Component {
               <Icon type="Octicons" name="issue-opened" style={{ fontSize: 30, color: 'orange' }} />
             </Button>
           </View>
-          <Map />
+          <Map 
+            permissionsGranted={this.state.permissionsGranted} 
+            latitude={this.state.latitude} 
+            longitude={this.state.longitude}
+            onChange={(lat, long) => this.setState({ latitude: lat, longitude: long })}
+          />
           <ExitModal modalVisible={!this.state.permissionsGranted} />
         </Content>
         <Footer>
@@ -95,7 +100,7 @@ export default class HomeScreen extends Component {
               <Icon type="MaterialIcons" name="explore" />
               <Text> Home </Text>
             </Button>
-            <Button active onPress={() => this.openURL("http://weather.com")}>
+            <Button active onPress={() => this.openURL(`http://weather.com?longitude=${this.state.longitude}&latitude=${this.state.latitude}`)}>
               <Icon type="MaterialCommunityIcons" name="weather-partlycloudy" />
               <Text>Weather</Text>
             </Button>
