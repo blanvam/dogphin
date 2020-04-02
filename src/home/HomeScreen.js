@@ -17,7 +17,10 @@ export default class HomeScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
-          active: false
+          active: false,
+          lat: 36.342, //example location data
+          long: -6.156,
+          zoom: 11
         };
       }
 
@@ -70,7 +73,7 @@ export default class HomeScreen extends Component {
                             <Icon type="MaterialIcons" name="explore" />
                             <Text> Home </Text>
                         </Button>
-                        <Button active onPress={() => this.openURL("http://weather.com")}>
+                        <Button active onPress={() => this.openURL(`http://windy.com/?${this.state.lat},${this.state.long},${this.state.zoom}`)}>
                             <Icon type="MaterialCommunityIcons" name="weather-partlycloudy" />
                             <Text>Weather</Text>
                         </Button>
