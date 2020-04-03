@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppState, StyleSheet, Linking } from 'react-native';
+import { AppState, StyleSheet, Linking, Switch } from 'react-native';
 import { Container, Header, Right, Content } from 'native-base';
 import { Footer, FooterTab, Item } from 'native-base';
 import { Icon, Button, Text, View, Badge } from 'native-base';
@@ -9,11 +9,18 @@ import ExitModal from './permission/ExitModal'
 import Map from './map/Map'
 
 const styles = StyleSheet.create({
-  alertBar: {
+  mapBar: {
     zIndex: 1,
     position: 'absolute',
     margin: 15,
+  },
+  alertBar: {
     alignSelf: 'center',
+    flexDirection: 'row',
+  },
+  positionBar: {
+    marginTop: 15,
+    alignSelf: 'flex-end',
     flexDirection: 'row',
   }
 })
@@ -24,6 +31,7 @@ export default class HomeScreen extends Component {
       this.state = {
         active: false,
         appState: AppState.currentState,
+        positionEnabled: true,
         permissionsGranted: false,
         latitude: 36.374665,
         longitude: -6.240144,
@@ -78,16 +86,27 @@ export default class HomeScreen extends Component {
           </Right>
         </Header>
         <Content>
-          <View style={styles.alertBar}>
-            <Button first rounded danger onPress={() => this.props.navigation.navigate('Alert')} >
-              <Icon type="Octicons" name="alert" style={{ fontSize: 30, color: 'white' }} />
-            </Button>
-            <Button block rounded success style={{ width: '55%', marginLeft: 20, marginRight: 20 }} >
-              <Text> Salida </Text>
-            </Button>
-            <Button last rounded light onPress={() => this.props.navigation.navigate('Alert')} >
-              <Icon type="Octicons" name="issue-opened" style={{ fontSize: 30, color: 'orange' }} />
-            </Button>
+          <View style={styles.mapBar}>
+            <View style={styles.alertBar}>
+              <Button first rounded danger onPress={() => this.props.navigation.navigate('Alert')} >
+                <Icon type="Octicons" name="alert" style={{ fontSize: 30, color: 'white' }} />
+              </Button>
+              <Button block rounded success style={{ width: '55%', marginLeft: 20, marginRight: 20 }} >
+                <Text> Salida </Text>
+              </Button>
+              <Button last rounded light onPress={() => this.props.navigation.navigate('Alert')} >
+                <Icon type="Octicons" name="issue-opened" style={{ fontSize: 30, color: 'orange' }} />
+              </Button>
+            </View>
+            <View style={styles.positionBar}>
+              <Switch 
+                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                thumbColor={this.state.positionEnabled ? "#f5dd4b" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={() => this.setState({positionEnabled: !this.state.positionEnabled}) }
+                value={this.state.positionEnabled}
+              />
+            </View>
           </View>
           <Map 
             markers={[
