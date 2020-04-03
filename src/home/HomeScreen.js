@@ -20,13 +20,15 @@ const styles = StyleSheet.create({
 
 export default class HomeScreen extends Component {
   constructor(props) {
-    super(props)
-    this.state = {
-      appState: AppState.currentState,
-      permissionsGranted: false,
-      latitude: 36.374665,
-      longitude: -6.240144
-    }
+      super(props)
+      this.state = {
+        active: false,
+        appState: AppState.currentState,
+        permissionsGranted: false,
+        latitude: 36.374665,
+        longitude: -6.240144,
+        zoom: 11
+      };
   }
 
   componentDidMount() {
@@ -45,6 +47,7 @@ export default class HomeScreen extends Component {
     this.setState({appState: nextAppState})
   }
 
+
   openURL(url) {
     Linking.canOpenURL(url)
       .then((supported) => {
@@ -56,15 +59,15 @@ export default class HomeScreen extends Component {
       })
       .catch((err) => console.error('An error occurred', err));
   }
-  
+
   render() {
     return (
       <Container>
         <Header searchBar rounded>
           <Item>
-            <Icon 
-              style={{ /*color: 'white',*/ transform: [{ rotateY: '360deg' }, { scaleX: -1 }] }} 
-              type="AntDesign" name="notification" 
+            <Icon
+              style={{ /*color: 'white',*/ transform: [{ rotateY: '360deg' }, { scaleX: -1 }] }}
+              type="AntDesign" name="notification"
             />
              <Text placeholder="Notifications"> Hello! Today is a good day for sailing... </Text>
           </Item>
@@ -86,9 +89,9 @@ export default class HomeScreen extends Component {
               <Icon type="Octicons" name="issue-opened" style={{ fontSize: 30, color: 'orange' }} />
             </Button>
           </View>
-          <Map 
-            permissionsGranted={this.state.permissionsGranted} 
-            latitude={this.state.latitude} 
+          <Map
+            permissionsGranted={this.state.permissionsGranted}
+            latitude={this.state.latitude}
             longitude={this.state.longitude}
             onChange={(lat, long) => this.setState({ latitude: lat, longitude: long })}
           />
@@ -100,7 +103,7 @@ export default class HomeScreen extends Component {
               <Icon type="MaterialIcons" name="explore" />
               <Text> Home </Text>
             </Button>
-            <Button active onPress={() => this.openURL(`http://weather.com?longitude=${this.state.longitude}&latitude=${this.state.latitude}`)}>
+            <Button active onPress={() => this.openURL(`http://windy.com/?${this.state.longitude},${this.state.latitude},${this.state.zoom}`)}>
               <Icon type="MaterialCommunityIcons" name="weather-partlycloudy" />
               <Text>Weather</Text>
             </Button>
