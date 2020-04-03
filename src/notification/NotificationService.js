@@ -1,4 +1,4 @@
-import firestore as db from '@react-native-firebase/firestore';
+import db from '@react-native-firebase/firestore';
 
 
 const listNotification = (querySnapshot)=>{
@@ -13,13 +13,13 @@ const listNotification = (querySnapshot)=>{
 class NotificationService {
 
     constructor(notificationId, data = {}){
-        this.dbRef = db.collection("notifications").doc(notificationId);
+        this.dbRef = db().collection("notifications").doc(notificationId);
         this.notificationId = notificationId;
         this.data = data;
     }
 
-    static collectionRef(courseId){
-        return db.collection("notifications");
+    static collectionRef(){
+        return db().collection("notifications");
     }
 
     collectionRef(){
@@ -29,7 +29,7 @@ class NotificationService {
     //notify var is a function to manage errors or success messages to user
     static create(data, notify = () => {}){
         //data = JSON.parse(JSON.stringify(data));
-        NotificationService.collectionRef(courseId).add(data)
+        NotificationService.collectionRef().add(data)
             .then(function(docRef) {
                 console.log("Document written with ID: ", docRef.id);
                 notify("success", "Notification entry successfully created");
@@ -51,15 +51,15 @@ class NotificationService {
     }
 
     static all(action){
-        NotificationService.onSnapshot(function(querySnapshot) {
-                action(listNotification(querySnapshot, courseId));
+        NotificationService.collectionRef().onSnapshot(function(querySnapshot) {
+                action(listNotification(querySnapshot));
             }
         );
     }
 
     static where(action, ...query){
         NotificationService.where(...query).onSnapshot(function(querySnapshot) {
-                action(listNotification(querySnapshot, courseId));
+                action(listNotification(querySnapshot));
             }
         );
     }
@@ -68,7 +68,7 @@ class NotificationService {
         let batch = db.batch();
 
         notificationIds.forEach(notificationId =>{
-           batch.delete(NotificationService.doc(notificationId));
+           batch.delete(NotificationService.collectionRef().doc(notificationId));
         });
 
         batch.commit().then(function() {
