@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Dimensions } from 'react-native'; 
 import { View } from 'native-base';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation'
 
 import mapStyle from './mapStyle.json';
@@ -87,7 +87,15 @@ export default class Map extends Component {
           showsUserLocation={true}
           followsUserLocation={true}
           loadingEnabled={true}
-        />
+        >
+          {this.props.markers.map(marker => (
+            <Marker
+              coordinate={marker.latlng}
+              title={marker.title}
+              description={marker.description}
+            />
+          ))}
+        </MapView>
       </View>
     );
   }

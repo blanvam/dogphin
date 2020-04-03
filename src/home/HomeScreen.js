@@ -87,6 +87,16 @@ export default class HomeScreen extends Component {
             </Button>
           </View>
           <Map 
+            markers={[
+              {
+                latlng: {
+                  latitude: 36.374665,
+                  longitude: -6.240144,
+                },
+                title: "example marker",
+                description: "example marker description"
+              }
+            ]}
             permissionsGranted={this.state.permissionsGranted} 
             latitude={this.state.latitude} 
             longitude={this.state.longitude}
