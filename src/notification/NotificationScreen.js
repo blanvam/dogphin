@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, ActivityIndicator } from "react-native"
+import {ScrollView, View, Text, StyleSheet, ActivityIndicator } from "react-native"
 import { Container, Header, Content } from 'native-base';
 import { Footer, FooterTab } from 'native-base';
 
@@ -9,10 +9,11 @@ export default class NotificationScreen extends Component {
         return(
             <Container>
                 <Content>
+                  <ScrollView>
                     <View style={styles.container}>
                         <Text> Notifications... </Text>
-                        <ActivityIndicator size='large'></ActivityIndicator>
                     </View>
+                  </ScrollView>
                 </Content>
                 <Footer>
                     <FooterTab>
