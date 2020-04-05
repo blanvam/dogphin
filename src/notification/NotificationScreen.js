@@ -28,10 +28,11 @@ class NotificationScreen extends Component {
                     <View style={styles.container}>
                      { this.props.notifications.map(n => {
                         return (
-                          <Text>n.message</Text>
+                          <Text>{n.message}</Text>
                         )
                        })
                      }
+                      <Text>prueba</Text>
                     </View>
                 </Content>
                 <Footer>
