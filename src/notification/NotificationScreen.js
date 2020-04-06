@@ -82,9 +82,11 @@ const styles = StyleSheet.create(
           borderRadius:25,
         },
         text: {
+          width: "92%",
           marginBottom: 5,
-          flexDirection: 'column',
-          flexWrap:'wrap'
+          flexDirection: 'row',
+          flexWrap:'wrap',
+          marginRight: 0
         },
         content: {
           flex: 1,
@@ -93,7 +95,9 @@ const styles = StyleSheet.create(
         },
         separator: {
           height: 1,
-          backgroundColor: "#CCCCCC"
+          backgroundColor: "#CCCCCC",
+          width: "80%",
+          alignSelf: "center"
         },
         timeAgo:{
           fontSize:12,

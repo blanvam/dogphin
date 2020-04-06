@@ -44,38 +44,38 @@ class NotificationService {
 const typesConfig = Object.freeze({
   emergency: {
     icon: "alert",
-    title: "SOS!! Emergency!",
+    title: "¡¡SOS!! ¡Emergencia!",
     message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
   },
   boat_damage: {
     icon: "issue-opened",
-    title: "Boat damage",
+    title: "¡Barco dañado!",
     message: "¡A 1Km parece que alguien tiene el barco dañado! ¿Puedes ayudarle?"
   },
   fuel_empty: {
     icon: "issue-opened",
-    title: "SOS!! Emergency!",
-    message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
+    title: "Sin combustible",
+    message: "A 200m hay alguien sin combustible, ponte en contacto si puedes ayudar."
   },
   bad_weather: {
     icon: "issue-opened",
-    title: "SOS!! Emergency!",
-    message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
+    title: "Mal tiempo/oleaje",
+    message: "Parece que a 5Km hay oleaje o previsión de mal tiempo. ¡Tome precauciones!"
   },
   floating_object: {
     icon: "issue-opened",
-    title: "SOS!! Emergency!",
-    message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
+    title: "Objeto flotando/peligroso",
+    message: "¡Tienes cerca un objeto flotante que podría ser peligroso!"
   },
   mechanic_failure: {
     icon: "issue-opened",
-    title: "SOS!! Emergency!",
-    message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
+    title: "Fallo de motor/eléctrico",
+    message: "Cerca hay alguien con un fallo de motor o eléctrico"
   },
   health_sos: {
     icon: "issue-opened",
-    title: "SOS!! Emergency!",
-    message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
+    title: "¡SOS! Problemas de salud",
+    message: "¡Alguien está teniendo problemas de salud! ¿Puedes ayudarle?"
   },
 })
 
