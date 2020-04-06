@@ -1,84 +1,82 @@
-import db from '@react-native-firebase/firestore';
-
-
-const listNotification = (querySnapshot)=>{
-    let notifications = [];
-    querySnapshot.forEach(function (doc, index) {
-        // doc.data() is never undefined for query doc snapshots
-        notifications.push(Object.assign({},{fid: doc.id}, doc.data()));
-    });
-    return notifications;
-};
+import AlertService from './../services/AlertService'
 
 class NotificationService {
 
-    constructor(notificationId, data = {}){
-        this.dbRef = db().collection("notifications").doc(notificationId);
-        this.notificationId = notificationId;
-        this.data = data;
+  constructor(notification){
+    this.type = notification.type
+    this.createdAt = notification.createdAt.toDate()
+    this.notification = notification
+  }
+
+  static lastNotifications(action){
+    AlertService.all(action)
+  }
+
+  timeAgo() {
+    let secAgo = (new Date().getTime() - this.createdAt.getTime()) / 1000
+    let minAgo, hoursAgo, daysAgo;
+    if ((minAgo = secAgo/60) < 1) {
+      return `${parseInt(secAgo)} seconds ago`;
+    } else if ((hoursAgo = minAgo/60) < 1) {
+      return `${parseInt(minAgo)} minutes ago`;
+    } else if ((daysAgo = hoursAgo/24) < 1) {
+      return `${parseInt(hoursAgo)} hours ago`;
+    } else if ((daysAgo/30) < 1) {
+      return `${parseInt(daysAgo)} days ago`;
+    } else {
+      return this.createdAt.toDateString();
     }
+  }
 
-    static collectionRef(){
-        return db().collection("notifications");
-    }
+  iconType(){
+    return typesConfig[this.type].icon
+  }
 
-    collectionRef(){
-        return NotificationService.collectionRef();
-    }
+  message(){
+    return typesConfig[this.type].message
+  }
 
-    //notify var is a function to manage errors or success messages to user
-    static create(data, notify = () => {}){
-        //data = JSON.parse(JSON.stringify(data));
-        NotificationService.collectionRef().add(data)
-            .then(function(docRef) {
-                console.log("Document written with ID: ", docRef.id);
-                notify("success", "Notification entry successfully created");
-            })
-            .catch(function(error) {
-                console.error("Error adding document: ", error);
-                notify("error", "Error creating Notification entry: " + error);
-            });
-    }
-
-    update(data, notify = ()=>{}){
-        this.dbRef.update(data).then(function() {
-            console.log("Notification entry successfully updated!");
-            notify("success", "Notification entry successfully updated!")
-        }).catch(function(error) {
-            console.error("Error updating Notification entry: ", error);
-            notify("error", "Error updating Notification entry: " + error)
-        });
-    }
-
-    static all(action){
-        NotificationService.collectionRef().onSnapshot(function(querySnapshot) {
-                action(listNotification(querySnapshot));
-            }
-        );
-    }
-
-    static where(action, ...query){
-        NotificationService.where(...query).onSnapshot(function(querySnapshot) {
-                action(listNotification(querySnapshot));
-            }
-        );
-    }
-
-    static destroy_all(notificationIds, notify = () => {}){
-        let batch = db.batch();
-
-        notificationIds.forEach(notificationId =>{
-           batch.delete(NotificationService.collectionRef().doc(notificationId));
-        });
-
-        batch.commit().then(function() {
-            console.log("Notification entry successfully deleted!");
-            notify("success", "Notification entry successfully deleted!")
-        }).catch(function(error) {
-            console.error("Error removing notification entry: ", error);
-            notify("error", "Error removing notification entry: " + error)
-        });
-    }
+  title(){
+    return typesConfig[this.type].title
+  }
 }
+
+const typesConfig = Object.freeze({
+  emergency: {
+    icon: "alert",
+    title: "SOS!! Emergency!",
+    message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
+  },
+  boat_damage: {
+    icon: "issue-opened",
+    title: "Boat damage",
+    message: "¡A 1Km parece que alguien tiene el barco dañado! ¿Puedes ayudarle?"
+  },
+  fuel_empty: {
+    icon: "issue-opened",
+    title: "SOS!! Emergency!",
+    message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
+  },
+  bad_weather: {
+    icon: "issue-opened",
+    title: "SOS!! Emergency!",
+    message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
+  },
+  floating_object: {
+    icon: "issue-opened",
+    title: "SOS!! Emergency!",
+    message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
+  },
+  mechanic_failure: {
+    icon: "issue-opened",
+    title: "SOS!! Emergency!",
+    message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
+  },
+  health_sos: {
+    icon: "issue-opened",
+    title: "SOS!! Emergency!",
+    message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
+  },
+})
 
 export default NotificationService;
