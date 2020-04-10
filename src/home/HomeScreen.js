@@ -25,6 +25,8 @@ const styles = StyleSheet.create({
   }
 })
 
+let loadingMessage = { option1: 'Profile', option2: 'Login', message: 'Gettin user info ...' }
+
 export default class HomeScreen extends Component {
   constructor(props) {
       super(props)
@@ -33,6 +35,8 @@ export default class HomeScreen extends Component {
         appState: AppState.currentState,
         positionEnabled: true,
         permissionsGranted: false,
+        showExitModal: false,
+        user: null,
         latitude: 36.374665,
         longitude: -6.240144,
         zoom: 11
@@ -41,7 +45,7 @@ export default class HomeScreen extends Component {
 
   componentDidMount() {
     AppState.addEventListener('change', this._handleAppStateChange)
-    checkPermissions((r) => this.setState({ permissionsGranted: r }))
+    checkPermissions((r) => this.setState({ permissionsGranted: r, showExitModal: !r }))
   }
 
   componentWillUnmount() {
@@ -50,7 +54,7 @@ export default class HomeScreen extends Component {
 
   _handleAppStateChange = (nextAppState) => {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active' && !this.state.permissionsGranted) {
-      checkPermissions((r) => this.setState({ permissionsGranted: r }))
+      checkPermissions((r) => this.setState({ permissionsGranted: r, showExitModal: !r }))
     }
     this.setState({appState: nextAppState})
   }
@@ -80,7 +84,7 @@ export default class HomeScreen extends Component {
              <Text placeholder="Notifications"> Hello! Today is a good day for sailing... </Text>
           </Item>
           <Right style={{ flex: null }}>
-            <Button transparent onPress={() => this.props.navigation.navigate('Profile')}>
+            <Button transparent onPress={() => this.props.navigation.navigate('Loading', loadingMessage)}>
               <Icon type="MaterialIcons" name="person" />
             </Button>
           </Right>
@@ -111,6 +115,7 @@ export default class HomeScreen extends Component {
           <Map 
             markers={[
               {
+                id: 1,
                 latlng: {
                   latitude: 36.374665,
                   longitude: -6.240144,
@@ -124,7 +129,7 @@ export default class HomeScreen extends Component {
             longitude={this.state.longitude}
             onChange={(lat, long) => this.setState({ latitude: lat, longitude: long })}
           />
-          <ExitModal modalVisible={!this.state.permissionsGranted} />
+          <ExitModal modalVisible={this.state.showExitModal} />
         </Content>
         <Footer>
           <FooterTab>

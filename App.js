@@ -18,8 +18,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import store from './src/store/index'
 import HomeScreen from './src/home/HomeScreen';
-import ProfileScreen from './src/profile/ProfileScreen';
 import NotificationScreen from './src/notification/NotificationScreen';
+import LoadingScreen from './src/user/loading/LoadingScreen';
+import LoginScreen from './src/user/login/LoginScreen';
+import SignupScreen from './src/user/signup/SignupScreen';
+import ProfileScreen from './src/user/profile/ProfileScreen';
 
 // TODO(you): import any additional firebase services that you require for your app, e.g for auth:
 //    1) install the npm package: `yarn add @react-native-firebase/auth@alpha` - you do not need to
@@ -38,10 +41,13 @@ export default class App extends Component {
           <NavigationContainer initialRouteName="Home">
             <Stack.Navigator>
               <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'My home' }} />
-              <Stack.Screen name="Profile" component={ProfileScreen} />
               <Stack.Screen name="Notifications">
                 {props => <NotificationScreen {...props} />}
               </Stack.Screen>
+              <Stack.Screen name="Loading" component={LoadingScreen} />
+              <Stack.Screen name="Profile" component={ProfileScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Signup" component={SignupScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </Provider>

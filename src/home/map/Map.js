@@ -90,6 +90,7 @@ export default class Map extends Component {
         >
           {this.props.markers.map(marker => (
             <Marker
+              key={marker.id}
               coordinate={marker.latlng}
               title={marker.title}
               description={marker.description}
