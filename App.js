@@ -46,7 +46,14 @@ export default class App extends Component {
               </Stack.Screen>
               <Stack.Screen name="Loading" component={LoadingScreen} />
               <Stack.Screen name="Profile" component={ProfileScreen} />
-              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Login" component={LoginScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: '#00576a',
+                  },
+                  headerTintColor: '#fff',
+                }}
+              />
               <Stack.Screen name="Signup" component={SignupScreen} />
             </Stack.Navigator>
           </NavigationContainer>

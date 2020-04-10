@@ -6,8 +6,6 @@ import { Text, View, Button } from "react-native";
 import Modal from 'react-native-modal';
 
 
-let {height, width} = Dimensions.get('window')
-
 const styles = StyleSheet.create({
   modal: {
     marginTop: height/3,
@@ -26,6 +24,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   }
 })
+const {height, width} = Dimensions.get('window')
+
 
 export default class ExitModal extends Component {
   componentDidMount() {

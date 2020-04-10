@@ -11,6 +11,8 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   }
 })
+const {height, width} = Dimensions.get('window');
+
 
 export default class Map extends Component {
   constructor(props) {
@@ -74,7 +76,6 @@ export default class Map extends Component {
   }
 
   render() {
-    let {height, width} = Dimensions.get('window');
     return (
       <View style={{height:height, width: width}}>
         <MapView
