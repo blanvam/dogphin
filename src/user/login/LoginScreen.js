@@ -3,7 +3,7 @@ import { StyleSheet, ActivityIndicator, Dimensions, Alert } from 'react-native'
 import { Container, Content, Form, Button, View, Text } from 'native-base'
 import auth from '@react-native-firebase/auth'
 import  { Path, Svg } from 'react-native-svg'
-import FormItem from './FormItem'
+import FormItem from '../FormItem'
 
 const styles = StyleSheet.create({
   preloader: {
@@ -103,7 +103,6 @@ export default class LoginScreen extends Component {
   }
 
   render() {
-    console.log(this.state)
     if(this.state.isLoading){
       return(
         <View style={styles.preloader}>

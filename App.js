@@ -54,7 +54,14 @@ export default class App extends Component {
                   headerTintColor: '#fff',
                 }}
               />
-              <Stack.Screen name="Signup" component={SignupScreen} />
+              <Stack.Screen name="Signup" component={SignupScreen}
+                options={{
+                  headerStyle: {
+                    backgroundColor: '#00576a',
+                  },
+                  headerTintColor: '#fff',
+                }}
+              />
             </Stack.Navigator>
           </NavigationContainer>
         </Provider>

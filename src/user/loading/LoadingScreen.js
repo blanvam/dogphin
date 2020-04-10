@@ -12,7 +12,9 @@ export default class LoadingScreen extends Component {
   }
 
   componentDidMount() {
+    auth().signOut()
     auth().onAuthStateChanged(user => {
+      console.log(`USER: ${JSON.stringify(user)}`)
       this.props.navigation.navigate(user ? this.option1 : this.option2)
     })
   }
