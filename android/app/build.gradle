@@ -191,6 +191,9 @@ android {
 
 dependencies {
     compile 'com.android.support:multidex:1.0.1'
+    implementation project(':@react-native-community_geolocation')
+    implementation project(':react-native-permissions')
+    implementation project(':react-native-maps')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.google.firebase:firebase-analytics:17.2.2"
     implementation "com.facebook.react:react-native:+"  // From node_modules
