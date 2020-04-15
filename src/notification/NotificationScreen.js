@@ -1,10 +1,23 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import mapDispatchToProps from './notification.actions';
 import {View, Text, StyleSheet, ActivityIndicator } from "react-native"
-import { Container, Header, Content } from 'native-base'; 
+import { Container, Header, Content } from 'native-base';
 import { Footer, FooterTab } from 'native-base';
+import NotificationService from './NotificationService'
 
+function mapStateToProps(state) {
+    return {
+        notifications: state.notification.notifications,
+    };
+}
 
-export default class NotificationScreen extends Component {
+class NotificationScreen extends Component {
+
+    componentDidMount(){
+      NotificationService.all(this.props.actions.handleNotifications);
+    }
+
     render () {
         return(
             <Container>
@@ -13,8 +26,13 @@ export default class NotificationScreen extends Component {
                 </Header>
                 <Content>
                     <View style={styles.container}>
-                        <Text> Notifications... </Text>
-                        <ActivityIndicator size='large'></ActivityIndicator>
+                     { this.props.notifications.map(n => {
+                        return (
+                          <Text>{n.message}</Text>
+                        )
+                       })
+                     }
+                      <Text>prueba</Text>
                     </View>
                 </Content>
                 <Footer>
@@ -36,3 +54,5 @@ const styles = StyleSheet.create(
         }
     }
 )
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationScreen);
