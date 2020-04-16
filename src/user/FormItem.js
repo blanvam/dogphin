@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
 import { Item, Label, Text, Row, Input, Button, Icon } from 'native-base'
 
+const LabelError = (props) => {
+  if (props.render == true) {
+    return (<Label>{props.label} <Text style={{color: '#d9534f'}}>*</Text></Label>)
+  } else {
+    return (<Label>{props.label}</Label>)
+  }
+}
 
 export default class FormItem extends Component {
   render() {
     if (this.props.error) {
       return (
         <Item stackedLabel error>
-          <Label>{this.props.label} <Text style={{color: '#d9534f'}}>*</Text></Label>
+          <LabelError label={this.props.label} render={this.props.obligatory} />
           <Row>
             <Input 
               value={this.props.value} 
@@ -15,14 +22,32 @@ export default class FormItem extends Component {
               onChangeText={(v) => this.props.onChangeText(v)} 
             />
             <Button danger transparent>
-              <Icon name="close-circle" />
+              <Icon type="MaterialCommunityIcons" name="close-circle" />
             </Button>
           </Row>
         </Item> )
+    } 
+    if (this.props.disabled) {
+      return (
+      <Item stackedLabel>
+        <LabelError label={this.props.label} render={this.props.obligatory} />
+        <Row>
+            <Input 
+              disabled
+              placeholder={this.props.placeholder} 
+              value={this.props.value} 
+              secureTextEntry={this.props.secureTextEntry} 
+            />
+            <Button dark transparent>
+              <Icon type="MaterialIcons" name="block" />
+            </Button>
+        </Row>
+      </Item>
+      )
     }
     return (
       <Item stackedLabel>
-        <Label>{this.props.label}</Label>
+        <LabelError label={this.props.label} render={this.props.obligatory} />
         <Input 
           value={this.props.value} 
           secureTextEntry={this.props.secureTextEntry} 

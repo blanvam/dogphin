@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
   }
 })
 
-let loadingMessage = { option1: 'Profile', option2: 'Login', message: 'Gettin user info ...' }
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -84,7 +83,7 @@ export default class HomeScreen extends Component {
              <Text placeholder="Notifications"> Hello! Today is a good day for sailing... </Text>
           </Item>
           <Right style={{ flex: null }}>
-            <Button transparent onPress={() => this.props.navigation.navigate('Loading', loadingMessage)}>
+            <Button transparent onPress={() => this.props.navigation.navigate('Profile')}>
               <Icon type="MaterialIcons" name="person" />
             </Button>
           </Right>

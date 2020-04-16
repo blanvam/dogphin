@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { StyleSheet, ActivityIndicator, Dimensions, Alert } from 'react-native'
+import { StyleSheet, ActivityIndicator, Alert } from 'react-native'
 import { Container, Content, Form, Button, View, Text } from 'native-base'
 import auth from '@react-native-firebase/auth'
-import  { Path, Svg } from 'react-native-svg'
+import UserHeader from '../UserHeader'
 import FormItem from '../FormItem'
 
 const styles = StyleSheet.create({
@@ -34,12 +34,6 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 })
-const { width, height } = Dimensions.get('window')
-const shapes = {
-  path: "M0.00,49.98 C149.99,150.00 271.49,-49.98 500.00,49.98 L500.00,0.00 L0.00,0.00 Z",
-  width: 500,
-  height: 150
-}
 const authErrors = {
   'auth/invalid-email': {
     'fields': ['email'],
@@ -74,8 +68,8 @@ export default class LoginScreen extends Component {
   constructor(props) {
     super(props)
     this.state = { 
-      email: '', 
-      password: '',
+      email: 'dogphin.app@gmail.com', 
+      password: 'password',
       isLoading: false,
       errorFields: [],
       errorMessage: ''
@@ -84,21 +78,21 @@ export default class LoginScreen extends Component {
 
   userLogin = () => {
     if(this.state.email === '' || this.state.password === '') {
-        Alert.alert('Enter details to signin!')
+      Alert.alert('Enter details to signin!')
     } else {
-        this.setState({errorFields: [], errorMessage: '', isLoading: true})
-        auth()
-        .signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then((res) => {
-          console.log(res)
-          console.log('User logged-in successfully!')
-          this.setState({isLoading: false, email: '', password: ''})
-          this.props.navigation.navigate('Profile')
-        })
-        .catch(error => {
-          let e = (authErrors[error.code] || authErrors['default'])
-          this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
-        })
+      this.setState({errorFields: [], errorMessage: '', isLoading: true})
+      auth()
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then((res) => {
+        console.log(res)
+        console.log('User logged-in successfully!')
+        this.setState({isLoading: false, email: '', password: ''})
+        this.props.navigation.navigate('Profile', {user: res})
+      })
+      .catch(error => {
+        let e = (authErrors[error.code] || authErrors['default'])
+        this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
+      })
     }
   }
 
@@ -113,11 +107,7 @@ export default class LoginScreen extends Component {
     return (
       <Container>
         <Content>
-          <View style={{height: '15%' }}>
-            <Svg width={width+1} height={height*0.2} viewBox={`0 8 ${shapes.width} ${shapes.height}`}>
-              <Path fill="#00576a" fillOpacity={1} d={shapes.path}></Path>
-            </Svg>
-          </View>
+          <UserHeader height={75} />
           <Form style={styles.loginForm}>
             <FormItem 
               error={this.state.errorFields.includes('email')}

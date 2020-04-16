@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { StyleSheet, ActivityIndicator, Dimensions, Alert } from 'react-native'
+import { StyleSheet, ActivityIndicator, Alert } from 'react-native'
 import { Container, Content, Form, Button, View, Text } from 'native-base'
 import auth from '@react-native-firebase/auth'
-import  { Path, Svg } from 'react-native-svg'
+import UserHeader from '../UserHeader'
 import FormItem from '../FormItem'
 
 
@@ -35,12 +35,6 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 })
-const { width, height } = Dimensions.get('window')
-const shapes = {
-  path: "M0.00,49.98 C149.99,150.00 271.49,-49.98 500.00,49.98 L500.00,0.00 L0.00,0.00 Z",
-  width: 500,
-  height: 150
-}
 const authErrors = {
   'auth/email-already-in-use': {
     'fields': ['email'],
@@ -76,8 +70,9 @@ export default class SignupScreen extends Component {
     super();
     this.state = { 
       displayName: '',
-      email: '', 
-      password: '',
+      email: 'dogphin.app@gmail.com', 
+      password: 'password',
+      phoneNumber: '',
       isLoading: false,
       errorFields: [],
       errorMessage: ''
@@ -85,14 +80,23 @@ export default class SignupScreen extends Component {
   }
 
   registerUser = () => {
-    if(this.state.email === '' || this.state.password === '' || this.state.displayName === '') {
+    if(this.state.email === '' || this.state.password === '' || this.state.displayName === '' || this.state.phoneNumber === '') {
       Alert.alert('Enter details to signup!')
     } else {
       this.setState({isLoading: true})
       auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then((res) => {
-        res.user.updateProfile({displayName: this.state.displayName})
+        res.user.updateProfile({displayName: this.state.displayName, phoneNumber: this.state.phoneNumber})
+        this.state.user.updateProfile({
+          displayName: this.state.displayName,
+          phoneNumber: this.state.phoneNumber
+        }).then((res) => { 
+          console.log(`OK: ${res}`)
+        }, function(error) {
+          console.log(`KO: ${error}`)
+        })
+
         console.log('User registered successfully!')
         this.setState({
           isLoading: false,
@@ -121,29 +125,35 @@ export default class SignupScreen extends Component {
     return (
       <Container>
         <Content>
-          <View style={{height: '15%' }}>
-            <Svg width={width+1} height={height*0.2} viewBox={`0 8 ${shapes.width} ${shapes.height}`}>
-              <Path fill="#00576a" fillOpacity={1} d={shapes.path}></Path>
-            </Svg>
-          </View>
+          <UserHeader height={75} />
           <Form style={styles.loginForm}>
-            <FormItem 
+            <FormItem
               error={this.state.errorFields.includes('displayName')}
-              label='Username'
+              label='Name'
               value={this.state.displayName}
-              onChangeText={(v) => this.setState({displayName: v})} 
+              onChangeText={(v) => this.setState({displayName: v})}
+              obligatory={true}
             />
             <FormItem 
               error={this.state.errorFields.includes('email')}
               label='Email'
               value={this.state.email}
               onChangeText={(v) => this.setState({email: v})} 
+              obligatory={true}
+            />
+            <FormItem 
+              error={this.state.errorFields.includes('phoneNumber')}
+              label='Phone Number'
+              value={this.state.phoneNumber}
+              onChangeText={(v) => this.setState({phoneNumber: v})}
+              obligatory={true}
             />
             <FormItem 
               error={this.state.errorFields.includes('password')}
               label='Password'
               value={this.state.password}
               onChangeText={(v) => this.setState({password: v})}
+              obligatory={true}
               secureTextEntry={true} 
             />
             <TextError error={this.state.errorMessage}/>
