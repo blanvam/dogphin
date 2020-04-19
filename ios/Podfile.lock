@@ -270,7 +270,6 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.5.1):
     - GoogleUtilities/Logger
-  - GTMSessionFetcher/Core (1.3.1)
   - "gRPC-C++ (0.0.9)":
     - "gRPC-C++/Implementation (= 0.0.9)"
     - "gRPC-C++/Interface (= 0.0.9)"
@@ -287,6 +286,7 @@ PODS:
     - gRPC-Core/Interface (= 1.21.0)
     - nanopb (~> 0.3)
   - gRPC-Core/Interface (1.21.0)
+  - GTMSessionFetcher/Core (1.3.1)
   - leveldb-library (1.22)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
@@ -530,13 +530,14 @@ PODS:
   - RNFBApp (6.4.0):
     - Firebase/Core (~> 6.13.0)
     - React
-  - RNFBFirestore (6.4.0):
-    - Firebase/Core (~> 6.13.0)
-    - Firebase/Firestore (~> 6.13.0)
-    - React
   - RNFBAuth (6.4.0):
     - Firebase/Auth (~> 6.13.0)
     - Firebase/Core (~> 6.13.0)
+    - React
+    - RNFBApp
+  - RNFBFirestore (6.4.0):
+    - Firebase/Core (~> 6.13.0)
+    - Firebase/Firestore (~> 6.13.0)
     - React
     - RNFBApp
   - RNGestureHandler (1.6.0):
@@ -617,9 +618,9 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
-    - GTMSessionFetcher
     - "gRPC-C++"
     - gRPC-Core
+    - GTMSessionFetcher
     - leveldb-library
     - nanopb
 
@@ -727,9 +728,9 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 47fe3b8e1673e5187dfd615656a3c5034f150d69
   GoogleDataTransportCCTSupport: 36f69887fd212db6d7ef4dd45ba44523717a434e
   GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
-  GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   "gRPC-C++": 9dfe7b44821e7b3e44aacad2af29d2c21f7cde83
   gRPC-Core: c9aef9a261a1247e881b18059b84d597293c9947
+  GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   Permission-LocationAlways: 8ecde136071ff169dc9f3607641dc40ae3ad7c02
