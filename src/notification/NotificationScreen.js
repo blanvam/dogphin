@@ -1,21 +1,58 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, ActivityIndicator } from "react-native"
-import { Container, Header, Content } from 'native-base'; 
+import { connect } from 'react-redux';
+import mapDispatchToProps from './notification.actions';
+import { FlatList, View, Image, Text, StyleSheet, ActivityIndicator } from "react-native"
+import { Container, Icon, Header, Content } from 'native-base';
 import { Footer, FooterTab } from 'native-base';
+import NotificationService from './NotificationService'
 
+function mapStateToProps(state) {
+    return {
+        notifications: state.notification.notifications,
+    };
+}
 
-export default class NotificationScreen extends Component {
+class NotificationScreen extends Component {
+
+    componentDidMount(){
+      NotificationService.lastNotifications(this.props.actions.handleNotifications);
+    }
+
     render () {
         return(
             <Container>
-                <Header searchBar rounded>
-                    <Text> Notifications </Text>
-                </Header>
                 <Content>
-                    <View style={styles.container}>
-                        <Text> Notifications... </Text>
-                        <ActivityIndicator size='large'></ActivityIndicator>
-                    </View>
+                  <FlatList styles={styles.root}
+                    data={this.props.notifications}
+                    ItemSeparatorComponent={() => {
+                      return (
+                        <View style={styles.separator}/>
+                      )
+                    }}
+                    keyExtractor={(item)=>{
+                      return item.id;
+                    }}
+                    renderItem={({item}) => {
+
+                      let notificationService = new NotificationService(item)
+
+                      return (
+                      <View style={styles.container}>
+                        <Icon type="Octicons" name={notificationService.iconType()} style={styles.avatar} />
+                        <View styles={styles.content}>
+                          <View>
+                            <View style={styles.text}>
+                              <Text style={styles.name}>{notificationService.title()}</Text>
+                              <Text>{notificationService.message()}</Text>
+                            </View>
+                            <Text style={styles.timeAgo}>
+                              {notificationService.timeAgo()}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    )}}
+                  />
                 </Content>
                 <Footer>
                     <FooterTab>
@@ -29,10 +66,48 @@ export default class NotificationScreen extends Component {
 
 const styles = StyleSheet.create(
     {
+        root: {
+          backgroundColor: "#FFFFFF"
+        },
         container: {
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center"
+          padding: 16,
+          flexDirection: 'row',
+          borderBottomWidth: 1,
+          borderColor: "#FFFFFF",
+          alignItems: 'flex-start'
+        },
+        avatar: {
+          width:50,
+          height:50,
+          borderRadius:25,
+        },
+        text: {
+          width: "92%",
+          marginBottom: 5,
+          flexDirection: 'row',
+          flexWrap:'wrap',
+          marginRight: 0
+        },
+        content: {
+          flex: 1,
+          marginLeft: 16,
+          marginRight: 0
+        },
+        separator: {
+          height: 1,
+          backgroundColor: "#CCCCCC",
+          width: "80%",
+          alignSelf: "center"
+        },
+        timeAgo:{
+          fontSize:12,
+          color:"#696969"
+        },
+        name:{
+          fontSize:16,
+          color:"#1E90FF"
         }
     }
 )
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationScreen);

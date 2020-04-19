@@ -130,6 +130,7 @@ android {
 
     defaultConfig {
         applicationId "com.dogphin"
+        multiDexEnabled true
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -189,6 +190,7 @@ android {
 }
 
 dependencies {
+    compile 'com.android.support:multidex:1.0.1'
     implementation project(':@react-native-community_geolocation')
     implementation project(':react-native-permissions')
     implementation project(':react-native-maps')
