@@ -69,46 +69,72 @@ export default class SignupScreen extends Component {
   constructor() {
     super();
     this.state = { 
-      displayName: '',
+      displayName: 'Test 1',
       email: 'dogphin.app@gmail.com', 
       password: 'password',
-      phoneNumber: '',
+      phoneNumber: '+34 622 34 34 34',
       isLoading: false,
       errorFields: [],
       errorMessage: ''
     }
   }
 
-  registerUser = () => {
-    if(this.state.email === '' || this.state.password === '' || this.state.displayName === '' || this.state.phoneNumber === '') {
-      Alert.alert('Enter details to signup!')
+  _cleanedPhoneNumber = () => {
+    return this.state.phoneNumber.replace(/(^\(?\+)?(\))?(\.)?(\-)?(\ )?/g, '')
+  }
+
+  _formFieldsValid = () => {
+    const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    //const phoneFormat = /^(\(?([+]?([0-9]{2}))\)?)?[-. ]?([0-9]{3})[-. ]?([0-9]{3})[-. ]?([0-9]{3})$/
+    const phoneFormat = /^([0-9]{2})?([0-9]{9})$/
+    let errorMessage = ''
+    let errorFields = []
+    if (emailFormat.test(this.state.email) === false) {
+      errorFields.push('email')
+      errorMessage += 'Introduce a correct email'
+    }
+    if (phoneFormat.test(this._cleanedPhoneNumber()) === false) {
+      errorFields.push('phoneNumber')
+      let msg = 'Introduce a correct phone number'
+      errorMessage += errorMessage  ? `\n   ${msg}` : msg
+    }
+    if(this.state.password === ''){
+      errorFields.push('password')
+      let msg = 'Introduce password'
+      errorMessage += errorMessage  ? `\n   ${msg}` : msg
+    }
+    if(this.state.displayName === '') {
+      errorFields.push('displayName')
+      let msg = 'Introduce your first name'
+      errorMessage += errorMessage  ? `\n   ${msg}` : msg
+    }
+    if (errorFields.length === 0) {
+      return true
     } else {
+      this.setState({ errorFields: errorFields, errorMessage: errorMessage, isLoading: false })
+      return false
+    }
+  }
+
+  registerUser = () => {
+    if (this._formFieldsValid()) {
       this.setState({isLoading: true})
       auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then((res) => {
-        res.user.updateProfile({displayName: this.state.displayName, phoneNumber: this.state.phoneNumber})
-        this.state.user.updateProfile({
-          displayName: this.state.displayName,
-          phoneNumber: this.state.phoneNumber
+        res.user.updateProfile({
+          displayName: this.state.displayName, phoneNumber: this.state.phoneNumber
         }).then((res) => { 
-          console.log(`OK: ${res}`)
+          console.log(`RES: ${res}`)
+          this.setState({isLoading: false})
+          this.props.navigation.navigate('Profile')
         }, function(error) {
-          console.log(`KO: ${error}`)
+          console.log(`error: ${error}`)
+          Alert.alert(error)
         })
-
-        console.log('User registered successfully!')
-        this.setState({
-          isLoading: false,
-          displayName: '',
-          email: '', 
-          password: ''
-        })
-        this.props.navigation.navigate('Login')
       })
       .catch(error => {
         let e = (authErrors[error.code] || authErrors['default'])
-        console.log(`error --> ${error.message}`)
         this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
       })
     }
@@ -147,6 +173,7 @@ export default class SignupScreen extends Component {
               value={this.state.phoneNumber}
               onChangeText={(v) => this.setState({phoneNumber: v})}
               obligatory={true}
+              keyboardType='number-pad'
             />
             <FormItem 
               error={this.state.errorFields.includes('password')}

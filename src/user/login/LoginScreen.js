@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { StyleSheet, ActivityIndicator, Alert } from 'react-native'
 import { Container, Content, Form, Button, View, Text } from 'native-base'
 import auth from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore'
 import UserHeader from '../UserHeader'
 import FormItem from '../FormItem'
 
+const usersCollection = firestore().collection('users')
 const styles = StyleSheet.create({
   preloader: {
     left: 0,

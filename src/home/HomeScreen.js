@@ -39,7 +39,7 @@ export default class HomeScreen extends Component {
         latitude: 36.374665,
         longitude: -6.240144,
         zoom: 11
-      };
+      }
   }
 
   componentDidMount() {

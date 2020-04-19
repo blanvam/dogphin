@@ -10,10 +10,12 @@ const photo = 'http://images.pexels.com/photos/1295036/pexels-photo-1295036.jpeg
 export default class ProfileScreen extends Component {
   constructor(props) {
     super(props)
+    console.log(`profile props ${JSON.stringify(props)}`)
     this.state = {
       isLoading: true,
-      user: null,
-      displayName: '',
+      email: props.email,
+      phoneNumber: '',
+      name: '',
       surname: '',
       portNumber: '',
       insuranceName: '',
@@ -25,10 +27,15 @@ export default class ProfileScreen extends Component {
     }
   }
 
+
   componentDidMount() {
     auth().onAuthStateChanged(user => {
+      console.log(`USER Profile ${JSON.stringify(user)}`)
       if (user) {
-        this.setState({user: user, displayName: user.displayName, isLoading: false})
+        this.setState({
+          email: user.email, phoneNumber: user.phoneNumber, 
+          displayName: user.displayName, isLoading: false
+        })
       } else {
         this.props.navigation.navigate('Login')
       }
@@ -42,7 +49,6 @@ export default class ProfileScreen extends Component {
       Alert.alert('Enter details to update profile info!')
     } else {
       this.setState({errorFields: [], errorMessage: '', isLoading: true})
-      // Updates the user attributes:
       this.state.user.updateProfile({
         displayName: this.state.displayName,
       }).then((res) => { 
@@ -76,16 +82,18 @@ export default class ProfileScreen extends Component {
             <FormItem 
               disabled={true}
               label='Email'
-              value={this.state.user?.email}
+              value={this.state.email}
               placeholder='Disabled field'
               obligatory={true}
+              keyboardType='email-address'
             />
             <FormItem 
               disabled={true}
               label='Phone Number'
-              value={this.state.user?.phoneNumber}
+              value={this.state.phoneNumber}
               placeholder='Disabled field'
               obligatory={true}
+              keyboardType='number-pad'
             />
             <FormItem 
               error={this.state.errorFields.includes('displayName')}
@@ -102,9 +110,10 @@ export default class ProfileScreen extends Component {
             />
             <FormItem 
               error={this.state.errorFields.includes('portNumber')}
-              label='Port Number'
+              label='Port phone number'
               value={this.state.portNumber}
-              onChangeText={(v) => this.setState({portNumber: v})} 
+              onChangeText={(v) => this.setState({portNumber: v})}
+              keyboardType='number-pad'
             />
             <FormItem 
               error={this.state.errorFields.includes('insuranceName')}
@@ -116,7 +125,8 @@ export default class ProfileScreen extends Component {
               error={this.state.errorFields.includes('insurancePhoneNumber')}
               label='Insurance phone number'
               value={this.state.insurancePhoneNumber}
-              onChangeText={(v) => this.setState({insurancePhoneNumber: v})} 
+              onChangeText={(v) => this.setState({insurancePhoneNumber: v})}
+              keyboardType='number-pad'
             />
             <FormItem 
               error={this.state.errorFields.includes('insuranceIdNumber')}
@@ -128,7 +138,8 @@ export default class ProfileScreen extends Component {
               error={this.state.errorFields.includes('contactPhoneNumber')}
               label='Contact phone number'
               value={this.state.contactPhoneNumber}
-              onChangeText={(v) => this.setState({contactPhoneNumber: v})} 
+              onChangeText={(v) => this.setState({contactPhoneNumber: v})}
+              keyboardType='number-pad'
             />
             <Button warning block style={styles.profileButton} onPress={() => this._userUpdate()}>
               <Text> Update </Text>
