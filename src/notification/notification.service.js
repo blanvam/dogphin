@@ -9,6 +9,8 @@ export default class NotificationService {
     this.notification = notification
   }
 
+  static all = (onResult, onError) => { alertService.all(onResult, onError) }
+  
   static listAlert = (querySnapshot) => {
     let alerts = []
     querySnapshot.forEach((doc, _) => {
