@@ -1,6 +1,7 @@
-import AlertService from './../services/AlertService'
+import alertService from '../services/alert.service'
 
-class NotificationService {
+
+export default class NotificationService {
 
   constructor(notification){
     this.type = notification.type
@@ -8,8 +9,28 @@ class NotificationService {
     this.notification = notification
   }
 
-  static lastNotifications(action){
-    AlertService.all(action)
+  static listAlert = (querySnapshot) => {
+    let alerts = []
+    querySnapshot.forEach((doc, _) => {
+      alerts.push({id: doc.id, ...doc.data()})
+    })
+    return alerts
+  }
+
+  static lastNotifications = () => {
+    return dispatch => {
+      return alertService.all(
+        (querySnapshot) => {
+          let alerts = []
+          querySnapshot.forEach((doc, _) => {
+            alerts.push({id: doc.id, ...doc.data()})
+          })
+          dispatch(getNotificationsSuccess(alerts))
+          dispatch(toggleNotificationsLoader(false))
+          return alerts
+        }
+      )
+    }
   }
 
   timeAgo() {
@@ -78,5 +99,3 @@ const typesConfig = Object.freeze({
     message: "¡Alguien está teniendo problemas de salud! ¿Puedes ayudarle?"
   },
 })
-
-export default NotificationService;

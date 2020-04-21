@@ -1,3 +1,4 @@
 module.exports = Object.freeze({
-    LIST_NOTIFICATIONS: 'list_notifications'
-  })
+  TOGGLE_NOTIFICATIONS_LOADER: 'toggleNotificationsLoader',
+  GET_NOTIFICATIONS_SUCCESS: 'getNotificationsSuccess',
+})
