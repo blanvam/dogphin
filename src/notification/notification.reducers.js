@@ -3,7 +3,7 @@ import actionsTypes from './notification.action-types'
 const INITIAL_STATE = {
   toggleNotificationsLoader: true,
   notifications: [],
-};
+}
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -14,4 +14,4 @@ export default (state = INITIAL_STATE, action) => {
     default:
       return state;
   }
-};
+}
