@@ -1,6 +1,7 @@
-import AlertService from './../services/AlertService'
+import alertService from '../services/alert.service'
 
-class NotificationService {
+
+export default class NotificationService {
 
   constructor(notification){
     this.type = notification.type
@@ -8,9 +9,7 @@ class NotificationService {
     this.notification = notification
   }
 
-  static lastNotifications(action){
-    AlertService.all(action)
-  }
+  static lasts = (onResult, onError) => { alertService.all(onResult, onError) }
 
   timeAgo() {
     let secAgo = (new Date().getTime() - this.createdAt.getTime()) / 1000
@@ -78,5 +77,3 @@ const typesConfig = Object.freeze({
     message: "¡Alguien está teniendo problemas de salud! ¿Puedes ayudarle?"
   },
 })
-
-export default NotificationService;
