@@ -18,12 +18,11 @@ export const getNotificationsSuccess = notifications => {
 
 export const getNotifications = () => {
   return dispatch => {
-    return NotificationService.all(
-      (querySnapshot) => {
-        let alerts = NotificationService.listAlert(querySnapshot)
-        dispatch(getNotificationsSuccess(alerts))
+    return NotificationService.lasts(
+      notifications => {
+        dispatch(getNotificationsSuccess(notifications))
         dispatch(toggleNotificationsLoader(false))
-        return alerts
+        return notifications
       }
     )
   }

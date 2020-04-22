@@ -3,17 +3,16 @@ import firestore from '@react-native-firebase/firestore'
 
 const dbRef = firestore().collection("alerts")
 const listAlert = (querySnapshot) => {
-  let alerts = [];
-  querySnapshot.forEach((doc, index) => {
-    // doc.data() is never undefined for query doc snapshots
-    alerts.push(Object.assign({},{id: doc.id}, doc.data()));
+  let alerts = []
+  querySnapshot.forEach((doc, _) => {
+    alerts.push({id: doc.id, ...doc.data()})
   })
-  return alerts;
+  return alerts
 }
 
 export default {
-  collectionRef: () => { return dbRef },
-  all: (onResult, onError) => { return dbRef.onSnapshot(onResult, onError) },
+  collectionRef: () => dbRef,
+  all: (onResult, onError) => ( dbRef.onSnapshot((querySnapshot) => (onResult(listAlert(querySnapshot))), onError) ),
   where: (action, ...query) => {
     dbRef.where(...query).onSnapshot((querySnapshot) => {
         action(listAlert(querySnapshot))

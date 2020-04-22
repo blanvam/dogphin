@@ -9,31 +9,7 @@ export default class NotificationService {
     this.notification = notification
   }
 
-  static all = (onResult, onError) => { alertService.all(onResult, onError) }
-  
-  static listAlert = (querySnapshot) => {
-    let alerts = []
-    querySnapshot.forEach((doc, _) => {
-      alerts.push({id: doc.id, ...doc.data()})
-    })
-    return alerts
-  }
-
-  static lastNotifications = () => {
-    return dispatch => {
-      return alertService.all(
-        (querySnapshot) => {
-          let alerts = []
-          querySnapshot.forEach((doc, _) => {
-            alerts.push({id: doc.id, ...doc.data()})
-          })
-          dispatch(getNotificationsSuccess(alerts))
-          dispatch(toggleNotificationsLoader(false))
-          return alerts
-        }
-      )
-    }
-  }
+  static lasts = (onResult, onError) => { alertService.all(onResult, onError) }
 
   timeAgo() {
     let secAgo = (new Date().getTime() - this.createdAt.getTime()) / 1000
