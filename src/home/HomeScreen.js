@@ -1,12 +1,15 @@
-import React, { Component } from 'react';
-import { AppState, StyleSheet, Linking, Switch } from 'react-native';
-import { Container, Header, Right, Content } from 'native-base';
-import { Footer, FooterTab, Item } from 'native-base';
-import { Icon, Button, Text, View, Badge } from 'native-base';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { AppState, StyleSheet, Linking, Switch } from 'react-native'
+import { Container, Header, Right, Content } from 'native-base'
+import { Footer, FooterTab, Item } from 'native-base'
+import { Icon, Button, Text, View, Badge } from 'native-base'
 
 import { checkPermissions } from './permission/checkPermissions'
 import ExitModal from './permission/ExitModal'
 import Map from './map/Map'
+import * as userActions from '../user/user.actions'
+
 
 const styles = StyleSheet.create({
   mapBar: {
@@ -26,16 +29,16 @@ const styles = StyleSheet.create({
 })
 
 
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
   constructor(props) {
       super(props)
       this.state = {
         active: false,
         appState: AppState.currentState,
-        positionEnabled: true,
         permissionsGranted: false,
         showExitModal: false,
         user: null,
+        positionEnabled: true,
         latitude: 36.374665,
         longitude: -6.240144,
         zoom: 11
@@ -151,3 +154,17 @@ export default class HomeScreen extends Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    user: state.user.user,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateSuccess: (user) => dispatch(userActions.updateSuccess(user)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)
