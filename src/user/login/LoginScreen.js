@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { StyleSheet, ActivityIndicator, Alert } from 'react-native'
 import { Container, Content, Form, Button, View, Text } from 'native-base'
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
 import UserHeader from '../UserHeader'
 import FormItem from '../FormItem'
+import * as userActions from '../user.actions'
 
-const usersCollection = firestore().collection('users')
 const styles = StyleSheet.create({
   preloader: {
     left: 0,
@@ -66,7 +67,7 @@ const TextError = props => {
 }
 
 
-export default class LoginScreen extends Component {
+class LoginScreen extends Component {
   constructor(props) {
     super(props)
     this.state = { 
@@ -89,7 +90,8 @@ export default class LoginScreen extends Component {
         console.log(res)
         console.log('User logged-in successfully!')
         this.setState({isLoading: false, email: '', password: ''})
-        this.props.navigation.navigate('Profile', {user: res})
+        this.props.updateSuccess(res)
+        this.props.navigation.navigate('Profile')
       })
       .catch(error => {
         let e = (authErrors[error.code] || authErrors['default'])
@@ -138,3 +140,17 @@ export default class LoginScreen extends Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    user: state.user.user,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateSuccess: (user) => dispatch(userActions.updateSuccess(user)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)

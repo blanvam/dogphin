@@ -1,154 +1,193 @@
-import React, { Component } from 'react'
-import {View, Text, StyleSheet, ActivityIndicator, Image, Alert } from "react-native"
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import {View, Text, StyleSheet, ActivityIndicator, Image } from "react-native"
 import { Container, Content, Form, Button } from 'native-base'
 import auth from '@react-native-firebase/auth'
 import UserHeader from '../UserHeader'
 import FormItem from '../FormItem'
+import * as userActions from '../user.actions'
+import userServices from '../user.services'
 
 const photo = 'http://images.pexels.com/photos/1295036/pexels-photo-1295036.jpeg?auto=compress&dpr=2&w=130'
 // https://www.pexels.com/es-es/buscar/boat/
-export default class ProfileScreen extends Component {
-  constructor(props) {
-    super(props)
-    console.log(`profile props ${JSON.stringify(props)}`)
-    this.state = {
-      isLoading: true,
-      email: props.email,
-      phoneNumber: '',
-      name: '',
-      surname: '',
-      portNumber: '',
-      insuranceName: '',
-      insurancePhoneNumber: '',
-      insuranceIdNumber: '',
-      contactPhoneNumber: '',
-      errorFields: [],
-      errorMessage: ''
-    }
+
+const TextError = props => {
+  if (props.error) {
+    return (<Text style={styles.updateError}>* {props.error}</Text>)
+  } else {
+    return null
   }
+}
 
-
-  componentDidMount() {
-    auth().onAuthStateChanged(user => {
-      console.log(`USER Profile ${JSON.stringify(user)}`)
-      if (user) {
-        this.setState({
-          email: user.email, phoneNumber: user.phoneNumber, 
-          displayName: user.displayName, isLoading: false
-        })
-      } else {
-        this.props.navigation.navigate('Login')
-      }
-    })
+const Loader = props => {
+  if (props.show) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size='large'></ActivityIndicator>
+      </View>
+    )
+  } else {
+    return null
   }
+}
 
-  _userUpdate = () => {
-    if(this.state.displayName == '' || this.state.surname == '' || this.state.portNumber == '' ||
-       this.state.insuranceName == '' || this.state.insurancePhoneNumber == '' || 
-       this.state.insuranceIdNumber == '' || this.state.contactPhoneNumber == '') {
-      Alert.alert('Enter details to update profile info!')
-    } else {
-      this.setState({errorFields: [], errorMessage: '', isLoading: true})
-      this.state.user.updateProfile({
-        displayName: this.state.displayName,
-      }).then((res) => { 
-        console.log(`RES: ${res}`)
-      }, function(error) {
-        console.log(`error: ${error}`)
-      })
-    }
-  }
+const ProfileScreen = props => {
 
-  _renderLoading = () => {
-    if (this.state.isLoading) {
-      return (
-        <View style={styles.container}>
-          <ActivityIndicator size='large'></ActivityIndicator>
-        </View>
+  const [isLoading, setLoading] = useState(true)
+  const [email, setEmail] = useState(props.user?.email)
+  const [phoneNumber, setPhoneNumber] = useState(props.user?.phoneNumber)
+  const [firstname, setFirstname] = useState(props.user?.firstname)
+  const [surname, setSurname] = useState(props.user?.surname)
+  const [portNumber, setPortNumber] = useState(props.user?.portNumber)
+  const [insuranceName, setInsuranceName] = useState(props.user?.insuranceName)
+  const [insurancePhoneNumber, setInsurancePhoneNumber] = useState(props.user?.insurancePhoneNumber)
+  const [insuranceIdNumber, setInsuranceIdNumber] = useState(props.user?.insuranceIdNumber)
+  const [contactPhoneNumber, setContactPhoneNumber] = useState(props.user?.contactPhoneNumber)
+  const [errorFields, setErrorFields] = useState([])
+  const [errorMessage, setErrorMessage] = useState('')
+
+  authStateChanged = (user) => {
+    console.log(`USER Profile ${JSON.stringify(user)}`)
+    if (user) {
+      setEmail(user.email)
+      userServices.get(
+        user.email,
+        usr => {
+          setPhoneNumber(usr?.phoneNumber)
+          setFirstname(usr?.firstname)
+          setSurname(usr?.surname)
+          setPortNumber(usr?.portNumber)
+          setInsuranceName(usr?.insuranceName)
+          setInsurancePhoneNumber(usr?.insurancePhoneNumber)
+          setInsuranceIdNumber(usr?.insuranceIdNumber)
+          setContactPhoneNumber(usr?.contactPhoneNumber)
+          props.updateSuccess({email: email, ...usr})
+          console.log(`USER Profile DB ${JSON.stringify({email: email, ...usr})}`)
+          setLoading(false)
+        }
       )
     } else {
-      return null
+      props.updateSuccess(null)
+      setLoading(false)
+      props.navigation.navigate('Login')
     }
   }
 
-  render () {
-    return(
-      <Container>
-        <Content>
-          <UserHeader height={150} style={{backgroundColor: 'transparent'}} />
-          <Image style={styles.avatar} source={{uri: photo}}/>
-          {this._renderLoading()}
-          <Form style={styles.profileForm}>
-            <FormItem 
-              disabled={true}
-              label='Email'
-              value={this.state.email}
-              placeholder='Disabled field'
-              obligatory={true}
-              keyboardType='email-address'
-            />
-            <FormItem 
-              disabled={true}
-              label='Phone Number'
-              value={this.state.phoneNumber}
-              placeholder='Disabled field'
-              obligatory={true}
-              keyboardType='number-pad'
-            />
-            <FormItem 
-              error={this.state.errorFields.includes('displayName')}
-              label='Name'
-              value={this.state.displayName}
-              onChangeText={(v) => this.setState({displayName: v})}
-              obligatory={true}
-            />
-            <FormItem 
-              error={this.state.errorFields.includes('surname')}
-              label='Surname'
-              value={this.state.surname}
-              onChangeText={(v) => this.setState({surname: v})} 
-            />
-            <FormItem 
-              error={this.state.errorFields.includes('portNumber')}
-              label='Port phone number'
-              value={this.state.portNumber}
-              onChangeText={(v) => this.setState({portNumber: v})}
-              keyboardType='number-pad'
-            />
-            <FormItem 
-              error={this.state.errorFields.includes('insuranceName')}
-              label='Insurance name'
-              value={this.state.insuranceName}
-              onChangeText={(v) => this.setState({insuranceName: v})} 
-            />
-            <FormItem 
-              error={this.state.errorFields.includes('insurancePhoneNumber')}
-              label='Insurance phone number'
-              value={this.state.insurancePhoneNumber}
-              onChangeText={(v) => this.setState({insurancePhoneNumber: v})}
-              keyboardType='number-pad'
-            />
-            <FormItem 
-              error={this.state.errorFields.includes('insuranceIdNumber')}
-              label='Insurance id number'
-              value={this.state.insuranceIdNumber}
-              onChangeText={(v) => this.setState({insuranceIdNumber: v})} 
-            />
-            <FormItem 
-              error={this.state.errorFields.includes('contactPhoneNumber')}
-              label='Contact phone number'
-              value={this.state.contactPhoneNumber}
-              onChangeText={(v) => this.setState({contactPhoneNumber: v})}
-              keyboardType='number-pad'
-            />
-            <Button warning block style={styles.profileButton} onPress={() => this._userUpdate()}>
-              <Text> Update </Text>
-            </Button>
-          </Form>  
-        </Content>
-      </Container>
-    )
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(authStateChanged)
+    return subscriber // unsubscribe on unmount
+  }, [])
+
+  userUpdate = () => {
+    if(firstname == '') {
+      setErrorFields(['firstname'])
+      setErrorMessage('Name is obligatory!')
+      console.log('EEEE USER firstname')
+    } else {
+      setErrorFields([])
+      setErrorMessage('')
+      setLoading(true)
+      let userData = {
+        firstname: firstname,
+        surname: surname,
+        portNumber: portNumber,
+        insuranceName: insuranceName,
+        insurancePhoneNumber: insurancePhoneNumber,
+        insuranceIdNumber: insuranceIdNumber,
+        contactPhoneNumber: contactPhoneNumber,
+      }
+      userServices.update(
+        email,
+        userData,
+        () => {
+          props.updateSuccess({email: email, phoneNumber: phoneNumber, ...userData})
+          setLoading(false)
+        },
+        () => {
+          setErrorFields([Object.keys(userData)])
+          setErrorMessage('Unable to access your account at this time, please try again later')
+          setLoading(false)
+        }
+      )
+    }
   }
+
+  return(
+    <Container>
+      <Content>
+        <UserHeader height={150} style={{backgroundColor: 'transparent'}} />
+        <Image style={styles.avatar} source={{uri: photo}}/>
+        < Loader show={isLoading}/>
+        <Form style={styles.profileForm}>
+          <FormItem 
+            disabled={true}
+            label='Email'
+            value={email}
+            placeholder='Disabled field'
+            obligatory={true}
+          />
+          <FormItem 
+            disabled={true}
+            label='Phone Number'
+            value={phoneNumber}
+            placeholder='Disabled field'
+            obligatory={true}
+          />
+          <FormItem 
+            error={errorFields.includes('firstname')}
+            label='Name'
+            value={firstname}
+            onChangeText={(v) => setFirstname(v)}
+            obligatory={true}
+          />
+          <FormItem 
+            error={errorFields.includes('surname')}
+            label='Surname'
+            value={surname}
+            onChangeText={(v) => setSurname(v)} 
+          />
+          <FormItem 
+            error={errorFields.includes('portNumber')}
+            label='Port phone number'
+            value={portNumber}
+            onChangeText={(v) => setPortNumber(v)}
+            keyboardType='number-pad'
+          />
+          <FormItem 
+            error={errorFields.includes('insuranceName')}
+            label='Insurance name'
+            value={insuranceName}
+            onChangeText={(v) => setInsuranceName(v)} 
+          />
+          <FormItem 
+            error={errorFields.includes('insurancePhoneNumber')}
+            label='Insurance phone number'
+            value={insurancePhoneNumber}
+            onChangeText={(v) => setInsurancePhoneNumber(v)}
+            keyboardType='number-pad'
+          />
+          <FormItem 
+            error={errorFields.includes('insuranceIdNumber')}
+            label='Insurance id number'
+            value={insuranceIdNumber}
+            onChangeText={(v) => setInsuranceIdNumber(v)} 
+          />
+          <FormItem 
+            error={errorFields.includes('contactPhoneNumber')}
+            label='Contact phone number'
+            value={contactPhoneNumber}
+            onChangeText={(v) => setContactPhoneNumber(v)}
+            keyboardType='number-pad'
+          />
+          <TextError error={errorMessage}/>
+          <Button warning block style={styles.profileButton} onPress={userUpdate}>
+            <Text> Update </Text>
+          </Button>
+        </Form>  
+      </Content>
+    </Container>
+  )
+
 }
 
 const styles = StyleSheet.create({
@@ -177,4 +216,22 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20
   },
+  updateError: {
+    color: '#d9534f',
+    marginTop: 20
+  },
 })
+
+const mapStateToProps = state => {
+  return {
+    user: state.user.user,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateSuccess: (user) => dispatch(userActions.updateSuccess(user)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen)

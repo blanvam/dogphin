@@ -1,40 +1,13 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { StyleSheet, ActivityIndicator, Alert } from 'react-native'
 import { Container, Content, Form, Button, View, Text } from 'native-base'
 import auth from '@react-native-firebase/auth'
 import UserHeader from '../UserHeader'
 import FormItem from '../FormItem'
+import * as userActions from '../user.actions'
+import userServices from '../user.services'
 
-
-const styles = StyleSheet.create({
-  preloader: {
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff'
-  },
-  loginForm: {
-    width: '85%', 
-    alignSelf: 'center',
-  },
-  loginError: {
-    color: '#d9534f',
-    marginTop: 20
-  },
-  loginButton: {
-    marginTop: 50
-  },
-  loginText: {
-    color: '#3740FE',
-    marginTop: 15,
-    marginBottom: 15,
-    textAlign: 'center'
-  }
-})
 const authErrors = {
   'auth/email-already-in-use': {
     'fields': ['email'],
@@ -65,11 +38,11 @@ const TextError = props => {
 }
 
 
-export default class SignupScreen extends Component {
+class SignupScreen extends Component {
   constructor() {
     super();
     this.state = { 
-      displayName: 'Test 1',
+      firstname: 'Test 1',
       email: 'dogphin.app@gmail.com', 
       password: 'password',
       phoneNumber: '+34 622 34 34 34',
@@ -103,8 +76,8 @@ export default class SignupScreen extends Component {
       let msg = 'Introduce password'
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
-    if(this.state.displayName === '') {
-      errorFields.push('displayName')
+    if(this.state.firstname === '') {
+      errorFields.push('firstname')
       let msg = 'Introduce your first name'
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
@@ -121,19 +94,21 @@ export default class SignupScreen extends Component {
       this.setState({isLoading: true})
       auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then((res) => {
-        res.user.updateProfile({
-          displayName: this.state.displayName, phoneNumber: this.state.phoneNumber
-        }).then((res) => { 
-          console.log(`RES: ${res}`)
-          this.setState({isLoading: false})
-          this.props.navigation.navigate('Profile')
-        }, function(error) {
-          console.log(`error: ${error}`)
-          Alert.alert(error)
-        })
+      .then(() => {
+        let userData = {firstname: this.state.firstname, phoneNumber: this.state.phoneNumber}
+        userServices.set(
+          this.state.email,
+          userData,
+          () => {
+            this.props.updateSuccess({email: this.state.email, ...userData})
+            this.setState({isLoading: false})
+            this.props.navigation.navigate('Profile')
+          }
+        )
       })
       .catch(error => {
+        console.log(`ERRORRRRRR register ${error}`)
+        console.log(`ERRORRRRRR register ${Json.stringify(error)}`)
         let e = (authErrors[error.code] || authErrors['default'])
         this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
       })
@@ -154,10 +129,10 @@ export default class SignupScreen extends Component {
           <UserHeader height={75} />
           <Form style={styles.loginForm}>
             <FormItem
-              error={this.state.errorFields.includes('displayName')}
+              error={this.state.errorFields.includes('firstname')}
               label='Name'
-              value={this.state.displayName}
-              onChangeText={(v) => this.setState({displayName: v})}
+              value={this.state.firstname}
+              onChangeText={(v) => this.setState({firstname: v})}
               obligatory={true}
             />
             <FormItem 
@@ -197,3 +172,47 @@ export default class SignupScreen extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  preloader: {
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff'
+  },
+  loginForm: {
+    width: '85%', 
+    alignSelf: 'center',
+  },
+  loginError: {
+    color: '#d9534f',
+    marginTop: 20
+  },
+  loginButton: {
+    marginTop: 50
+  },
+  loginText: {
+    color: '#3740FE',
+    marginTop: 15,
+    marginBottom: 15,
+    textAlign: 'center'
+  }
+})
+
+const mapStateToProps = state => {
+  return {
+    user: state.user.user,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateSuccess: (user) => dispatch(userActions.updateSuccess(user)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignupScreen)

@@ -20,7 +20,7 @@ export default class FormItem extends Component {
               value={this.props.value}
               secureTextEntry={this.props.secureTextEntry}
               onChangeText={(v) => this.props.onChangeText(v)}
-              keyboardType={this.props.secureTextEntry || 'default'}
+              keyboardType={this.props.keyboardType || 'default'}
             />
             <Button danger transparent>
               <Icon type="MaterialCommunityIcons" name="close-circle" />
@@ -53,7 +53,7 @@ export default class FormItem extends Component {
           value={this.props.value} 
           secureTextEntry={this.props.secureTextEntry} 
           onChangeText={(v) => this.props.onChangeText(v)} 
-          keyboardType={this.props.secureTextEntry || 'default'}
+          keyboardType={this.props.keyboardType || 'default'}
         />
       </Item>
     )
