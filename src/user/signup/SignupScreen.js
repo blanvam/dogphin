@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, ActivityIndicator, Alert } from 'react-native'
+import { StyleSheet, ActivityIndicator } from 'react-native'
 import { Container, Content, Form, Button, View, Text } from 'native-base'
 import auth from '@react-native-firebase/auth'
 import UserHeader from '../UserHeader'
@@ -91,7 +91,7 @@ class SignupScreen extends Component {
 
   registerUser = () => {
     if (this._formFieldsValid()) {
-      this.setState({isLoading: true})
+      this.setState({errorFields: [], errorMessage: '', isLoading: true})
       auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
@@ -107,8 +107,6 @@ class SignupScreen extends Component {
         )
       })
       .catch(error => {
-        console.log(`ERRORRRRRR register ${error}`)
-        console.log(`ERRORRRRRR register ${Json.stringify(error)}`)
         let e = (authErrors[error.code] || authErrors['default'])
         this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
       })

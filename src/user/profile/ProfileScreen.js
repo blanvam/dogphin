@@ -47,7 +47,6 @@ const ProfileScreen = props => {
   const [errorMessage, setErrorMessage] = useState('')
 
   authStateChanged = (user) => {
-    console.log(`USER Profile ${JSON.stringify(user)}`)
     if (user) {
       setEmail(user.email)
       userServices.get(
@@ -62,7 +61,6 @@ const ProfileScreen = props => {
           setInsuranceIdNumber(usr?.insuranceIdNumber)
           setContactPhoneNumber(usr?.contactPhoneNumber)
           props.updateSuccess({email: email, ...usr})
-          console.log(`USER Profile DB ${JSON.stringify({email: email, ...usr})}`)
           setLoading(false)
         }
       )
@@ -82,7 +80,6 @@ const ProfileScreen = props => {
     if(firstname == '') {
       setErrorFields(['firstname'])
       setErrorMessage('Name is obligatory!')
-      console.log('EEEE USER firstname')
     } else {
       setErrorFields([])
       setErrorMessage('')
