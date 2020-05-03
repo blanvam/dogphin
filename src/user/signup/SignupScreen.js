@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { StyleSheet, ActivityIndicator } from 'react-native'
 import { Container, Content, Form, Button, View, Text } from 'native-base'
 import auth from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore';
+
 import UserHeader from '../UserHeader'
 import FormItem from '../FormItem'
 import * as userActions from '../user.actions'
@@ -95,7 +97,11 @@ class SignupScreen extends Component {
       auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        let userData = {firstname: this.state.firstname, phoneNumber: this.state.phoneNumber}
+        let userData = {
+          firstname: this.state.firstname, 
+          phoneNumber: this.state.phoneNumber, 
+          positionEnabled: true,
+        }
         userServices.set(
           this.state.email,
           userData,

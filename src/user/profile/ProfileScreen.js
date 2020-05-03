@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {View, Text, StyleSheet, ActivityIndicator, Image } from "react-native"
 import { Container, Content, Form, Button } from 'native-base'
 import auth from '@react-native-firebase/auth'
+
 import UserHeader from '../UserHeader'
 import FormItem from '../FormItem'
 import * as userActions from '../user.actions'
@@ -52,15 +53,19 @@ const ProfileScreen = props => {
       userServices.get(
         user.email,
         usr => {
-          setPhoneNumber(usr?.phoneNumber)
-          setFirstname(usr?.firstname)
-          setSurname(usr?.surname)
-          setPortNumber(usr?.portNumber)
-          setInsuranceName(usr?.insuranceName)
-          setInsurancePhoneNumber(usr?.insurancePhoneNumber)
-          setInsuranceIdNumber(usr?.insuranceIdNumber)
-          setContactPhoneNumber(usr?.contactPhoneNumber)
-          props.updateSuccess({email: email, ...usr})
+          if (usr) {
+            setPhoneNumber(usr?.phoneNumber)
+            setFirstname(usr?.firstname)
+            setSurname(usr?.surname)
+            setPortNumber(usr?.portNumber)
+            setInsuranceName(usr?.insuranceName)
+            setInsurancePhoneNumber(usr?.insurancePhoneNumber)
+            setInsuranceIdNumber(usr?.insuranceIdNumber)
+            setContactPhoneNumber(usr?.contactPhoneNumber)
+            props.updateSuccess({email: email, ...usr}) 
+          } else {
+            props.updateSuccess({email: email}) 
+          }
           setLoading(false)
         }
       )
@@ -76,7 +81,7 @@ const ProfileScreen = props => {
     return subscriber // unsubscribe on unmount
   }, [])
 
-  userUpdate = () => {
+  updateUser = () => {
     if(firstname == '') {
       setErrorFields(['firstname'])
       setErrorMessage('Name is obligatory!')
@@ -177,7 +182,7 @@ const ProfileScreen = props => {
             keyboardType='number-pad'
           />
           <TextError error={errorMessage}/>
-          <Button warning block style={styles.profileButton} onPress={userUpdate}>
+          <Button warning block style={styles.profileButton} onPress={updateUser}>
             <Text> Update </Text>
           </Button>
         </Form>  

@@ -12,7 +12,7 @@ const listAlert = (querySnapshot) => {
 export default {
   collectionRef: () => dbRef,
   all: (onResult, onError=(_ => {})) => (dbRef.onSnapshot(querySnapshot => onResult(listAlert(querySnapshot)), onError)),
-  get: (id, onResult, onError=(_ => {})) => (dbRef.doc(id).onSnapshot(documentSnapshot => onResult(documentSnapshot.data() || {}), onError)),
+  get: (id, onResult, onError=(_ => {})) => (dbRef.doc(id).onSnapshot(documentSnapshot => onResult(documentSnapshot.data()), onError)),
   where: (query, onResult) => (dbRef.where(...query).get().then(querySnapshot => onResult(listAlert(querySnapshot)))),
   set: (id, data, onSuccess, onError=(_ => {})) => (dbRef.doc(id).set(data).then(docRef => onSuccess(docRef)).catch((error) => onError(error))),
   add: (data, onSuccess, onError=(_ => {})) => (dbRef.add(data).then(docRef => onSuccess(docRef)).catch((error) => onError(error))),
