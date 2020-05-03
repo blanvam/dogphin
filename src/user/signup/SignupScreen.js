@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, ActivityIndicator } from 'react-native'
 import { Container, Content, Form, Button, View, Text } from 'native-base'
-import auth from '@react-native-firebase/auth'
-import firestore from '@react-native-firebase/firestore';
 
 import UserHeader from '../UserHeader'
 import FormItem from '../FormItem'
@@ -94,28 +92,25 @@ class SignupScreen extends Component {
   registerUser = () => {
     if (this._formFieldsValid()) {
       this.setState({errorFields: [], errorMessage: '', isLoading: true})
-      auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => {
-        let userData = {
-          firstname: this.state.firstname, 
-          phoneNumber: this.state.phoneNumber, 
-          positionEnabled: true,
+      let userData = {
+        firstname: this.state.firstname, 
+        phoneNumber: this.state.phoneNumber, 
+        positionEnabled: true,
+      }
+      userServices.signUp(
+        this.state.email,
+        this.state.password,
+        userData,
+        () => {          
+          this.props.updateSuccess({email: this.state.email, ...userData})
+          this.setState({isLoading: false})
+          this.props.navigation.navigate('Profile')
+        },
+        (error) => {
+          let e = (authErrors[error.code] || authErrors['default'])
+          this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
         }
-        userServices.set(
-          this.state.email,
-          userData,
-          () => {
-            this.props.updateSuccess({email: this.state.email, ...userData})
-            this.setState({isLoading: false})
-            this.props.navigation.navigate('Profile')
-          }
-        )
-      })
-      .catch(error => {
-        let e = (authErrors[error.code] || authErrors['default'])
-        this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
-      })
+      )
     }
   }
 

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import {View, Text, StyleSheet, ActivityIndicator, Image } from "react-native"
+import { View, Text, StyleSheet, ActivityIndicator, Image } from "react-native"
 import { Container, Content, Form, Button } from 'native-base'
-import auth from '@react-native-firebase/auth'
 
 import UserHeader from '../UserHeader'
 import FormItem from '../FormItem'
@@ -11,6 +10,38 @@ import userServices from '../user.services'
 
 const photo = 'http://images.pexels.com/photos/1295036/pexels-photo-1295036.jpeg?auto=compress&dpr=2&w=130'
 // https://www.pexels.com/es-es/buscar/boat/
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 50
+  },
+  avatar: {
+    width: 130,
+    height: 130,
+    borderRadius: 63,
+    borderWidth: 4,
+    borderColor: "white",
+    marginBottom:10,
+    alignSelf:'center',
+    position: 'absolute',
+    marginTop: 50
+  },
+  profileForm: {
+    width: '85%', 
+    alignSelf: 'center',
+  },
+  profileButton: {
+    marginTop: 20,
+    marginBottom: 20
+  },
+  updateError: {
+    color: '#d9534f',
+    marginTop: 20
+  },
+})
 
 const TextError = props => {
   if (props.error) {
@@ -47,38 +78,31 @@ const ProfileScreen = props => {
   const [errorFields, setErrorFields] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
 
-  authStateChanged = (user) => {
-    if (user) {
-      setEmail(user.email)
-      userServices.get(
-        user.email,
-        usr => {
-          if (usr) {
-            setPhoneNumber(usr?.phoneNumber)
-            setFirstname(usr?.firstname)
-            setSurname(usr?.surname)
-            setPortNumber(usr?.portNumber)
-            setInsuranceName(usr?.insuranceName)
-            setInsurancePhoneNumber(usr?.insurancePhoneNumber)
-            setInsuranceIdNumber(usr?.insuranceIdNumber)
-            setContactPhoneNumber(usr?.contactPhoneNumber)
-            props.updateSuccess({email: email, ...usr}) 
-          } else {
-            props.updateSuccess({email: email}) 
-          }
-          setLoading(false)
-        }
-      )
-    } else {
-      props.updateSuccess(null)
-      setLoading(false)
-      props.navigation.navigate('Login')
+  onUserLoadSuccess = (email, usr) => {
+    if (usr) {
+      setPhoneNumber(usr.phoneNumber)
+      setFirstname(usr.firstname)
+      setSurname(usr.surname)
+      setPortNumber(usr.portNumber)
+      setInsuranceName(usr.insuranceName)
+      setInsurancePhoneNumber(usr.insurancePhoneNumber)
+      setInsuranceIdNumber(usr.insuranceIdNumber)
+      setContactPhoneNumber(usr.contactPhoneNumber)
     }
+    setEmail(email)
+    props.updateSuccess({email: email, ...usr})
+    setLoading(false)
+  }
+
+  onUserLoadFail = () => {
+    props.updateSuccess(null)
+    props.navigation.navigate('Login')
+    setLoading(false)
   }
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(authStateChanged)
-    return subscriber // unsubscribe on unmount
+    const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
+    return unlisten
   }, [])
 
   updateUser = () => {
@@ -189,40 +213,7 @@ const ProfileScreen = props => {
       </Content>
     </Container>
   )
-
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 50
-  },
-  avatar: {
-    width: 130,
-    height: 130,
-    borderRadius: 63,
-    borderWidth: 4,
-    borderColor: "white",
-    marginBottom:10,
-    alignSelf:'center',
-    position: 'absolute',
-    marginTop: 50
-  },
-  profileForm: {
-    width: '85%', 
-    alignSelf: 'center',
-  },
-  profileButton: {
-    marginTop: 20,
-    marginBottom: 20
-  },
-  updateError: {
-    color: '#d9534f',
-    marginTop: 20
-  },
-})
 
 const mapStateToProps = state => {
   return {

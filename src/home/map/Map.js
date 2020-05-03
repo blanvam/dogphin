@@ -68,6 +68,7 @@ export default class Map extends Component {
       longitudeDelta: this.state.region.longitudeDelta
     }
     this.mapRef.animateToRegion(newRegion, 5000)
+    // actualPosition: new firestore.GeoPoint(53.483959, -2.244644),
   }
 
   _set_region(region) {

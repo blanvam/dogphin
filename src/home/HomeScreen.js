@@ -4,7 +4,6 @@ import { AppState, StyleSheet, Linking, Switch } from 'react-native'
 import { Container, Header, Right, Content } from 'native-base'
 import { Footer, FooterTab, Item } from 'native-base'
 import { Icon, Button, Text, View, Badge } from 'native-base'
-import auth from '@react-native-firebase/auth'
 
 import { checkPermissions } from './permission/checkPermissions'
 import ExitModal from './permission/ExitModal'
@@ -33,32 +32,12 @@ const styles = StyleSheet.create({
 
 const HomeScreen = props => {
 
-  const [active, setActive] = useState(false)
   const [permissionsGranted, setPermissionsGranted] = useState(false)
   const [showExitModal, setShowExitModal] = useState(false)
-  const [positionEnabled, setPositionEnabled] = useState(props.user?.positionEnabled || true)
+  const [positionEnabled, setPositionEnabled] = useState(props.user?.positionEnabled)
   const [position, setPosition] = useState(props.user?.position || defaultPostion)
   const [zoom, setZoom] = useState(11)
   const [appState, setAppState] = useState(AppState.currentState)
-
-  authStateChanged = (user) => {
-    if (user) {
-      userServices.get(
-        user.email,
-        usr => {
-          if (usr) {
-            setPositionEnabled(usr.positionEnabled)
-            setPosition(usr.actualPosition)
-            props.updateSuccess({email: user.email, ...usr})
-          } else {
-            props.updateSuccess(null)
-          }
-        }
-      )
-    } else {
-      props.updateSuccess(null)
-    }
-  }
 
   handleAppStateChange = (nextAppState) => {
     if (appState.match(/inactive|background/) && nextAppState === 'active' && !permissionsGranted) {
@@ -67,10 +46,22 @@ const HomeScreen = props => {
     setAppState(nextAppState)
   }
 
+  onUserLoadSuccess = (email, usr) => {
+    if (usr) {
+      setPositionEnabled(usr.positionEnabled)
+      setPosition(usr.actualPosition || defaultPostion)
+    }
+    props.updateSuccess({email: email, ...usr})
+  }
+
+  onUserLoadFail = () => {
+    props.updateSuccess(null)
+  }
+
   useEffect(() => { 
     AppState.addEventListener('change', handleAppStateChange)
     checkPermissions((r) => { setPermissionsGranted(r); setShowExitModal(!r) })
-    const unlisten = auth().onAuthStateChanged(authStateChanged)
+    const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
     return (() => {
       unlisten()
       AppState.removeEventListener('change', handleAppStateChange)

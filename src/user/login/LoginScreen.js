@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, ActivityIndicator, Alert } from 'react-native'
 import { Container, Content, Form, Button, View, Text } from 'native-base'
-import auth from '@react-native-firebase/auth'
+
 import UserHeader from '../UserHeader'
 import FormItem from '../FormItem'
 import * as userActions from '../user.actions'
+import userServices from '../user.services'
 
 const styles = StyleSheet.create({
   preloader: {
@@ -83,17 +84,19 @@ class LoginScreen extends Component {
       Alert.alert('Enter details to signin!')
     } else {
       this.setState({errorFields: [], errorMessage: '', isLoading: true})
-      auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then((res) => {
-        this.setState({isLoading: false, email: '', password: ''})
-        this.props.updateSuccess(res)
-        this.props.navigation.navigate('Profile')
-      })
-      .catch(error => {
-        let e = (authErrors[error.code] || authErrors['default'])
-        this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
-      })
+      userServices.signInWithEmail(
+        this.state.email, 
+        this.state.password,
+        (res) => {
+          this.setState({isLoading: false, email: '', password: ''})
+          this.props.updateSuccess(res)
+          this.props.navigation.navigate('Profile')
+        },
+        (error) => {
+          let e = (authErrors[error.code] || authErrors['default'])
+          this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
+        }
+      )
     }
   }
 
