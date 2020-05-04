@@ -89,7 +89,7 @@ class LoginScreen extends Component {
         this.state.password,
         (res) => {
           this.setState({isLoading: false, email: '', password: ''})
-          this.props.updateSuccess(res)
+          this.props.updateUser(res)
           this.props.navigation.navigate('Profile')
         },
         (error) => {
@@ -149,7 +149,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateSuccess: (user) => dispatch(userActions.updateSuccess(user)),
+    updateUser: (user) => dispatch(userActions.update(user)),
   }
 }
 

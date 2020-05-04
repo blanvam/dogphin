@@ -90,12 +90,12 @@ const ProfileScreen = props => {
       setContactPhoneNumber(usr.contactPhoneNumber)
     }
     setEmail(email)
-    props.updateSuccess({email: email, ...usr})
+    props.updateUser({email: email, ...usr})
     setLoading(false)
   }
 
   onUserLoadFail = () => {
-    props.updateSuccess(null)
+    props.updateUser({})
     props.navigation.navigate('Login')
     setLoading(false)
   }
@@ -105,7 +105,7 @@ const ProfileScreen = props => {
     return unlisten
   }, [])
 
-  updateUser = () => {
+  updateProfileUser = () => {
     if(firstname == '') {
       setErrorFields(['firstname'])
       setErrorMessage('Name is obligatory!')
@@ -126,7 +126,7 @@ const ProfileScreen = props => {
         email,
         userData,
         () => {
-          props.updateSuccess({email: email, phoneNumber: phoneNumber, ...userData})
+          props.updateUser({email: email, phoneNumber: phoneNumber, ...userData})
           setLoading(false)
         },
         () => {
@@ -206,7 +206,7 @@ const ProfileScreen = props => {
             keyboardType='number-pad'
           />
           <TextError error={errorMessage}/>
-          <Button warning block style={styles.profileButton} onPress={updateUser}>
+          <Button warning block style={styles.profileButton} onPress={updateProfileUser}>
             <Text> Update </Text>
           </Button>
         </Form>  
@@ -223,7 +223,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateSuccess: (user) => dispatch(userActions.updateSuccess(user)),
+    updateUser: (user) => dispatch(userActions.update(user)),
   }
 }
 

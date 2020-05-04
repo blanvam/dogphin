@@ -1,10 +1,14 @@
-import React, { Component } from 'react';
-import { StyleSheet, Dimensions } from 'react-native'; 
-import { View } from 'native-base';
-import MapView, { Marker } from 'react-native-maps';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { StyleSheet, Dimensions } from 'react-native'
+import { View } from 'native-base'
+import MapView, { Marker } from 'react-native-maps'
 import Geolocation from '@react-native-community/geolocation'
+import firestore from '@react-native-firebase/firestore'
 
-import mapStyle from './mapStyle.json';
+import * as userActions from '../../user/user.actions'
+import userServices from '../../user/user.services'
+import mapStyle from './mapStyle.json'
 
 const styles = StyleSheet.create({
   map: {
@@ -14,13 +18,13 @@ const styles = StyleSheet.create({
 const {height, width} = Dimensions.get('window');
 
 
-export default class Map extends Component {
+class Map extends Component {
   constructor(props) {
     super(props)
     this.state = {
       region: {
-        latitude: props.latitude,
-        longitude: props.longitude,
+        latitude: props.location.latitude,
+        longitude: props.location.longitude,
         latitudeDelta: 0.5,
         longitudeDelta: 0.5,
       },
@@ -68,12 +72,18 @@ export default class Map extends Component {
       longitudeDelta: this.state.region.longitudeDelta
     }
     this.mapRef.animateToRegion(newRegion, 5000)
-    // actualPosition: new firestore.GeoPoint(53.483959, -2.244644),
   }
 
   _set_region(region) {
     this.setState({ region })
-    this.props.onChange(region.latitude, region.longitude) 
+    let actualLocation = {latitude: region.latitude, longitude: region.longitude}
+    // TODO send to firestore actual location (new firestore.GeoPoint(53.483959, -2.244644))
+    let location = new firestore.GeoPoint(region.latitude, region.longitude)
+    userServices.update(
+      this.props.user.email,
+      {currentLocation: location},
+      () => { this.props.updateLocation(actualLocation) }
+    )
   }
 
   render() {
@@ -103,3 +113,18 @@ export default class Map extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    user: state.user.user,
+    location: state.user.location
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateLocation: (location) => dispatch(userActions.updateLocation(location)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Map)

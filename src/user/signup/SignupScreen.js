@@ -102,7 +102,7 @@ class SignupScreen extends Component {
         this.state.password,
         userData,
         () => {          
-          this.props.updateSuccess({email: this.state.email, ...userData})
+          this.props.updateUser({email: this.state.email, ...userData})
           this.setState({isLoading: false})
           this.props.navigation.navigate('Profile')
         },
@@ -210,7 +210,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateSuccess: (user) => dispatch(userActions.updateSuccess(user)),
+    updateUser: (user) => dispatch(userActions.update(user)),
   }
 }
 

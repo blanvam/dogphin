@@ -15,9 +15,9 @@ export default (collection) => {
     all: (onResult, onError=(_ => {})) => (dbRef.onSnapshot(querySnapshot => onResult(listElements(querySnapshot)), onError)),
     get: (id, onResult, onError=(_ => {})) => (dbRef.doc(id).onSnapshot(documentSnapshot => onResult(documentSnapshot.data()), onError)),
     where: (query, onResult) => (dbRef.where(...query).get().then(querySnapshot => onResult(listElements(querySnapshot)))),
-    set: (id, data, onSuccess, onError=(_ => {})) => (dbRef.doc(id).set(data).then(() => onSuccess()).catch(onError)),
-    add: (data, onSuccess, onError=(_ => {})) => (dbRef.add(data).then(docRef => onSuccess(docRef)).catch(onError)),
-    update: (id, data, onSuccess, onError=(_ => {})) => (dbRef.doc(id).update(data).then(() => onSuccess()).catch(onError) ),
+    set: (id, data, onSuccess, onError=(_ => {})) => (dbRef.doc(id).set(data).then(onSuccess).catch(onError)),
+    add: (data, onSuccess, onError=(_ => {})) => (dbRef.add(data).then(onSuccess).catch(onError)),
+    update: (id, data, onSuccess, onError=(_ => {})) => (dbRef.doc(id).update(data).then(onSuccess).catch(onError) ),
     destroy_all: (ids, notify) => {
       let batch = db.batch()
       ids.forEach(id =>{

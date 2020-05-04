@@ -12,7 +12,6 @@ import * as userActions from '../user/user.actions'
 import userServices from '../user/user.services'
 
 
-const defaultPostion = { latitude: 36.374665, longitude: -6.240144 }
 const styles = StyleSheet.create({
   mapBar: {
     zIndex: 1,
@@ -34,8 +33,7 @@ const HomeScreen = props => {
 
   const [permissionsGranted, setPermissionsGranted] = useState(false)
   const [showExitModal, setShowExitModal] = useState(false)
-  const [positionEnabled, setPositionEnabled] = useState(props.user?.positionEnabled)
-  const [position, setPosition] = useState(props.user?.position || defaultPostion)
+  const [locationEnabled, setLocationEnabled] = useState(props.user?.locationEnabled)
   const [zoom, setZoom] = useState(11)
   const [appState, setAppState] = useState(AppState.currentState)
 
@@ -48,14 +46,13 @@ const HomeScreen = props => {
 
   onUserLoadSuccess = (email, usr) => {
     if (usr) {
-      setPositionEnabled(usr.positionEnabled)
-      setPosition(usr.actualPosition || defaultPostion)
+      setLocationEnabled(usr.locationEnabled)
     }
-    props.updateSuccess({email: email, ...usr})
+    props.updateUser({email: email, ...usr})
   }
 
   onUserLoadFail = () => {
-    props.updateSuccess(null)
+    props.updateUser({})
   }
 
   useEffect(() => { 
@@ -81,24 +78,24 @@ const HomeScreen = props => {
   }
 
   updateUserPositionSwitch = (value) => {
-    setPositionEnabled(value)
+    setLocationEnabled(value)
     userServices.update(
       props.user.email,
-      {positionEnabled: value},
-      () => { props.updateSuccess({positionEnabled: value, ...props.user}) }
+      {locationEnabled: value},
+      () => { props.updateUser({locationEnabled: value, ...props.user}) }
     )
   }
 
   switchPosition = () => {
-    if (props.user !== null) {
+    if (props.user?.email) {
       return (
         <View style={styles.positionBar}>
           <Switch 
             trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={positionEnabled ? "#f5dd4b" : "#f4f3f4"}
+            thumbColor={locationEnabled ? "#f5dd4b" : "#f4f3f4"}
             ios_backgroundColor="#3e3e3e"
             onValueChange={updateUserPositionSwitch}
-            value={positionEnabled}
+            value={locationEnabled}
           />
         </View>
       )
@@ -138,7 +135,8 @@ const HomeScreen = props => {
           </View>
           {switchPosition()}
         </View>
-        <Map 
+        <Map
+          permissionsGranted={permissionsGranted} 
           markers={[
             {
               id: 1,
@@ -150,10 +148,6 @@ const HomeScreen = props => {
               description: "example marker description"
             }
           ]}
-          permissionsGranted={permissionsGranted} 
-          latitude={position.latitude}
-          longitude={position.longitude}
-          onChange={(lat, long) => setPosition({ latitude: lat, longitude: long })}
         />
         <ExitModal modalVisible={showExitModal} />
       </Content>
@@ -163,7 +157,7 @@ const HomeScreen = props => {
             <Icon type="MaterialIcons" name="explore" />
             <Text> Home </Text>
           </Button>
-          <Button active onPress={() => openURL(`http://windy.com/?${position.longitude},${position.latitude},${zoom}`)}>
+          <Button active onPress={() => openURL(`http://windy.com/?${location.longitude},${location.latitude},${zoom}`)}>
             <Icon type="MaterialCommunityIcons" name="weather-partlycloudy" />
             <Text>Weather</Text>
           </Button>
@@ -181,12 +175,13 @@ const HomeScreen = props => {
 const mapStateToProps = state => {
   return {
     user: state.user.user,
+    location: state.user.location
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateSuccess: (user) => dispatch(userActions.updateSuccess(user)),
+    updateUser: (user) => dispatch(userActions.update(user)),
   }
 }
 
