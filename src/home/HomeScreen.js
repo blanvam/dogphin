@@ -37,9 +37,15 @@ const HomeScreen = props => {
   const [zoom, setZoom] = useState(11)
   const [appState, setAppState] = useState(AppState.currentState)
 
+  handleGranted = (value) => {
+    setPermissionsGranted(value) 
+    setShowExitModal(!value) 
+    return value
+  }
+   
   handleAppStateChange = (nextAppState) => {
-    if (appState.match(/inactive|background/) && nextAppState === 'active' && !permissionsGranted) {
-      checkPermissions((r) => { setPermissionsGranted(r); setShowExitModal(!r) })
+    if (appState.match(/inactive|background/) && nextAppState === 'active') {
+      checkPermissions(handleGranted)
     }
     setAppState(nextAppState)
   }
@@ -57,7 +63,7 @@ const HomeScreen = props => {
 
   useEffect(() => { 
     AppState.addEventListener('change', handleAppStateChange)
-    checkPermissions((r) => { setPermissionsGranted(r); setShowExitModal(!r) })
+    checkPermissions(handleGranted)
     const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
     return (() => {
       unlisten()

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet, Dimensions, Alert } from 'react-native'
 import { View } from 'native-base'
 import MapView, { Marker } from 'react-native-maps'
 import Geolocation from '@react-native-community/geolocation'
@@ -40,7 +40,7 @@ class Map extends Component {
   }
 
   componentDidUpdate(prevProps){
-    if (this.props.permissionsGranted && this.props.permissionsGranted != prevProps.permissionsGranted) {
+    if (this.props.permissionsGranted && this.props.permissionsGranted !== prevProps.permissionsGranted) {
         this._set_geolocation()
       }
   }
@@ -53,13 +53,13 @@ class Map extends Component {
     Geolocation.setRNConfiguration({"authorizationLevel": "always"})
     Geolocation.getCurrentPosition(
       position => {this._move(position.coords.latitude, position.coords.longitude)},
-      error => Alert.alert('Error', JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 2000, maximumAge: 1000},
+      error => console.log('Error getCurrentPosition', JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000},
     )
     let watchID = Geolocation.watchPosition(
       position => { this._move(position.coords.latitude, position.coords.longitude)},
-      error => Alert.alert('Error', JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 2000, maximumAge: 1000, distanceFilter: 50},
+      error => console.log('Error watchPosition', JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000, distanceFilter: 200},
     )
     this.setState({ watchID })
   }
