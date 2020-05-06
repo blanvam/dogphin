@@ -1,21 +1,29 @@
-import { bindActionCreators } from 'redux';
-import { LIST_NOTIFICATIONS } from './notification.action-types';
+import actionTypes from './notification.action-types'
+import NotificationService from './notification.service'
 
 
-export const handleNotifications = (notifications) => {
-    return {
-        type: LIST_NOTIFICATIONS,
-        notifications
-    }
-};
-
-function mapDispatchToProps(dispatch){
-
-    const actions = {
-        handleNotifications: bindActionCreators(handleNotifications, dispatch)
-    };
-
-    return { actions };
+export const toggleNotificationsLoader = status => {
+  return {
+    type: actionTypes.TOGGLE_NOTIFICATIONS_LOADER,
+    status,
+  }
 }
 
-export default mapDispatchToProps;
+export const getNotificationsSuccess = notifications => {
+  return {
+    type: actionTypes.GET_NOTIFICATIONS_SUCCESS,
+    notifications,
+  }
+}
+
+export const getNotifications = () => {
+  return dispatch => {
+    return NotificationService.lasts(
+      notifications => {
+        dispatch(getNotificationsSuccess(notifications))
+        dispatch(toggleNotificationsLoader(false))
+        return notifications
+      }
+    )
+  }
+}

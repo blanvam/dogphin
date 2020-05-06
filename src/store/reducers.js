@@ -1,11 +1,11 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from 'redux'
 
-import menu from './../menu/menu.reducers';
-import profile from './../profile/profile.reducers';
-import notification from './../notification/notification.reducers';
+import menu from './../menu/menu.reducers'
+import user from '../user/user.reducers'
+import notification from './../notification/notification.reducers'
 
 export default combineReducers({
   menu,
-  profile,
+  user,
   notification,
-});
+})

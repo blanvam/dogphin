@@ -1,24 +1,30 @@
-import React, { Component } from 'react';
-import { StyleSheet, Dimensions } from 'react-native'; 
-import { View } from 'native-base';
-import MapView, { Marker } from 'react-native-maps';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { StyleSheet, Dimensions, Alert } from 'react-native'
+import { View } from 'native-base'
+import MapView, { Marker } from 'react-native-maps'
 import Geolocation from '@react-native-community/geolocation'
+import firestore from '@react-native-firebase/firestore'
 
-import mapStyle from './mapStyle.json';
+import * as userActions from '../../user/user.actions'
+import userServices from '../../user/user.services'
+import mapStyle from './mapStyle.json'
 
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   }
 })
+const {height, width} = Dimensions.get('window');
 
-export default class Map extends Component {
+
+class Map extends Component {
   constructor(props) {
     super(props)
     this.state = {
       region: {
-        latitude: props.latitude,
-        longitude: props.longitude,
+        latitude: props.location.latitude,
+        longitude: props.location.longitude,
         latitudeDelta: 0.5,
         longitudeDelta: 0.5,
       },
@@ -34,7 +40,7 @@ export default class Map extends Component {
   }
 
   componentDidUpdate(prevProps){
-    if (this.props.permissionsGranted && this.props.permissionsGranted != prevProps.permissionsGranted) {
+    if (this.props.permissionsGranted && this.props.permissionsGranted !== prevProps.permissionsGranted) {
         this._set_geolocation()
       }
   }
@@ -47,13 +53,13 @@ export default class Map extends Component {
     Geolocation.setRNConfiguration({"authorizationLevel": "always"})
     Geolocation.getCurrentPosition(
       position => {this._move(position.coords.latitude, position.coords.longitude)},
-      error => Alert.alert('Error', JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 2000, maximumAge: 1000},
+      error => console.log('Error getCurrentPosition', JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000},
     )
     let watchID = Geolocation.watchPosition(
       position => { this._move(position.coords.latitude, position.coords.longitude)},
-      error => Alert.alert('Error', JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 2000, maximumAge: 1000, distanceFilter: 50},
+      error => console.log('Error watchPosition', JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000, distanceFilter: 200},
     )
     this.setState({ watchID })
   }
@@ -70,11 +76,17 @@ export default class Map extends Component {
 
   _set_region(region) {
     this.setState({ region })
-    this.props.onChange(region.latitude, region.longitude) 
+    let actualLocation = {latitude: region.latitude, longitude: region.longitude}
+    // TODO send to firestore actual location (new firestore.GeoPoint(53.483959, -2.244644))
+    let location = new firestore.GeoPoint(region.latitude, region.longitude)
+    userServices.update(
+      this.props.user.email,
+      {currentLocation: location},
+      () => { this.props.updateLocation(actualLocation) }
+    )
   }
 
   render() {
-    let {height, width} = Dimensions.get('window');
     return (
       <View style={{height:height, width: width}}>
         <MapView
@@ -90,6 +102,7 @@ export default class Map extends Component {
         >
           {this.props.markers.map(marker => (
             <Marker
+              key={marker.id}
               coordinate={marker.latlng}
               title={marker.title}
               description={marker.description}
@@ -100,3 +113,18 @@ export default class Map extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    user: state.user.user,
+    location: state.user.location
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateLocation: (location) => dispatch(userActions.updateLocation(location)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Map)
