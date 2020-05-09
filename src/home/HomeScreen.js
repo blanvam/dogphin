@@ -8,6 +8,7 @@ import { Icon, Button, Text, View, Badge } from 'native-base'
 import { checkPermissions } from './permission/checkPermissions'
 import ExitModal from './permission/ExitModal'
 import Map from './map/Map'
+import NotificationBar from '../notification/NotificationBar'
 import * as userActions from '../user/user.actions'
 import userServices from '../user/user.services'
 
@@ -118,7 +119,7 @@ const HomeScreen = props => {
             style={{ /*color: 'white',*/ transform: [{ rotateY: '360deg' }, { scaleX: -1 }] }}
             type="AntDesign" name="notification"
           />
-           <Text placeholder="Notifications"> Hello! Today is a good day for sailing... </Text>
+          <NotificationBar />
         </Item>
         <Right style={{ flex: null }}>
           <Button transparent onPress={() => props.navigation.navigate('Profile')}>
