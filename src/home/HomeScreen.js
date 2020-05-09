@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { AppState, StyleSheet, Linking, Switch } from 'react-native'
+import { AppState, StyleSheet, Switch } from 'react-native'
 import { Container, Header, Right, Content } from 'native-base'
-import { Footer, FooterTab, Item } from 'native-base'
-import { Icon, Button, Text, View, Badge } from 'native-base'
+import { Icon, Button, Text, View, Item } from 'native-base'
 
 import { checkPermissions } from './permission/checkPermissions'
-import ExitModal from './permission/ExitModal'
+import PermissionExitModal from '../components/PermissionExitModal'
+import FooterBar from '../components/FooterBar'
 import Map from './map/Map'
 import * as userActions from '../user/user.actions'
 import userServices from '../user/user.services'
@@ -34,7 +34,6 @@ const HomeScreen = props => {
   const [permissionsGranted, setPermissionsGranted] = useState(false)
   const [showExitModal, setShowExitModal] = useState(false)
   const [locationEnabled, setLocationEnabled] = useState(props.user?.locationEnabled)
-  const [zoom, setZoom] = useState(11)
   const [appState, setAppState] = useState(AppState.currentState)
 
   handleGranted = (value) => {
@@ -70,18 +69,6 @@ const HomeScreen = props => {
       AppState.removeEventListener('change', handleAppStateChange)
     })
   }, [])
-
-  openURL = (url) => {
-    Linking.canOpenURL(url)
-      .then((supported) => {
-        if (!supported) {
-          console.log("Can't handle url: " + url);
-        } else {
-          return Linking.openURL(url);
-        }
-      })
-      .catch((err) => console.error('An error occurred', err));
-  }
 
   updateUserPositionSwitch = (value) => {
     setLocationEnabled(value)
@@ -155,25 +142,9 @@ const HomeScreen = props => {
             }
           ]}
         />
-        <ExitModal modalVisible={showExitModal} />
+        <PermissionExitModal modalVisible={showExitModal} />
       </Content>
-      <Footer>
-        <FooterTab>
-          <Button active>
-            <Icon type="MaterialIcons" name="explore" />
-            <Text> Home </Text>
-          </Button>
-          <Button active onPress={() => openURL(`http://windy.com/?${location.longitude},${location.latitude},${zoom}`)}>
-            <Icon type="MaterialCommunityIcons" name="weather-partlycloudy" />
-            <Text>Weather</Text>
-          </Button>
-          <Button active badge vertical onPress={() => props.navigation.navigate("Notifications")} >
-            <Badge ><Text>13</Text></Badge>
-            <Icon type="MaterialCommunityIcons" name="bell-outline" />
-            <Text>Notifications</Text>
-          </Button>
-        </FooterTab>
-      </Footer>
+      <FooterBar active='Home' navigation={props.navigation} />
     </Container>
   )
 }

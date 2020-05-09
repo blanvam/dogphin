@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Dimensions, Alert } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 import { View } from 'native-base'
 import MapView, { Marker } from 'react-native-maps'
 import Geolocation from '@react-native-community/geolocation'
