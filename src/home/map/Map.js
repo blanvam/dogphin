@@ -8,7 +8,7 @@ import firestore from '@react-native-firebase/firestore'
 
 import * as userActions from '../../user/user.actions'
 import userServices from '../../user/user.services'
-import mapStyle from './mapStyle.json'
+//import mapStyle from './mapStyle.json'
 
 const styles = StyleSheet.create({
   map: {
@@ -92,8 +92,8 @@ class Map extends Component {
         <MapView
           ref={(ref) => this.mapRef = ref}
           style={[styles.map]}
-          mapType="satellite"
-          customMapStyle={mapStyle}
+          mapType="hybrid"
+          //customMapStyle={mapStyle}
           region={this.state.region}
           onRegionChangeComplete={(v) => this._set_region(v)}
           showsUserLocation={true}
