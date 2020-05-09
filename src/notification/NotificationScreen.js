@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { YellowBox, ActivityIndicator, FlatList, StyleSheet } from "react-native"
 import { Container, View, Text, Icon, Content, ListItem, Left, Body, Right } from 'native-base'
-import { Footer, FooterTab } from 'native-base'
+
 import * as notificationsActions from './notification.actions'
 import NotificationService from './notification.service'
+import FooterBar from '../components/FooterBar'
 
 YellowBox.ignoreWarnings([
 	'VirtualizedLists should never be nested', // TODO: Remove when fixed
@@ -54,11 +55,7 @@ class NotificationScreen extends Component {
             renderItem={this._renderItem}
           />
         </Content>
-        <Footer>
-          <FooterTab>
-            <Text> Notifications... </Text>
-          </FooterTab>
-        </Footer>
+        <FooterBar active='Notifications' navigation={this.props.navigation} />
       </Container>
     )
   }

@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 })
 
 
-export default class ExitModal extends Component {
+export default class PermissionExitModal extends Component {
   componentDidMount() {
     Linking.addEventListener('url', this._handleOpenURL);
   }

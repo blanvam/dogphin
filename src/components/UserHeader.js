@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Dimensions } from 'react-native'
-import { View, Text } from 'native-base'
+import { View } from 'native-base'
 import  { Svg, Path } from 'react-native-svg'
 
 const width = Dimensions.get('window').width + 10
