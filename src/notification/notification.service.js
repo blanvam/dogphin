@@ -28,7 +28,19 @@ export default class NotificationService {
   }
 
   iconType(){
-    return typesConfig[this.type].icon
+    return typesConfig[this.type].icon.font
+  }
+
+  iconName(){
+    return typesConfig[this.type].icon.name
+  }
+
+  iconColor(){
+    return typesConfig[this.type].icon.color
+  }
+
+  fontColor(){
+    return typesConfig[this.type].fontColor
   }
 
   message(){
@@ -42,37 +54,72 @@ export default class NotificationService {
 
 const typesConfig = Object.freeze({
   emergency: {
-    icon: "alert",
+    icon: {
+      font: "Octicons",
+      name: "alert",
+      color: "white",
+    },
+    fontColor: "white",
     title: "¡¡SOS!! ¡Emergencia!",
-    message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
+    message: "A 200m"
   },
   boat_damage: {
-    icon: "issue-opened",
+    icon: {
+      font: "Octicons",
+      name: "issue-opened",
+      color: "orange"
+    },
+    fontColor: "black",
     title: "¡Barco dañado!",
     message: "¡A 1Km parece que alguien tiene el barco dañado! ¿Puedes ayudarle?"
   },
   fuel_empty: {
-    icon: "issue-opened",
+    icon: {
+      font: "MaterialCommunityIcons",
+      name: "fuel",
+      color: "orange",
+    },
+    fontColor: "black",
     title: "Sin combustible",
     message: "A 200m hay alguien sin combustible, ponte en contacto si puedes ayudar."
   },
   bad_weather: {
-    icon: "issue-opened",
+    icon: {
+      font: "MaterialCommunityIcons",
+      name: "weather-lightning-rainy",
+      color: "orange", 
+    },
+    fontColor: "black",
     title: "Mal tiempo/oleaje",
     message: "Parece que a 5Km hay oleaje o previsión de mal tiempo. ¡Tome precauciones!"
   },
   floating_object: {
-    icon: "issue-opened",
+    icon: {
+      font: "FontAwesome",
+      name: "warning",
+      color: "orange", 
+    },
+    fontColor: "black",
     title: "Objeto flotando/peligroso",
     message: "¡Tienes cerca un objeto flotante que podría ser peligroso!"
   },
   mechanic_failure: {
-    icon: "issue-opened",
+    icon: {
+      font: "FontAwesome",
+      name: "wrench",
+      color: "orange", 
+    },
+    fontColor: "black",
     title: "Fallo de motor/eléctrico",
     message: "Cerca hay alguien con un fallo de motor o eléctrico"
   },
   health_sos: {
-    icon: "issue-opened",
+    icon: {
+      font: "MaterialCommunityIcons",
+      name: "heart-pulse",
+      color: "#d9534f",
+    },
+    fontColor: "black",
     title: "¡SOS! Problemas de salud",
     message: "¡Alguien está teniendo problemas de salud! ¿Puedes ayudarle?"
   },
