@@ -33,7 +33,7 @@ class NotificationBar extends Component {
     let notificationService = new NotificationService(item)
     return (
       <ListItem avatar 
-        onPress={() => this.props.updateLocation(notificationService.notification.location)}
+        onPress={() => this.props.updateLocation(notificationService.location())}
         style={{ 
           paddingTop: 7, paddingLeft: 5, marginLeft: 0, marginRight: -8,
           backgroundColor: notificationService.type == 'emergency' ? '#d9534f' : 'white'
