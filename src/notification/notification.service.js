@@ -11,6 +11,13 @@ export default class NotificationService {
 
   static lasts = (onResult, onError) => { alertService.all(onResult, onError) }
 
+  location () {
+    return {
+      latitude: this.notification.location.latitude,
+      longitude: this.notification.location.longitude,
+    }
+  }
+
   timeAgo() {
     let secAgo = (new Date().getTime() - this.createdAt.getTime()) / 1000
     let minAgo, hoursAgo, daysAgo;
