@@ -69,7 +69,7 @@ const HomeScreen = props => {
       unlisten()
       AppState.removeEventListener('change', handleAppStateChange)
     })
-  }, [])
+  }, [permissionsGranted, showExitModal, locationEnabled, appState])
 
   updateUserPositionSwitch = (value) => {
     setLocationEnabled(value)
