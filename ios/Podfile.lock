@@ -293,9 +293,9 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
-  - Permission-LocationAlways (2.0.9):
+  - Permission-LocationAlways (2.1.4):
     - RNPermissions
-  - Permission-LocationWhenInUse (2.0.9):
+  - Permission-LocationWhenInUse (2.1.4):
     - RNPermissions
   - RCTRequired (0.62.0)
   - RCTTypeSafety (0.62.0):
@@ -542,7 +542,7 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.6.0):
     - React
-  - RNPermissions (2.0.9):
+  - RNPermissions (2.1.4):
     - React
   - RNReanimated (1.7.0):
     - React
@@ -733,8 +733,8 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
-  Permission-LocationAlways: 8ecde136071ff169dc9f3607641dc40ae3ad7c02
-  Permission-LocationWhenInUse: 9133db2ae6ce48da6ca513ec44a24ccce613fe4f
+  Permission-LocationAlways: 48085521ad224052f5b25c3fdc6d0e996d162428
+  Permission-LocationWhenInUse: 7449010ca36a26dbe6b10e69e9d6ebcab0222c42
   RCTRequired: 0873f5bdb1762d2b9b1ae16a01c4f91d6ee3b6dd
   RCTTypeSafety: a605e0cc0e4220f6e65896bd9e675073c2978f35
   React: 8abf6bdd2b05538e9445f7bbda800df744068bfe
@@ -762,7 +762,7 @@ SPEC CHECKSUMS:
   RNFBAuth: 50fcc7826344dc96caad8bc4f5b40a64904297b8
   RNFBFirestore: 69e59e5266927857fa3629715111ee65f4de1cd0
   RNGestureHandler: dde546180bf24af0b5f737c8ad04b6f3fa51609a
-  RNPermissions: 2f74237e97b08beda01e914301e12524ddddf5b8
+  RNPermissions: 3635b407c15f2fe591bd2101c8f20aa0912caba8
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
   RNScreens: 2a9cd603bcebc34319c92e595283d760dd1f55f5
   RNSVG: 7e16ddfc6e00d5aa69c9eb83e699bcce5dcb85d4
