@@ -1,63 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { YellowBox, ActivityIndicator, FlatList, StyleSheet } from "react-native"
-import { Container, View, Text, Icon, Content, ListItem, Left, Body, Right } from 'native-base'
+import React from 'react'
+import { connect } from 'react-redux'
+import { ActivityIndicator, FlatList, StyleSheet } from 'react-native'
+import { Container, View, Text, Icon, ListItem, Left, Body, Right } from 'native-base'
 
-import * as notificationsActions from './notification.actions'
 import notificationService from './notification.service'
 import FooterBar from '../components/FooterBar'
-
-//YellowBox.ignoreWarnings([
-//	'VirtualizedLists should never be nested', // TODO: Remove when fixed
-//])
-
-class NotificationScreen extends Component {
-  constructor(props) {
-    super(props)
-  }
-
-  componentDidMount(){
-    this.props.getNotifications()
-  }
-
-  _renderItem = ({ item }) => { 
-    console.log(`item SCREEN ${item.type} - ${item.id} `)
-    return (
-      <ListItem avatar>
-        <Left>
-          <Icon type={notificationService.iconType(item)} name={notificationService.iconName(item)} style={styles.listItemIcon} />
-        </Left>
-        <Body>
-          <Text style={styles.listItemTitle}>{notificationService.title(item)}</Text>
-          <Text note>{notificationService.message(item)}</Text>
-        </Body>
-        <Right>
-          <Text note>{notificationService.timeAgo(item)}</Text>
-        </Right>
-      </ListItem>
-    )
-  }
-
-  render () {
-    if(this.props.showNotificationsLoader){
-      return(
-        <View style={styles.preloader}>
-          <ActivityIndicator size="large" color="#00576a"/>
-        </View>
-      )
-    }
-    return(
-      <Container>
-        <FlatList
-          data={this.props.notifications}
-          keyExtractor={(item) => item.id }
-          renderItem={this._renderItem}
-        />
-        <FooterBar active='Notifications' navigation={this.props.navigation} />
-      </Container>
-    )
-  }
-}
 
 const styles = StyleSheet.create({
   preloader: {
@@ -81,6 +28,50 @@ const styles = StyleSheet.create({
   }
 })
 
+
+const NotificationScreen = props => {
+  renderItem = ({ item }) => { 
+    console.log(`item SCREEN ${item.type} - ${item.id} `)
+    return (
+      <ListItem avatar>
+        <Left>
+          <Icon type={notificationService.iconType(item)} name={notificationService.iconName(item)} style={styles.listItemIcon} />
+        </Left>
+        <Body>
+          <Text style={styles.listItemTitle}>{notificationService.title(item)}</Text>
+          <Text note>{notificationService.message(item)}</Text>
+        </Body>
+        <Right>
+          <Text note>{notificationService.timeAgo(item)}</Text>
+        </Right>
+      </ListItem>
+    )
+  }
+
+  showLoader = () => {
+    if(props.showNotificationsLoader){
+      return(
+        <View style={styles.preloader}>
+          <ActivityIndicator size="large" color="#00576a"/>
+        </View>
+      )
+    }
+  }
+
+  return(
+    <Container>
+      {showLoader()}
+      <FlatList
+        data={props.notifications}
+        keyExtractor={(item) => item.id }
+        renderItem={renderItem}
+      />
+      <FooterBar active='Notifications' navigation={props.navigation} />
+    </Container>
+  )
+
+}
+
 const mapStateToProps = state => {
   return {
     showNotificationsLoader: state.notification.showNotificationsLoader,
@@ -89,10 +80,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-  return {
-    getNotifications: () => dispatch(notificationsActions.getNotifications()),
-    // toggleNotificationsLoader: status => dispatch(notificationsActions.toggleNotificationsLoader(status)),
-  }
+  return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationScreen)

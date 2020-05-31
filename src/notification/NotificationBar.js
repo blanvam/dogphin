@@ -69,7 +69,13 @@ class NotificationBar extends Component {
   }
 
   render () {
-    if (this.props.notifications[0]) {
+    if (this.props.showNotificationsLoader || !this.props.notifications[0]) {
+      return (
+        <TextTicker placeholder="Notifications" style={{ color: 'black' }}>
+          Hello! Today is a good day for sailing... 
+        </TextTicker>
+      )
+    } else {
       let data = this.props.notifications.slice(0, this.state.nNotifications)
       console.log(`BAR notfs ${data}`)
       return (
@@ -83,16 +89,13 @@ class NotificationBar extends Component {
           renderItem={this._renderItem}
         />
       )
-    } else {
-      return (
-        <TextTicker placeholder="Notifications"> Hello! Today is a good day for sailing... </TextTicker>
-      )
     }
   }
 }
 
 const mapStateToProps = state => {
   return {
+    showNotificationsLoader: state.notification.showNotificationsLoader,
     notifications: state.notification.notifications,
     location: state.user.location,
   }
