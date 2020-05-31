@@ -50,8 +50,8 @@ export default {
 const typesConfig = Object.freeze({
   emergency: {
     icon: {
-      font: "Octicons",
-      name: "alert",
+      font: "MaterialCommunityIcons",
+      name: "alert-decagram",
       color: "white",
     },
     fontColor: "white",
@@ -61,8 +61,8 @@ const typesConfig = Object.freeze({
   },
   boat_damage: {
     icon: {
-      font: "Octicons",
-      name: "issue-opened",
+      font: "MaterialCommunityIcons",
+      name: "alert-circle-outline",
       color: "orange"
     },
     fontColor: "black",
@@ -94,8 +94,8 @@ const typesConfig = Object.freeze({
   },
   floating_object: {
     icon: {
-      font: "FontAwesome",
-      name: "warning",
+      font: "MaterialCommunityIcons",
+      name: "alert",
       color: "orange", 
     },
     fontColor: "black",
