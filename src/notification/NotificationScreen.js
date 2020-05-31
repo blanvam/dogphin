@@ -4,12 +4,12 @@ import { YellowBox, ActivityIndicator, FlatList, StyleSheet } from "react-native
 import { Container, View, Text, Icon, Content, ListItem, Left, Body, Right } from 'native-base'
 
 import * as notificationsActions from './notification.actions'
-import NotificationService from './notification.service'
+import notificationService from './notification.service'
 import FooterBar from '../components/FooterBar'
 
-YellowBox.ignoreWarnings([
-	'VirtualizedLists should never be nested', // TODO: Remove when fixed
-])
+//YellowBox.ignoreWarnings([
+//	'VirtualizedLists should never be nested', // TODO: Remove when fixed
+//])
 
 class NotificationScreen extends Component {
   constructor(props) {
@@ -20,19 +20,19 @@ class NotificationScreen extends Component {
     this.props.getNotifications()
   }
 
-  _renderItem = ({ item }) => {
-    let notificationService = new NotificationService(item)
+  _renderItem = ({ item }) => { 
+    console.log(`item SCREEN ${item.type} - ${item.id} `)
     return (
       <ListItem avatar>
         <Left>
-          <Icon type="Octicons" name={notificationService.iconType()} style={styles.listItemIcon} />
+          <Icon type={notificationService.iconType(item)} name={notificationService.iconName(item)} style={styles.listItemIcon} />
         </Left>
         <Body>
-          <Text style={styles.listItemTitle}>{notificationService.title()}</Text>
-          <Text note>{notificationService.message()}</Text>
+          <Text style={styles.listItemTitle}>{notificationService.title(item)}</Text>
+          <Text note>{notificationService.message(item)}</Text>
         </Body>
         <Right>
-          <Text note>{notificationService.timeAgo()}</Text>
+          <Text note>{notificationService.timeAgo(item)}</Text>
         </Right>
       </ListItem>
     )
@@ -48,13 +48,11 @@ class NotificationScreen extends Component {
     }
     return(
       <Container>
-        <Content>
-          <FlatList
-            data={this.props.notifications}
-            keyExtractor={(item)=>{return item.id}}
-            renderItem={this._renderItem}
-          />
-        </Content>
+        <FlatList
+          data={this.props.notifications}
+          keyExtractor={(item) => item.id }
+          renderItem={this._renderItem}
+        />
         <FooterBar active='Notifications' navigation={this.props.navigation} />
       </Container>
     )

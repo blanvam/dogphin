@@ -13,3 +13,10 @@ export const updateLocation = location => {
     location,
   }
 }
+
+export const updatePermissions = value => {
+  return {
+    type: actionTypes.UPDATE_PERMISSIONS_SUCCESS,
+    value,
+  }
+}

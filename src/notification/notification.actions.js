@@ -1,5 +1,5 @@
 import actionTypes from './notification.action-types'
-import NotificationService from './notification.service'
+import notificationService from './notification.service'
 
 
 export const toggleNotificationsLoader = status => {
@@ -18,7 +18,7 @@ export const getNotificationsSuccess = notifications => {
 
 export const getNotifications = () => {
   return dispatch => {
-    return NotificationService.lasts(
+    return notificationService.lasts(
       notifications => {
         dispatch(getNotificationsSuccess(notifications))
         dispatch(toggleNotificationsLoader(false))

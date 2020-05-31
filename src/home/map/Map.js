@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Dimensions } from 'react-native'
-import { View } from 'native-base'
+import { View, Icon } from 'native-base'
 import MapView, { Marker } from 'react-native-maps'
 import Geolocation from '@react-native-community/geolocation'
 import firestore from '@react-native-firebase/firestore'
@@ -10,9 +10,26 @@ import * as userActions from '../../user/user.actions'
 import userServices from '../../user/user.services'
 //import mapStyle from './mapStyle.json'
 
+import notificationService from '../../notification/notification.service'
+
+
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  marker: {
+    position: 'absolute',
+    top: 40,
+    left: 50,
+    marginLeft: -115,
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 0,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    // border: '4px solid #fff',
+    width: 20,
+    height: 20,
+    //transform: 'rotate(-45deg)'
   }
 })
 const {height, width} = Dimensions.get('window');
@@ -30,13 +47,15 @@ const Map = props => {
   const [mapRef, setMapRef] = useState(null)
  
   useEffect(() => { 
-    console.log(`${props.permissionsGranted} && ${watchID} && ${!watchID} && ${watchID == null}`)
+    console.log(`MMMMMMMap permissionsGranted: ${props.permissionsGranted} && location: ${JSON.stringify(props.location)} && watchID: ${watchID}`)
     if (props.permissionsGranted && !watchID) {
       set_geolocation()
-    } else if (watchID) {
+    } else if (watchID && props.location.latitude !== region.latitude && props.location.longitude !== region.longitude ) {
+      console.log('Moving position')
       move(props.location.latitude, props.location.longitude)
     }
     return (() => {
+      console.log('unlisten map')
       watchID && Geolocation.clearWatch(watchID)
     })
   }, [props.permissionsGranted, props.location])
@@ -49,12 +68,13 @@ const Map = props => {
       error => console.log('Error getCurrentPosition', JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000},
     )
-    let watchID = Geolocation.watchPosition(
-      position => { move(position.coords.latitude, position.coords.longitude)},
-      error => console.log('Error watchPosition', JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000, distanceFilter: 200},
-    )
-    setWatchID(watchID)
+    //let watchID = Geolocation.watchPosition(
+    //  position => { move(position.coords.latitude, position.coords.longitude)},
+    //  error => console.log('Error watchPosition', JSON.stringify(error)),
+    //  {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000, distanceFilter: 200},
+    //)
+    //setWatchID(watchID)
+    setWatchID(true)
   }
 
   move = (latitude, longitude) => {
@@ -80,6 +100,36 @@ const Map = props => {
     )
   }
 
+  get_markers = () => (
+    props.notifications.map(item => {
+      return (
+        <Marker
+          key={notificationService.id}
+          coordinate={notificationService.location(item)}
+          title={notificationService.title(item)}
+          description={notificationService.message(item)}
+        >
+          <View 
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 40 / 2,
+            backgroundColor: notificationService.backgroundColor(item),
+          }}>
+            <Icon
+              style={{ 
+                marginTop: 5,
+                fontWeight: 'bold',
+                textAlign: "center", 
+                color: notificationService.iconColor(item) }}
+              type={notificationService.iconType(item)} 
+              name={notificationService.iconName(item)} 
+            />
+          </View>
+        </Marker>
+      )
+    })
+  )
   
   return (
     <View style={{height:height, width: width}}>
@@ -94,14 +144,7 @@ const Map = props => {
         followsUserLocation={true}
         loadingEnabled={true}
       >
-        {props.markers.map(marker => (
-          <Marker
-            key={marker.id}
-            coordinate={marker.latlng}
-            title={marker.title}
-            description={marker.description}
-          />
-        ))}
+        {get_markers()}
       </MapView>
     </View>
   )
@@ -111,7 +154,9 @@ const Map = props => {
 const mapStateToProps = state => {
   return {
     user: state.user.user,
-    location: state.user.location
+    location: state.user.location,
+    permissionsGranted: state.user.permissions,
+    notifications: state.notification.notifications,
   }
 }
 

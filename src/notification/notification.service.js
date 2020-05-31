@@ -1,25 +1,10 @@
 import alertService from '../services/alert.service'
 
 
-export default class NotificationService {
-
-  constructor(notification){
-    this.type = notification.type
-    this.createdAt = notification.createdAt.toDate()
-    this.notification = notification
-  }
-
-  static lasts = (onResult, onError) => { alertService.all(onResult, onError) }
-
-  location () {
-    return {
-      latitude: this.notification.location.latitude,
-      longitude: this.notification.location.longitude,
-    }
-  }
-
-  timeAgo() {
-    let secAgo = (new Date().getTime() - this.createdAt.getTime()) / 1000
+export default {
+  lasts: (onResult, onError) => { alertService.all(onResult, onError) },
+  timeAgo: (notification) => {
+    let secAgo = (new Date().getTime() - notification.createdAt.toDate().getTime()) / 1000
     let minAgo, hoursAgo, daysAgo;
     if ((minAgo = secAgo/60) < 1) {
       return `${parseInt(secAgo)} seconds ago`;
@@ -30,33 +15,36 @@ export default class NotificationService {
     } else if ((daysAgo/30) < 1) {
       return `${parseInt(daysAgo)} days ago`;
     } else {
-      return this.createdAt.toDateString();
+      return notification.createdAt.toDate().toDateString();
     }
-  }
-
-  iconType(){
-    return typesConfig[this.type].icon.font
-  }
-
-  iconName(){
-    return typesConfig[this.type].icon.name
-  }
-
-  iconColor(){
-    return typesConfig[this.type].icon.color
-  }
-
-  fontColor(){
-    return typesConfig[this.type].fontColor
-  }
-
-  message(){
-    return typesConfig[this.type].message
-  }
-
-  title(){
-    return typesConfig[this.type].title
-  }
+  },
+  location: (notification) => (
+    {
+      latitude: notification.location.latitude,
+      longitude: notification.location.longitude,
+    }
+  ),
+  iconType: (notification) => (
+    typesConfig[notification.type].icon.font
+  ),
+  iconName: (notification) => (
+    typesConfig[notification.type].icon.name
+  ),
+  iconColor: (notification) => (
+    typesConfig[notification.type].icon.color
+  ),
+  backgroundColor: (notification) => (
+    typesConfig[notification.type].backgroundColor
+  ),
+  fontColor: (notification) => (
+    typesConfig[notification.type].fontColor
+  ),
+  message: (notification) => (
+    typesConfig[notification.type].message
+  ),
+  title: (notification) => (
+    typesConfig[notification.type].title
+  )
 }
 
 const typesConfig = Object.freeze({
@@ -67,6 +55,7 @@ const typesConfig = Object.freeze({
       color: "white",
     },
     fontColor: "white",
+    backgroundColor: "#d9534f",
     title: "¡¡SOS!! ¡Emergencia!",
     message: "A 200m"
   },
@@ -77,6 +66,7 @@ const typesConfig = Object.freeze({
       color: "orange"
     },
     fontColor: "black",
+    backgroundColor: "white",
     title: "¡Barco dañado!",
     message: "¡A 1Km parece que alguien tiene el barco dañado! ¿Puedes ayudarle?"
   },
@@ -87,6 +77,7 @@ const typesConfig = Object.freeze({
       color: "orange",
     },
     fontColor: "black",
+    backgroundColor: "white",
     title: "Sin combustible",
     message: "A 200m hay alguien sin combustible, ponte en contacto si puedes ayudar."
   },
@@ -97,6 +88,7 @@ const typesConfig = Object.freeze({
       color: "orange", 
     },
     fontColor: "black",
+    backgroundColor: "white",
     title: "Mal tiempo/oleaje",
     message: "Parece que a 5Km hay oleaje o previsión de mal tiempo. ¡Tome precauciones!"
   },
@@ -107,6 +99,7 @@ const typesConfig = Object.freeze({
       color: "orange", 
     },
     fontColor: "black",
+    backgroundColor: "white",
     title: "Objeto flotando/peligroso",
     message: "¡Tienes cerca un objeto flotante que podría ser peligroso!"
   },
@@ -117,6 +110,7 @@ const typesConfig = Object.freeze({
       color: "orange", 
     },
     fontColor: "black",
+    backgroundColor: "white",
     title: "Fallo de motor/eléctrico",
     message: "Cerca hay alguien con un fallo de motor o eléctrico"
   },
@@ -127,6 +121,7 @@ const typesConfig = Object.freeze({
       color: "#d9534f",
     },
     fontColor: "black",
+    backgroundColor: "white",
     title: "¡SOS! Problemas de salud",
     message: "¡Alguien está teniendo problemas de salud! ¿Puedes ayudarle?"
   },

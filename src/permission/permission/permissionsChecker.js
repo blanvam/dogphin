@@ -33,7 +33,7 @@ export function permissionsChecker(permissions, handleGranted) {
           granted = false
           break;
       }
-    }
+    } 
     handleGranted(granted)
   })
 }

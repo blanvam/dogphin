@@ -6,7 +6,7 @@ import { ListItem, Body, Right, Icon } from 'native-base'
 
 import * as userActions from '../user/user.actions'
 import * as notificationsActions from './notification.actions'
-import NotificationService from './notification.service'
+import notificationService from './notification.service'
 
 class NotificationBar extends Component {
   constructor(props) {
@@ -29,34 +29,32 @@ class NotificationBar extends Component {
     clearInterval(this.state.notificationBarSlider)
   }
 
-  _renderItem = ({ item }) => {
-    let notificationService = new NotificationService(item)
+  _renderItem = ({ item }) => { console.log(`item z BAR ${item.type} - ${item.id} `) 
     return (
-      <ListItem avatar 
-        onPress={() => this.props.updateLocation(notificationService.location())}
-        style={{ 
-          paddingTop: 7, paddingLeft: 5, marginLeft: 0, marginRight: -8,
-          backgroundColor: notificationService.type == 'emergency' ? '#d9534f' : 'white'
-        }} >
-        <Body style={{ paddingTop: 0, marginLeft: 0, borderBottomColor: 'transparent' }} >
-          <TextTicker 
-            style={{ marginLeft: 0, color: notificationService.fontColor() }}
-            scrollSpeed={5000}
-            bounceSpeed={5000}
-          >
-            {notificationService.title()} - {notificationService.message() }
-          </TextTicker>
-        </Body>
-        <Right style={{ paddingTop: 0, marginLeft: 5, marginRight: 0, borderBottomColor: 'transparent' }}>
-            <Icon
-              type={notificationService.iconType()} 
-              name={notificationService.iconName()} 
-              style={{ fontSize: 25, color: notificationService.iconColor() }}
-            />
-        </Right>
-      </ListItem>
-    )
-  }
+    <ListItem avatar 
+      onPress={() => this.props.updateLocation(notificationService.location(item))}
+      style={{ 
+        paddingTop: 7, paddingLeft: 5, marginLeft: 0, marginRight: -8,
+        backgroundColor: notificationService.backgroundColor(item)
+      }} >
+      <Body style={{ paddingTop: 0, marginLeft: 0, borderBottomColor: 'transparent' }} >
+        <TextTicker 
+          style={{ marginLeft: 0, color: notificationService.fontColor(item) }}
+          scrollSpeed={5000}
+          bounceSpeed={5000}
+        >
+          {notificationService.title(item)} - {notificationService.message(item) }
+        </TextTicker>
+      </Body>
+      <Right style={{ paddingTop: 0, marginLeft: 5, marginRight: 0, borderBottomColor: 'transparent' }}>
+          <Icon
+            type={notificationService.iconType(item)} 
+            name={notificationService.iconName(item)} 
+            style={{ fontSize: 25, color: notificationService.iconColor(item) }}
+          />
+      </Right>
+    </ListItem>
+  )}
 
   scrollNext = () => {
     if (this.state.currentIndex < this.state.nNotifications - 1) {
@@ -72,14 +70,16 @@ class NotificationBar extends Component {
 
   render () {
     if (this.props.notifications[0]) {
+      let data = this.props.notifications.slice(0, this.state.nNotifications)
+      console.log(`BAR notfs ${data}`)
       return (
         <FlatList
           ref={ref => { this.state.flatListRef = ref}}
           pagingEnabled={false}
           scrollEnabled={false}
           showsVerticalScrollIndicator={false}
-          data={this.props.notifications.slice(0, this.state.nNotifications)}
-          keyExtractor={(item)=>{return item.id}}
+          data={data}
+          keyExtractor={(item) => item.id}
           renderItem={this._renderItem}
         />
       )
