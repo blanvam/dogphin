@@ -16,11 +16,19 @@ export const getNotificationsSuccess = notifications => {
   }
 }
 
-export const getNotifications = () => {
+export const getNotificationsBarSuccess = notifications => {
+  return {
+    type: actionTypes.GET_NOTIFICATIONS_BAR_SUCCESS,
+    notifications,
+  }
+}
+
+export const getNotifications = num => {
   return dispatch => {
     return notificationService.lasts(
       notifications => {
         dispatch(getNotificationsSuccess(notifications))
+        dispatch(getNotificationsBarSuccess(notifications.slice(0, num)))
         dispatch(toggleNotificationsLoader(false))
         return notifications
       }

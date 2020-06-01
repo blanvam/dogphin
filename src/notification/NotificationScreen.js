@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
 
 
 const NotificationScreen = props => {
+
   renderItem = ({ item }) => { 
     console.log(`item SCREEN ${item.type} - ${item.id} `)
     return (
@@ -49,6 +50,7 @@ const NotificationScreen = props => {
   }
 
   showLoader = () => {
+    console.log(`NNNNNNNNotification Screennnn`)
     if(props.showNotificationsLoader){
       return(
         <View style={styles.preloader}>
@@ -58,7 +60,7 @@ const NotificationScreen = props => {
     }
   }
 
-  return(
+  return (
     <Container>
       {showLoader()}
       <FlatList

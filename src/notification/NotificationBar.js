@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import TextTicker from 'react-native-text-ticker'
@@ -8,31 +8,36 @@ import * as userActions from '../user/user.actions'
 import * as notificationsActions from './notification.actions'
 import notificationService from './notification.service'
 
-class NotificationBar extends Component {
-  constructor(props) {
-    super(props)
-  }
+const NotificationBar = props => {
 
-  state = {
-    nNotifications: 5,
-    currentIndex: 0,
-    flatListRef: null,
-    notificationBarSlider: null,
-  }
+  const [numNotifications, _] = useState(5)
+  const flatListRef = useRef(null)
+  const [index, setIndex] = useState(0)
 
-  componentDidMount() {
-    this.props.getNotifications()
-    this.state.notificationBarSlider = setInterval(this.scrollNext, 5000)
-  }
+  scrollNext = useCallback(async() => {
+    let nextIndex = 0
+    if (index < numNotifications - 1) {
+      nextIndex = index + 1
+    }
+    flatListRef.current?.scrollToIndex({index: nextIndex, animated: true})
+    console.log(`SSSSSSSSSSShould ${index} - ${numNotifications} go to next ${nextIndex}`)
+    setIndex(nextIndex)
+  })
 
-  componentWillUnmount(){
-    clearInterval(this.state.notificationBarSlider)
-  }
+  useEffect(() => {
+    props.getNotifications(numNotifications)
+  }, [])
 
-  _renderItem = ({ item }) => { console.log(`item z BAR ${item.type} - ${item.id} `) 
+  useEffect(() => {
+    const timeot = setInterval(scrollNext.bind(this), 5000) 
+    return () => clearInterval(timeot)
+  }, [scrollNext])
+
+  renderItem = ({ item }) => { 
+    console.log(`item z BAR ${item.type} - ${item.id} `)
     return (
     <ListItem avatar 
-      onPress={() => this.props.updateLocation(notificationService.location(item))}
+      onPress={() => props.updateLocation(notificationService.location(item))}
       style={{ 
         paddingTop: 7, paddingLeft: 5, marginLeft: 0, marginRight: -8,
         backgroundColor: notificationService.backgroundColor(item)
@@ -56,54 +61,28 @@ class NotificationBar extends Component {
     </ListItem>
   )}
 
-  scrollNext = () => {
-    if (this.state.currentIndex < this.state.nNotifications - 1) {
-      this.state.currentIndex += 1
-    } else {
-      this.state.currentIndex = 0
-    }
-    this.state.flatListRef?.scrollToIndex({
-      index: this.state.currentIndex,
-      animated: true,
-    })
-  }
-
-  render () {
-    if (this.props.showNotificationsLoader || !this.props.notifications[0]) {
-      return (
-        <TextTicker placeholder="Notifications" style={{ color: 'black' }}>
-          Hello! Today is a good day for sailing... 
-        </TextTicker>
-      )
-    } else {
-      let data = this.props.notifications.slice(0, this.state.nNotifications)
-      console.log(`BAR notfs ${data}`)
-      return (
-        <FlatList
-          ref={ref => { this.state.flatListRef = ref}}
-          pagingEnabled={false}
-          scrollEnabled={false}
-          showsVerticalScrollIndicator={false}
-          data={data}
-          keyExtractor={(item) => item.id}
-          renderItem={this._renderItem}
-        />
-      )
-    }
-  }
+  return (
+    <FlatList
+      ref={flatListRef}
+      pagingEnabled={false}
+      scrollEnabled={false}
+      showsVerticalScrollIndicator={false}
+      data={props.notifications}
+      keyExtractor={(item) => item.id}
+      renderItem={renderItem}
+    />
+  )
 }
 
 const mapStateToProps = state => {
   return {
-    showNotificationsLoader: state.notification.showNotificationsLoader,
-    notifications: state.notification.notifications,
-    location: state.user.location,
+    notifications: state.notification.notificationsBar,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    getNotifications: () => dispatch(notificationsActions.getNotifications()),
+    getNotifications: (n) => dispatch(notificationsActions.getNotifications(n)),
     updateLocation: (location) => dispatch(userActions.updateLocation(location)),
   }
 }
