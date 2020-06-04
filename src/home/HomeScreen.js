@@ -79,13 +79,7 @@ const HomeScreen = props => {
   return (
     <Container>
       <Header searchBar rounded>
-        <Item>
-          <Icon
-            style={{ /*color: 'white',*/ transform: [{ rotateY: '360deg' }, { scaleX: -1 }] }}
-            type="AntDesign" name="notification"
-          />
-          <NotificationBar />
-        </Item>
+        <NotificationBar />
         <Right style={{ flex: null }}>
           <Button transparent onPress={() => props.navigation.navigate('Profile')}>
             <Icon type="MaterialIcons" name="person" />

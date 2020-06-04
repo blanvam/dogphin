@@ -1,8 +1,7 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { FlatList } from 'react-native'
+import React, { useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import TextTicker from 'react-native-text-ticker'
-import { ListItem, Body, Right, Icon } from 'native-base'
+import { Item, Icon, Input, View, Text } from 'native-base'
 
 import * as userActions from '../user/user.actions'
 import * as notificationsActions from './notification.actions'
@@ -11,7 +10,6 @@ import notificationService from './notification.service'
 const NotificationBar = props => {
 
   const [numNotifications, _] = useState(5)
-  const flatListRef = useRef(null)
   const [index, setIndex] = useState(0)
 
   scrollNext = useCallback(async() => {
@@ -19,8 +17,6 @@ const NotificationBar = props => {
     if (index < numNotifications - 1) {
       nextIndex = index + 1
     }
-    flatListRef.current?.scrollToIndex({index: nextIndex, animated: true})
-    console.log(`SSSSSSSSSSShould ${index} - ${numNotifications} go to next ${nextIndex}`)
     setIndex(nextIndex)
   })
 
@@ -29,49 +25,58 @@ const NotificationBar = props => {
   }, [])
 
   useEffect(() => {
-    const timeot = setInterval(scrollNext.bind(this), 5000) 
+    const timeot = setInterval(scrollNext.bind(this), 10000) 
     return () => clearInterval(timeot)
   }, [scrollNext])
 
-  renderItem = ({ item }) => { 
-    console.log(`item z BAR ${item.type} - ${item.id} `)
+  let ntf = props.notifications[index]
+  if (ntf) {
     return (
-    <ListItem avatar 
-      onPress={() => props.updateLocation(notificationService.location(item))}
-      style={{ 
-        paddingTop: 7, paddingLeft: 5, marginLeft: 0, marginRight: -8,
-        backgroundColor: notificationService.backgroundColor(item)
-      }} >
-      <Body style={{ paddingTop: 0, marginLeft: 0, borderBottomColor: 'transparent' }} >
-        <TextTicker 
-          style={{ marginLeft: 0, color: notificationService.fontColor(item) }}
-          scrollSpeed={5000}
-          bounceSpeed={5000}
-        >
-          {notificationService.title(item)} - {notificationService.message(item) }
-        </TextTicker>
-      </Body>
-      <Right style={{ paddingTop: 0, marginLeft: 5, marginRight: 0, borderBottomColor: 'transparent' }}>
-          <Icon
-            type={notificationService.iconType(item)} 
-            name={notificationService.iconName(item)} 
-            style={{ fontSize: 25, color: notificationService.iconColor(item) }}
-          />
-      </Right>
-    </ListItem>
-  )}
+      <Item 
+        onPress={() => props.updateLocation(notificationService.location(ntf))} 
+        style={{backgroundColor: notificationService.backgroundColor(ntf)}}
+      >
+        <Icon
+          style={{ /* color: 'white', */ transform: [{ rotateY: '360deg' }, { scaleX: -1 }] }}
+          type="AntDesign" name="notification"
+        />
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <TextTicker 
+            style={{ color: notificationService.fontColor(ntf) }}
+            scrollSpeed={5000}
+            bounceSpeed={5000}
+          >
+            {notificationService.title(ntf)} - {notificationService.message(ntf) }
+          </TextTicker>
+        </View>
+        <Icon
+          type={notificationService.iconType(ntf)} 
+          name={notificationService.iconName(ntf)} 
+          style={{ fontSize: 25, color: notificationService.iconColor(ntf) }}
+        />
+      </Item>
+    )
+  }
 
+  console.log(`aaaaaaaaaaa ${ntf}`)
   return (
-    <FlatList
-      ref={flatListRef}
-      pagingEnabled={false}
-      scrollEnabled={false}
-      showsVerticalScrollIndicator={false}
-      data={props.notifications}
-      keyExtractor={(item) => item.id}
-      renderItem={renderItem}
-    />
+    <Item>
+      <Icon
+        style={{ /* color: 'white', */ transform: [{ rotateY: '360deg' }, { scaleX: -1 }] }}
+        type="AntDesign" name="notification"
+      />
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <TextTicker 
+            style={{ color: notificationService.fontColor(ntf) }}
+            scrollSpeed={5000}
+            bounceSpeed={5000}
+          >
+            Hello! Today is a good day for sailing...
+          </TextTicker>
+        </View>
+    </Item>
   )
+ 
 }
 
 const mapStateToProps = state => {
