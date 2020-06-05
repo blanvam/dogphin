@@ -46,7 +46,6 @@ const PermissionExitModal = props => {
   }
 
   useEffect(() => {
-    console.log(`PPPPPPPPPP permissionsGranted: ${props.permissionsGranted}, showExitModal ${showExitModal},\ appState: ${appState}`)
     AppState.addEventListener('change', handleAppStateChange)
     checkPermissions(handleGranted)
     return (() => {

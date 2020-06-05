@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
 const NotificationScreen = props => {
 
   renderItem = ({ item }) => { 
-    console.log(`item SCREEN ${item.type} - ${item.id} `)
     return (
       <ListItem avatar>
         <Left>
@@ -50,7 +49,6 @@ const NotificationScreen = props => {
   }
 
   showLoader = () => {
-    console.log(`NNNNNNNNotification Screennnn`)
     if(props.showNotificationsLoader){
       return(
         <View style={styles.preloader}>

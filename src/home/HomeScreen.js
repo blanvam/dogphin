@@ -44,7 +44,6 @@ const HomeScreen = props => {
   }
 
   useEffect(() => {
-    console.log(`AAAAAAAA locationEnabled: ${locationEnabled}`)
     const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
     return (unlisten)
   }, [locationEnabled])

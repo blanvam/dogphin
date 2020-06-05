@@ -47,38 +47,36 @@ const Map = props => {
   const [mapRef, setMapRef] = useState(null)
  
   useEffect(() => { 
-    console.log(`MMMMMMMap permissionsGranted: ${props.permissionsGranted} && location: ${JSON.stringify(props.location)} && watchID: ${watchID}`)
-    if (props.permissionsGranted && !watchID) {
-      set_geolocation()
-    } else if (watchID && props.location.latitude !== region.latitude && props.location.longitude !== region.longitude ) {
-      console.log('Moving position')
+    if (watchID && props.location.latitude !== region.latitude && props.location.longitude !== region.longitude ) {
       move(props.location.latitude, props.location.longitude)
     }
-    return (() => {
-      console.log('unlisten map')
+  }, [props.location])
+
+  useEffect(() => {
+    if (props.permissionsGranted && !watchID) {
+      set_geolocation()
+    }
+    return (() => { 
       watchID && Geolocation.clearWatch(watchID)
     })
-  }, [props.permissionsGranted, props.location])
+  }, [props.permissionsGranted])
 
   set_geolocation = () => {
-    console.log('setting location')
     Geolocation.setRNConfiguration({"authorizationLevel": "always"})
     Geolocation.getCurrentPosition(
       position => { move(position.coords.latitude, position.coords.longitude)},
       error => console.log('Error getCurrentPosition', JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000},
     )
-    //let watchID = Geolocation.watchPosition(
-    //  position => { move(position.coords.latitude, position.coords.longitude)},
-    //  error => console.log('Error watchPosition', JSON.stringify(error)),
-    //  {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000, distanceFilter: 200},
-    //)
-    //setWatchID(watchID)
-    setWatchID(true)
+    let watchID = Geolocation.watchPosition(
+      position => { move(position.coords.latitude, position.coords.longitude)},
+      error => console.log('Error watchPosition', JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000, distanceFilter: 200},
+    )
+    setWatchID(watchID)
   }
 
   move = (latitude, longitude) => {
-    console.log(`moving to lat ${latitude} - lon ${longitude}`)
     let newRegion = {
       latitude: latitude,
       longitude: longitude,
@@ -102,9 +100,10 @@ const Map = props => {
 
   get_markers = () => (
     props.notifications.map(item => {
+      console.log(`id: ${item.id}`)
       return (
         <Marker
-          key={notificationService.id}
+          key={item.id}
           coordinate={notificationService.location(item)}
           title={notificationService.title(item)}
           description={notificationService.message(item)}
