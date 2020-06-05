@@ -100,7 +100,6 @@ const Map = props => {
 
   get_markers = () => (
     props.notifications.map(item => {
-      console.log(`id: ${item.id}`)
       return (
         <Marker
           key={item.id}
