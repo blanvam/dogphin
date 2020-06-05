@@ -46,11 +46,14 @@ const Map = props => {
   const [watchID, setWatchID] = useState(null)
   const [mapRef, setMapRef] = useState(null)
  
-  useEffect(() => { 
-    if (watchID && props.location.latitude !== region.latitude && props.location.longitude !== region.longitude ) {
-      move(props.location.latitude, props.location.longitude)
+  useEffect(() => {
+    if (props.permissionsGranted && !watchID) {
+      set_geolocation()
     }
-  }, [props.location])
+    return (() => { 
+      watchID && Geolocation.clearWatch(watchID)
+    })
+  }, [])
 
   useEffect(() => {
     if (props.permissionsGranted && !watchID) {
@@ -60,6 +63,12 @@ const Map = props => {
       watchID && Geolocation.clearWatch(watchID)
     })
   }, [props.permissionsGranted])
+
+  useEffect(() => { 
+    if (watchID && props.location.latitude !== region.latitude && props.location.longitude !== region.longitude ) {
+      move(props.location.latitude, props.location.longitude)
+    }
+  }, [props.location])
 
   set_geolocation = () => {
     Geolocation.setRNConfiguration({"authorizationLevel": "always"})
