@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Switch } from 'react-native'
 import { Container, Header, Right, Content } from 'native-base'
-import { Icon, Button, Text, View, Item } from 'native-base'
+import { Icon, Button, Text, View } from 'native-base'
 
 import PermissionExitModal from '../permission/PermissionExitModal'
 import FooterBar from '../components/FooterBar'

@@ -81,8 +81,6 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {}
-}
+const mapDispatchToProps = _ => {}
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationScreen)
