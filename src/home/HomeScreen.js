@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { AppState, StyleSheet, Switch } from 'react-native'
+import { StyleSheet, Switch } from 'react-native'
 import { Container, Header, Right, Content } from 'native-base'
-import { Icon, Button, Text, View, Item } from 'native-base'
+import { Icon, Button, Text, View } from 'native-base'
 
-import { checkPermissions } from './permission/checkPermissions'
-import PermissionExitModal from '../components/PermissionExitModal'
+import PermissionExitModal from '../permission/PermissionExitModal'
 import FooterBar from '../components/FooterBar'
 import Map from './map/Map'
+import NotificationBar from '../notification/NotificationBar'
 import * as userActions from '../user/user.actions'
 import userServices from '../user/user.services'
 
@@ -30,24 +30,7 @@ const styles = StyleSheet.create({
 })
 
 const HomeScreen = props => {
-
-  const [permissionsGranted, setPermissionsGranted] = useState(false)
-  const [showExitModal, setShowExitModal] = useState(false)
-  const [locationEnabled, setLocationEnabled] = useState(props.user?.locationEnabled)
-  const [appState, setAppState] = useState(AppState.currentState)
-
-  handleGranted = (value) => {
-    setPermissionsGranted(value) 
-    setShowExitModal(!value) 
-    return value
-  }
-   
-  handleAppStateChange = (nextAppState) => {
-    if (appState.match(/inactive|background/) && nextAppState === 'active') {
-      checkPermissions(handleGranted)
-    }
-    setAppState(nextAppState)
-  }
+  const [locationEnabled, setLocationEnabled] = useState(props.user?.locationEnabled || true)
 
   onUserLoadSuccess = (email, usr) => {
     if (usr) {
@@ -60,15 +43,10 @@ const HomeScreen = props => {
     props.updateUser({})
   }
 
-  useEffect(() => { 
-    AppState.addEventListener('change', handleAppStateChange)
-    checkPermissions(handleGranted)
+  useEffect(() => {
     const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
-    return (() => {
-      unlisten()
-      AppState.removeEventListener('change', handleAppStateChange)
-    })
-  }, [])
+    return (unlisten)
+  }, [locationEnabled])
 
   updateUserPositionSwitch = (value) => {
     setLocationEnabled(value)
@@ -100,13 +78,7 @@ const HomeScreen = props => {
   return (
     <Container>
       <Header searchBar rounded>
-        <Item>
-          <Icon
-            style={{ /*color: 'white',*/ transform: [{ rotateY: '360deg' }, { scaleX: -1 }] }}
-            type="AntDesign" name="notification"
-          />
-           <Text placeholder="Notifications"> Hello! Today is a good day for sailing... </Text>
-        </Item>
+        <NotificationBar />
         <Right style={{ flex: null }}>
           <Button transparent onPress={() => props.navigation.navigate('Profile')}>
             <Icon type="MaterialIcons" name="person" />
@@ -128,21 +100,8 @@ const HomeScreen = props => {
           </View>
           {switchPosition()}
         </View>
-        <Map
-          permissionsGranted={permissionsGranted} 
-          markers={[
-            {
-              id: 1,
-              latlng: {
-                latitude: 36.374665,
-                longitude: -6.240144,
-              },
-              title: "example marker",
-              description: "example marker description"
-            }
-          ]}
-        />
-        <PermissionExitModal modalVisible={showExitModal} />
+        <Map />
+        <PermissionExitModal />
       </Content>
       <FooterBar active='Home' navigation={props.navigation} />
     </Container>
@@ -152,7 +111,6 @@ const HomeScreen = props => {
 const mapStateToProps = state => {
   return {
     user: state.user.user,
-    location: state.user.location
   }
 }
 
