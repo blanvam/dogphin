@@ -28,5 +28,11 @@ export default {
     .createUserWithEmailAndPassword(email, password)
     .then(() => { usersFirestoreServices.set(email, userData, onSuccess, onError) })
     .catch(onError)
-  )
+  ),
+  signInWithCredential: (credential, userData, onSuccess, onError) => (
+    auth()
+    .signInWithCredential(credential)
+    .then(() => { usersFirestoreServices.set(userData.email, userData, onSuccess, onError) })
+    .catch(onError)
+  ),
 }
