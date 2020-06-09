@@ -21,6 +21,7 @@
     "native-base": "^2.13.12",
     "react": "16.9.0",
     "react-native": "0.62.0",
+    "react-native-fbsdk": "^2.0.0",
     "react-native-gesture-handler": "^1.6.0",
     "react-native-maps": "^0.26.1",
     "react-native-modal": "^11.5.6",
