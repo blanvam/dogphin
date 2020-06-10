@@ -40,13 +40,10 @@ target 'dogphin' do
 
   pod 'Firebase/Analytics'
 
-  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
   
-  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
   pod 'Permission-LocationAlways', :path => "../node_modules/react-native-permissions/ios/LocationAlways.podspec"
   pod 'Permission-LocationWhenInUse', :path => "../node_modules/react-native-permissions/ios/LocationWhenInUse.podspec"
   
-  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
 
   target 'dogphinTests' do
     inherit! :search_paths
