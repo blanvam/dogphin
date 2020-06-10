@@ -1,18 +1,10 @@
 import alertService from '../services/alert.service'
 
 
-export default class NotificationService {
-
-  constructor(notification){
-    this.type = notification.type
-    this.createdAt = notification.createdAt.toDate()
-    this.notification = notification
-  }
-
-  static lasts = (onResult, onError) => { alertService.all(onResult, onError) }
-
-  timeAgo() {
-    let secAgo = (new Date().getTime() - this.createdAt.getTime()) / 1000
+export default {
+  lasts: (onResult, onError) => { alertService.all(onResult, onError) },
+  timeAgo: (notification) => {
+    let secAgo = (new Date().getTime() - notification.createdAt.toDate().getTime()) / 1000
     let minAgo, hoursAgo, daysAgo;
     if ((minAgo = secAgo/60) < 1) {
       return `${parseInt(secAgo)} seconds ago`;
@@ -23,56 +15,113 @@ export default class NotificationService {
     } else if ((daysAgo/30) < 1) {
       return `${parseInt(daysAgo)} days ago`;
     } else {
-      return this.createdAt.toDateString();
+      return notification.createdAt.toDate().toDateString();
     }
-  }
-
-  iconType(){
-    return typesConfig[this.type].icon
-  }
-
-  message(){
-    return typesConfig[this.type].message
-  }
-
-  title(){
-    return typesConfig[this.type].title
-  }
+  },
+  location: (notification) => (
+    {
+      latitude: notification.location.latitude,
+      longitude: notification.location.longitude,
+    }
+  ),
+  iconType: (notification) => (
+    typesConfig[notification.type].icon.font
+  ),
+  iconName: (notification) => (
+    typesConfig[notification.type].icon.name
+  ),
+  iconColor: (notification) => (
+    typesConfig[notification.type].icon.color
+  ),
+  backgroundColor: (notification) => (
+    typesConfig[notification.type].backgroundColor
+  ),
+  fontColor: (notification) => (
+    typesConfig[notification.type].fontColor
+  ),
+  message: (notification) => (
+    typesConfig[notification.type].message
+  ),
+  title: (notification) => (
+    typesConfig[notification.type].title
+  )
 }
 
 const typesConfig = Object.freeze({
   emergency: {
-    icon: "alert",
+    icon: {
+      font: "MaterialCommunityIcons",
+      name: "alert-decagram",
+      color: "white",
+    },
+    fontColor: "white",
+    backgroundColor: "#d9534f",
     title: "¡¡SOS!! ¡Emergencia!",
-    message: "¡A 200m alguien ha enviado una llamada de socorro! ¿Puedes ayudarle?"
+    message: "A 200m"
   },
   boat_damage: {
-    icon: "issue-opened",
+    icon: {
+      font: "MaterialCommunityIcons",
+      name: "alert-circle-outline",
+      color: "orange"
+    },
+    fontColor: "black",
+    backgroundColor: "white",
     title: "¡Barco dañado!",
     message: "¡A 1Km parece que alguien tiene el barco dañado! ¿Puedes ayudarle?"
   },
   fuel_empty: {
-    icon: "issue-opened",
+    icon: {
+      font: "MaterialCommunityIcons",
+      name: "fuel",
+      color: "orange",
+    },
+    fontColor: "black",
+    backgroundColor: "white",
     title: "Sin combustible",
     message: "A 200m hay alguien sin combustible, ponte en contacto si puedes ayudar."
   },
   bad_weather: {
-    icon: "issue-opened",
+    icon: {
+      font: "MaterialCommunityIcons",
+      name: "weather-lightning-rainy",
+      color: "orange", 
+    },
+    fontColor: "black",
+    backgroundColor: "white",
     title: "Mal tiempo/oleaje",
     message: "Parece que a 5Km hay oleaje o previsión de mal tiempo. ¡Tome precauciones!"
   },
   floating_object: {
-    icon: "issue-opened",
+    icon: {
+      font: "MaterialCommunityIcons",
+      name: "alert",
+      color: "orange", 
+    },
+    fontColor: "black",
+    backgroundColor: "white",
     title: "Objeto flotando/peligroso",
     message: "¡Tienes cerca un objeto flotante que podría ser peligroso!"
   },
   mechanic_failure: {
-    icon: "issue-opened",
+    icon: {
+      font: "FontAwesome",
+      name: "wrench",
+      color: "orange", 
+    },
+    fontColor: "black",
+    backgroundColor: "white",
     title: "Fallo de motor/eléctrico",
     message: "Cerca hay alguien con un fallo de motor o eléctrico"
   },
   health_sos: {
-    icon: "issue-opened",
+    icon: {
+      font: "MaterialCommunityIcons",
+      name: "heart-pulse",
+      color: "#d9534f",
+    },
+    fontColor: "black",
+    backgroundColor: "white",
     title: "¡SOS! Problemas de salud",
     message: "¡Alguien está teniendo problemas de salud! ¿Puedes ayudarle?"
   },

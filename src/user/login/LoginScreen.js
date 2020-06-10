@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { StyleSheet, ActivityIndicator, Alert } from 'react-native'
 import { Container, Content, Form, Button, View, Text } from 'native-base'
 
-import UserHeader from '../UserHeader'
-import FormItem from '../FormItem'
+import UserHeader from '../../components/UserHeader'
+import FormItem from '../../components/FormItem'
 import * as userActions from '../user.actions'
 import userServices from '../user.services'
 
