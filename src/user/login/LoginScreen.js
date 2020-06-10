@@ -5,8 +5,8 @@ import { Container, Content, Form, Button, View, Text } from 'native-base'
 
 import UserHeader from '../../components/UserHeader'
 import FormItem from '../../components/FormItem'
-import LoginFacebookScreen from './LoginFacebookScreen'
-import LoginGoogleScreen from './LoginGoogleScreen'
+import LoginFacebookButton from './LoginFacebookButton'
+import LoginGoogleButton from './LoginGoogleButton'
 import * as userActions from '../user.actions'
 import userServices from '../user.services'
 
@@ -136,8 +136,14 @@ class LoginScreen extends Component {
             <Button block warning bordered onPress={() => this.props.navigation.navigate('Signup')}>
                 <Text> Signup </Text>
             </Button>
-            <LoginFacebookScreen onLoad={(v, e, m) => { this.setState({isLoading: v, errorFields: e, errorMessage: m}) }} />
-            <LoginGoogleScreen />
+            <LoginFacebookButton 
+              onLoad={(v, m) => { this.setState({isLoading: v, errorFields: [], errorMessage: m}) }} 
+              navigation={this.props.navigation}
+            />
+            <LoginGoogleButton 
+              onLoad={(v, m) => { this.setState({isLoading: v, errorFields: [], errorMessage: m}) }} 
+              navigation={this.props.navigation}
+            />
           </Form>
         </Content>
       </Container>

@@ -29,10 +29,17 @@ export default {
     .then(() => { usersFirestoreServices.set(email, userData, onSuccess, onError) })
     .catch(onError)
   ),
-  signInWithCredential: (credential, userData, onSuccess, onError) => (
+  signInWithCredential: (credential, onSuccess, onError) => (
     auth()
     .signInWithCredential(credential)
-    .then(() => { usersFirestoreServices.set(userData.email, userData, onSuccess, onError) })
-    .catch(onError)
+    .then((result) => {
+      let userData = { 
+        "email": result.user.email,
+        "phoneNumber": result.user.phoneNumber,
+        "firstname": result.additionalUserInfo.profile.first_name,
+        "surname": result.additionalUserInfo.profile.last_name 
+      }
+      usersFirestoreServices.set(userData.email, userData, onSuccess, onError)  
+    }).catch(onError)
   ),
 }
