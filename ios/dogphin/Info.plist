@@ -79,5 +79,25 @@
 	<string>YOUR TEXT</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>YOUR TEXT</string>
+	<key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>fb260695504448614</string>
+      </array>
+    </dict>
+  </array>
+  <key>FacebookAppID</key>
+  <string>260695504448614</string>
+  <key>FacebookDisplayName</key>
+  <string>Provapply</string>
+  <key>LSApplicationQueriesSchemes</key>
+  <array>
+    <string>fbapi</string>
+    <string>fb-messenger-api</string>
+    <string>fbauth2</string>
+    <string>fbshareextension</string>
+  </array>
 </dict>
 </plist>
