@@ -15,45 +15,39 @@ GoogleSignin.configure({
   iosClientId: 'com.googleusercontent.apps.448549857379-mredr5d177dca81efkn3r0tk2ld2o5aa', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
 })
 
+const errorFun = (error) => {
+  let e = 'Sorry, some other error happened'
+  if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+    e = 'User cancelled the login with google'
+  } else if (error.code === statusCodes.IN_PROGRESS) {
+    e = 'Sign in operation is in progress already'
+  } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+    e = 'Google Play services not available'
+  }
+  return e
+}
+
 export default LoginGoogleButton = props => {
 
   signInWithGoogle = () => {
     GoogleSignin.signIn().then(
-      (token) => {
-        console.log(`signIn ${JSON.stringify(token)}`)
-        const googleCredential = auth.GoogleAuthProvider.credential(token)
-        console.log(`googleCredential ${JSON.stringify(googleCredential)}`)
+      (data) => {
+        const googleCredential = auth.GoogleAuthProvider.credential(data.idToken)
         userServices.signInWithCredential(
           googleCredential,
-          (result) => {
-            console.log(`GUAYYYY ${JSON.stringify(result)}`)
+          () => {
             props.onLoad(false, '')
             props.navigation.navigate('Profile')
           },
           (error) => {
-            console.log(`EEERROR`)
-            errorFun(error)
+            props.onLoad(false, errorFun(error))
           }
         )
       },
       (error) => {
-        console.log(`EEERROR 2`)
-        errorFun(error)
+        props.onLoad(false, errorFun(error))
       }
     )
-  }
-
-  errorFun = (error) => {
-    let e = 'some other error happened'
-    console.log(`Error ${error}`)
-    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-      e = 'User cancelled the login with google'
-    } else if (error.code === statusCodes.IN_PROGRESS) {
-      e = 'Sign in operation is in progress already'
-    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-      e = 'Google Play services not available'
-    }
-    props.onLoad(false, e)
   }
 
   return (
