@@ -33,11 +33,12 @@ export default {
     auth()
     .signInWithCredential(credential)
     .then((result) => {
+      console.log(`Aaaaa signInWithCredential`)
       let userData = { 
         "email": result.user.email,
         "phoneNumber": result.user.phoneNumber,
-        "firstname": result.additionalUserInfo.profile.first_name,
-        "surname": result.additionalUserInfo.profile.last_name 
+        "firstname": result.user?.givenName || result.additionalUserInfo?.profile.first_name,
+        "surname": result.user?.familyName || result.additionalUserInfo?.profile.last_name,
       }
       usersFirestoreServices.set(userData.email, userData, onSuccess, onError)  
     }).catch(onError)

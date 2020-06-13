@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "931610236572-rf8956sat82tgegcf6j5m9mmd7i0o9m0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dogphin",
+            "certificate_hash": "202f1ceefecb738ccea0c462d6349ea84172f4eb"
+          }
+        },
+        {
           "client_id": "931610236572-gvn6cb6qjqnmvah1nn824g8lk79bal90.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -40,10 +48,10 @@
               "client_type": 3
             },
             {
-              "client_id": "931610236572-b74bqhnp8j0gd580u5vnlm51n47rahc1.apps.googleusercontent.com",
+              "client_id": "931610236572-81bmamnjr27hbln452nhiked4fbfdnks.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.dogphin"
+                "bundle_id": "org.dogphin"
               }
             }
           ]

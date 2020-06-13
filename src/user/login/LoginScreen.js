@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 15,
     textAlign: 'center'
+  },
+  loginButtons: {
+    width: '85%', 
+    alignSelf: 'center',
+    alignItems: 'center'
   }
 })
 const authErrors = {
@@ -131,7 +136,9 @@ class LoginScreen extends Component {
             <TextError error={this.state.errorMessage}/>
             <Button block style={styles.loginButton} onPress={() => this.userLogin()}>
               <Text> Login </Text>
-            </Button>
+            </Button> 
+          </Form>
+          <View style={styles.loginButtons}>
             <Text style={styles.loginText}>or</Text>
             <Button block warning bordered onPress={() => this.props.navigation.navigate('Signup')}>
                 <Text> Signup </Text>
@@ -144,7 +151,7 @@ class LoginScreen extends Component {
               onLoad={(v, m) => { this.setState({isLoading: v, errorFields: [], errorMessage: m}) }} 
               navigation={this.props.navigation}
             />
-          </Form>
+          </View>
         </Content>
       </Container>
     )
