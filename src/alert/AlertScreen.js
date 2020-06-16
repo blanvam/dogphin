@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Dimensions, FlatList } from 'react-native'
-import { Text, View, Button, Icon } from 'native-base'
+import { StyleSheet, Dimensions, FlatList, TouchableOpacity } from 'react-native'
+import { Text, View, Button, Icon, Title } from 'native-base'
 import Modal from 'react-native-modal'
 
 import * as alertActions from './alert.actions'
@@ -16,13 +16,16 @@ const styles = StyleSheet.create({
     marginLeft: width/10, 
     marginRight: width/10,
     borderRadius: 10,
+    backgroundColor: 'white',
   },
   container: {
-    flex: 1,
-    borderRadius: 10,
-    backgroundColor: 'white',
+    width: '90%',
+    marginLeft: '5%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  title: {
+    margin: 15
   },
   text: {
     fontSize: 25,
@@ -44,19 +47,28 @@ const AlertScren = props => {
      return (() => {})
   }, [props.showModal])
 
-  renderItem = ({item, index}) => {
+  renderItem = ({item}) => {
     return (
-      <Button iconLeft light>
-        <Icon
-          style={{
-            marginTop: 5,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            color: item.icon.color }}
-          type={item.icon.font} 
-          name={item.icon.name} 
-        />
-        <Text>{item.name}</Text>
+      <Button transparent style={{flexDirection: 'column', marginBottom: 55, width: '50%'}}>
+         <TouchableOpacity
+            style={{
+              borderWidth: 2,
+              borderColor: item.icon.color,
+              alignItems:'center',
+              justifyContent:'center',
+              width: 60,
+              height: 60,
+              backgroundColor: '#fff',
+              borderRadius: 50,
+            }}
+          >
+            <Icon
+              style={{ color: item.icon.color, fontSize: 30, width: 30, marginLeft: 15 }}
+              type={item.icon.font} 
+              name={item.icon.name} 
+            />
+          </TouchableOpacity>
+        <Text style={{color: item.fontColor, fontSize: 12, marginTop: 5}}>{item.name}</Text>
       </Button>
     )
   }
@@ -69,16 +81,18 @@ const AlertScren = props => {
       onBackdropPress={() => props.toggleModal(false)}
       >
       <View style={styles.container}>
+        <Title style={styles.title}>Send an Alerts</Title>
         <FlatList
           data={alertElements}
           numColumns={2}
           keyExtractor={(item) => item.id }
           renderItem={renderItem}
         />
-        <Button rounded warning
+        <Button bordered transparent
           title="Agree and Exit Dogphin" 
           onPress={() => props.toggleModal(false)}
           color="#CD5C5C"
+          style={{marginBottom: 10}}
         >
           <Text>Cancel</Text>
         </Button>
