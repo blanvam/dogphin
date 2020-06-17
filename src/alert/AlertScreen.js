@@ -13,33 +13,45 @@ import { YellowBox } from 'react-native'
 YellowBox.ignoreWarnings(['Animated: `useNativeDriver` was not specified'])
 
 const alertElements = Object.values(alerts)
-const { height, width } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 const styles = StyleSheet.create({
   modal: {
-    marginTop: height/5,
-    marginBottom: height/3, 
-    marginLeft: width/10, 
-    marginRight: width/10,
+    width: '80%',
+    marginLeft: '10%',
+    marginTop: ((height-450)/2)*0.7,
+    marginBottom: ((height-450)/2)*1.3,
     borderRadius: 10,
     backgroundColor: 'white',
+    paddingBottom: 10
   },
   container: {
+    flex: 1,
     width: '90%',
     marginLeft: '5%',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
-    margin: 15
+    margin: 15,
+    color: 'black'
   },
-  text: {
-    fontSize: 25,
-    fontWeight: "bold",
+  itemButton: {
+    flexDirection: 'column', 
+    marginBottom: 55, 
+    width: '50%'
   },
-  listItemIcon: {
-    fontSize: 35,
-    width:35,
+  itemText: {
+    fontSize: 12,
+    marginTop: 5
   },
+  iconBorder: {
+    borderWidth: 2,
+    alignItems:'center',
+    justifyContent:'center',
+    width: 60,
+    height: 60,
+    backgroundColor: '#fff',
+    borderRadius: 50,
+  }
 })
 
 const AlertScreen = props => {
@@ -69,21 +81,12 @@ const AlertScreen = props => {
   renderItem = ({item}) => {
     return (
       <Button 
-        transparent 
+        transparent
         onPress={() => { setShowCreateModal(true); setModalAlert(item) }}
-        style={{flexDirection: 'column', marginBottom: 55, width: '50%'}}
+        style={styles.itemButton}
       >
         <View
-          style={{
-            borderWidth: 2,
-            borderColor: item.icon.color,
-            alignItems:'center',
-            justifyContent:'center',
-            width: 60,
-            height: 60,
-            backgroundColor: '#fff',
-            borderRadius: 50,
-          }}
+          style={{...styles.iconBorder, borderColor: item.icon.color}}
         >
           <Icon
             style={{ color: item.icon.color, fontSize: 30 }}
@@ -91,7 +94,7 @@ const AlertScreen = props => {
             name={item.icon.name} 
           />
         </View>
-        <Text style={{color: item.fontColor, fontSize: 12, marginTop: 5}}>{item.name}</Text>
+        <Text style={{...styles.itemText, color: item.fontColor}}>{item.name}</Text>
       </Button>
     )
   }
@@ -101,8 +104,10 @@ const AlertScreen = props => {
       style={styles.modal}
       animationIn='slideInDown'
       isVisible={props.showModal}
+      deviceWidth={width}
+      deviceHeight={height}
       onBackdropPress={() => props.toggleModal(false)}
-      >
+    >
       <View style={styles.container}>
         <Title style={styles.title}>Send an Alerts</Title>
         <FlatList
@@ -114,8 +119,6 @@ const AlertScreen = props => {
         <Button bordered transparent
           title="Agree and Exit Dogphin" 
           onPress={() => props.toggleModal(false)}
-          color="#CD5C5C"
-          style={{marginBottom: 10}}
         >
           <Text>Cancel</Text>
         </Button>
