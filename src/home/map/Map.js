@@ -148,7 +148,7 @@ const Map = props => {
         region={region}
         onRegionChangeComplete={(v) => set_region(v)}
         showsUserLocation={true}
-        followsUserLocation={true}
+        //followsUserLocation={true}
         loadingEnabled={true}
       >
         {get_markers()}

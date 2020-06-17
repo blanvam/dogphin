@@ -46,9 +46,10 @@ const HomeScreen = props => {
   }
 
   useEffect(() => {
+    console.log('aaaa')
     const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
     return (unlisten)
-  }, [locationEnabled])
+  }, [locationEnabled, props.user?.email])
 
   updateUserPositionSwitch = (value) => {
     setLocationEnabled(value)

@@ -1,6 +1,6 @@
-{
-  "boat_damage": {
-    "id": 1,
+[
+  {
+    "id": "boat_damage",
     "name": "Boat Damage",
     "icon": {
       "font": "MaterialCommunityIcons",
@@ -10,10 +10,11 @@
     "fontColor": "black",
     "backgroundColor": "white",
     "title": "¡Barco dañado!",
-    "message": "¡A 1Km parece que alguien tiene el barco dañado! ¿Puedes ayudarle?"
+    "message": "¡A 1Km parece que alguien tiene el barco dañado! ¿Puedes ayudarle?",
+    "followable": true
   },
-  "fuel_empty": {
-    "id": 2,
+  {
+    "id": "fuel_empty",
     "name": "Fuel Empty",
     "icon": {
       "font": "MaterialCommunityIcons",
@@ -23,10 +24,11 @@
     "fontColor": "black",
     "backgroundColor": "white",
     "title": "Sin combustible",
-    "message": "A 200m hay alguien sin combustible, ponte en contacto si puedes ayudar."
+    "message": "A 200m hay alguien sin combustible, ponte en contacto si puedes ayudar.",
+    "followable": true
   },
-  "bad_weather": {
-    "id": 3,
+  {
+    "id": "bad_weather",
     "name": "Bad Weather",
     "icon": {
       "font": "MaterialCommunityIcons",
@@ -36,10 +38,11 @@
     "fontColor": "black",
     "backgroundColor": "white",
     "title": "Mal tiempo/oleaje",
-    "message": "Parece que a 5Km hay oleaje o previsión de mal tiempo. ¡Tome precauciones!"
+    "message": "Parece que a 5Km hay oleaje o previsión de mal tiempo. ¡Tome precauciones!",
+    "followable": false
   },
-  "floating_object": {
-    "id": 4,
+  {
+    "id": "floating_object",
     "name": "Floating Object",
     "icon": {
       "font": "MaterialCommunityIcons",
@@ -49,10 +52,11 @@
     "fontColor": "black",
     "backgroundColor": "white",
     "title": "Objeto flotando/peligroso",
-    "message": "¡Tienes cerca un objeto flotante que podría ser peligroso!"
+    "message": "¡Tienes cerca un objeto flotante que podría ser peligroso!",
+    "followable": false
   },
-  "mechanic_failure": {
-    "id": 5,
+  {
+    "id": "mechanic_failure",
     "name": "Mechanic Failure",
     "icon": {
       "font": "FontAwesome",
@@ -62,10 +66,11 @@
     "fontColor": "black",
     "backgroundColor": "white",
     "title": "Fallo de motor/eléctrico",
-    "message": "Cerca hay alguien con un fallo de motor o eléctrico"
+    "message": "Cerca hay alguien con un fallo de motor o eléctrico",
+    "followable": true
   },
-  "health_sos": {
-    "id": 6,
+  {
+    "id": "health_sos",
     "name": "Health SOS",
     "icon": {
       "font": "MaterialCommunityIcons",
@@ -75,6 +80,7 @@
     "fontColor": "black",
     "backgroundColor": "white",
     "title": "¡SOS! Problemas de salud",
-    "message": "¡Alguien está teniendo problemas de salud! ¿Puedes ayudarle?"
+    "message": "¡Alguien está teniendo problemas de salud! ¿Puedes ayudarle?",
+    "followable": true
   }
-}
+]

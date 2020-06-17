@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Dimensions, FlatList, TouchableOpacity } from 'react-native'
-import { Text, View, Button, Icon, Title } from 'native-base'
+import { StyleSheet, Dimensions, FlatList } from 'react-native'
+import { Text, View, Button, Icon, Title, Toast } from 'native-base'
 import Modal from 'react-native-modal'
 
 import * as alertActions from './alert.actions'
+import * as notificationActions from '../notification/notification.actions'
 import alerts from './alerts.json'
+import CreateAlertScreen from './CreateAlertScreen'
+
+import { YellowBox } from 'react-native'
+YellowBox.ignoreWarnings(['Animated: `useNativeDriver` was not specified'])
 
 const alertElements = Object.values(alerts)
 const { height, width } = Dimensions.get('window')
@@ -37,37 +42,55 @@ const styles = StyleSheet.create({
   },
 })
 
-const AlertScren = props => {
+const AlertScreen = props => {
+  const [showCreateModal, setShowCreateModal] = useState(false)
+  const [modalAlert, setModalAlert] = useState({})
 
-  // useEffect(() => {
-  //   return (() => {})
-  // }, [showModal])
+  successAlertCreated = () => {
+    props.toggleModal(false)
+      Toast.show({
+        text: `${modalAlert.name} created!`,
+        textStyle: { color: "white" },
+        buttonText: "Okay",
+        duration: 3000,
+        position: "top"
+      })
+      props.createNotificationSuccess(false)
+  }
 
   useEffect(() => {
-     return (() => {})
-  }, [props.showModal])
+    if (props.notificationCreated) {
+      successAlertCreated()
+    }
+  }, [props.notificationCreated])
+
+  useEffect(() => {}, [props.showModal, showCreateModal])
 
   renderItem = ({item}) => {
     return (
-      <Button transparent style={{flexDirection: 'column', marginBottom: 55, width: '50%'}}>
-         <TouchableOpacity
-            style={{
-              borderWidth: 2,
-              borderColor: item.icon.color,
-              alignItems:'center',
-              justifyContent:'center',
-              width: 60,
-              height: 60,
-              backgroundColor: '#fff',
-              borderRadius: 50,
-            }}
-          >
-            <Icon
-              style={{ color: item.icon.color, fontSize: 30, width: 30, marginLeft: 15 }}
-              type={item.icon.font} 
-              name={item.icon.name} 
-            />
-          </TouchableOpacity>
+      <Button 
+        transparent 
+        onPress={() => { setShowCreateModal(true); setModalAlert(item) }}
+        style={{flexDirection: 'column', marginBottom: 55, width: '50%'}}
+      >
+        <View
+          style={{
+            borderWidth: 2,
+            borderColor: item.icon.color,
+            alignItems:'center',
+            justifyContent:'center',
+            width: 60,
+            height: 60,
+            backgroundColor: '#fff',
+            borderRadius: 50,
+          }}
+        >
+          <Icon
+            style={{ color: item.icon.color, fontSize: 30 }}
+            type={item.icon.font} 
+            name={item.icon.name} 
+          />
+        </View>
         <Text style={{color: item.fontColor, fontSize: 12, marginTop: 5}}>{item.name}</Text>
       </Button>
     )
@@ -97,20 +120,28 @@ const AlertScren = props => {
           <Text>Cancel</Text>
         </Button>
       </View>
+      < CreateAlertScreen 
+        showModal={showCreateModal} 
+        setShowModal={setShowCreateModal} 
+        alert={modalAlert}
+      />
     </Modal>
   )
 }
 
 const mapStateToProps = state => {
   return {
-    showModal: state.alert.showModal
+    notificationCreated: state.notification.notificationCreated,
+    showModal: state.alert.showModal,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    selectAlert: (alert) => dispatch(alertActions.selectAlert(alert)),
     toggleModal: (value) => dispatch(alertActions.toggleModal(value)),
+    createNotificationSuccess: (value) => dispatch(notificationActions.createNotificationSuccess(value)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AlertScren)
+export default connect(mapStateToProps, mapDispatchToProps)(AlertScreen)

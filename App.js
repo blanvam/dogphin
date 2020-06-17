@@ -9,7 +9,7 @@
 import React, { Component } from 'react'
 
 import { Provider } from 'react-redux'
-import { Container, Button, Icon } from 'native-base'
+import { Root, Container, Button, Icon } from 'native-base'
 
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native'
@@ -62,21 +62,23 @@ const navigationProfileOptions = ({ navigation }) => {
 export default class App extends Component {
   render() {
     return (
-      <Container>
-        <Provider store={store}>
-          <NavigationContainer initialRouteName="Home">
-            <Stack.Navigator>
-              <Stack.Screen name="Home" component={HomeScreen} options={{ header: () => {} }} />
-              <Stack.Screen name="Notifications">
-                {props => <NotificationScreen {...props} />}
-              </Stack.Screen>
-              <Stack.Screen name="Profile" component={ProfileScreen} options={navigationProfileOptions} />
-              <Stack.Screen name="Login" component={LoginScreen} options={navigationAuthOptions} />
-              <Stack.Screen name="Signup" component={SignupScreen} options={navigationAuthOptions} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </Provider>
-      </Container>
+      <Root>
+        <Container>
+          <Provider store={store}>
+            <NavigationContainer initialRouteName="Home">
+              <Stack.Navigator>
+                <Stack.Screen name="Home" component={HomeScreen} options={{ header: () => {} }} />
+                <Stack.Screen name="Notifications">
+                  {props => <NotificationScreen {...props} />}
+                </Stack.Screen>
+                <Stack.Screen name="Profile" component={ProfileScreen} options={navigationProfileOptions} />
+                <Stack.Screen name="Login" component={LoginScreen} options={navigationAuthOptions} />
+                <Stack.Screen name="Signup" component={SignupScreen} options={navigationAuthOptions} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </Provider>
+        </Container>
+      </Root>
     )
   }
 }
