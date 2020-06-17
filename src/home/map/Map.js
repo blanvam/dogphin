@@ -101,6 +101,7 @@ const Map = props => {
   set_region = (region) => {
     setRegion(region)
     let actualLocation = {latitude: region.latitude, longitude: region.longitude}
+    props.updateLocation(actualLocation)
     // TODO: send to firestore actual location (new firestore.GeoPoint(53.483959, -2.244644))
     let location = new firestore.GeoPoint(region.latitude, region.longitude)
     userServices.update(
@@ -108,7 +109,6 @@ const Map = props => {
       {currentLocation: location},
       () => {}
     )
-    props.updateLocation(actualLocation)
   }
 
   get_markers = () => (
