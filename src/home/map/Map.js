@@ -47,7 +47,6 @@ const Map = props => {
   const [mapRef, setMapRef] = useState(null)
  
   useEffect(() => {
-    console.log(`MAP: init`)
     if (props.permissionsGranted && !watchID) {
       set_geolocation()
     }
@@ -57,7 +56,6 @@ const Map = props => {
   }, [])
 
   useEffect(() => {
-    console.log(`MAP: props.permissionsGranted ${props.permissionsGranted}`)
     if (props.permissionsGranted && !watchID) {
       set_geolocation()
     }
@@ -66,8 +64,7 @@ const Map = props => {
     })
   }, [props.permissionsGranted])
 
-  useEffect(() => {
-    console.log(`MAP: props.location ${props.location}`)
+  useEffect(() => {    
     if (watchID && props.location.latitude !== region.latitude && props.location.longitude !== region.longitude ) {
       move(props.location.latitude, props.location.longitude)
     }
