@@ -47,6 +47,7 @@ const Map = props => {
   const [mapRef, setMapRef] = useState(null)
  
   useEffect(() => {
+    console.log(`MAP: init`)
     if (props.permissionsGranted && !watchID) {
       set_geolocation()
     }
@@ -56,6 +57,7 @@ const Map = props => {
   }, [])
 
   useEffect(() => {
+    console.log(`MAP: props.permissionsGranted ${props.permissionsGranted}`)
     if (props.permissionsGranted && !watchID) {
       set_geolocation()
     }
@@ -64,7 +66,8 @@ const Map = props => {
     })
   }, [props.permissionsGranted])
 
-  useEffect(() => { 
+  useEffect(() => {
+    console.log(`MAP: props.location ${props.location}`)
     if (watchID && props.location.latitude !== region.latitude && props.location.longitude !== region.longitude ) {
       move(props.location.latitude, props.location.longitude)
     }
@@ -98,13 +101,14 @@ const Map = props => {
   set_region = (region) => {
     setRegion(region)
     let actualLocation = {latitude: region.latitude, longitude: region.longitude}
-    // TODO send to firestore actual location (new firestore.GeoPoint(53.483959, -2.244644))
+    // TODO: send to firestore actual location (new firestore.GeoPoint(53.483959, -2.244644))
     let location = new firestore.GeoPoint(region.latitude, region.longitude)
     userServices.update(
       props.user.email,
       {currentLocation: location},
-      () => { props.updateLocation(actualLocation) }
+      () => {}
     )
+    props.updateLocation(actualLocation)
   }
 
   get_markers = () => (
