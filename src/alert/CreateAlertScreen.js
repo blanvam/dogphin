@@ -10,30 +10,30 @@ import * as notificationActions from '../notification/notification.actions'
 const { height, width } = Dimensions.get('window')
 const styles = StyleSheet.create({
   modal: {
-    marginTop: height/4,
-    marginBottom: height/2, 
-    marginLeft: width/10, 
-    marginRight: width/10,
+    width: '80%',
+    marginLeft: '10%',
+    marginTop: ((height-280)/2)*0.7,
+    marginBottom: ((height-280)/2)*1.3,
     borderRadius: 10,
     backgroundColor: 'white',
+    paddingBottom: 10
   },
   container: {
+    flex: 1,
     width: '90%',
     marginLeft: '5%',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
-    margin: 15
-  },
-  text: {
-    fontSize: 25,
-    fontWeight: "bold",
+    margin: 15,
+    color: 'black'
   },
   buttonContainer: {
-    marginTop: 15,
+    flex: 1,
+    marginBottom: '2%',
     flexDirection: 'row',
-    justifyContent: 'space-evenly'
+    alignItems: 'flex-end',
+    //justifyContent: 'space-evenly'
   },
   button: {
     margin: 10,
