@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import firestore from '@react-native-firebase/firestore'
-import { StyleSheet, Dimensions, } from 'react-native'
+import { StyleSheet, Dimensions, Linking } from 'react-native'
 import { Text, View, Button, Title, Toast, Icon } from 'native-base'
 import Modal from 'react-native-modal'
 import SwipeButton from 'rn-swipe-button'
@@ -109,7 +109,7 @@ const EmergencyScreen = props => {
           thumbIconComponent={emergencyIcon}
           onSwipeStart={() => setErrorMessage('')}
           onSwipeFail={() => setErrorMessage('Incomplete swipe!')}
-          onSwipeSuccess={() => props.createEmergency(alert)}
+          onSwipeSuccess={() => {props.createEmergency(alert); Linking.openURL(`tel:${emergency.phoneNumber}`)}}
         />
         <TextError error={errorMessage}/>
         <View style={styles.buttonContainer} >

@@ -10,5 +10,6 @@
   "backgroundColor": "#d9534f",
   "title": "¡¡SOS!! ¡Emergencia!",
   "message": "A 200m",
-  "followable": true
+  "followable": true,
+  "phoneNumber": 112
 }
