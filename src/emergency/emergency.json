@@ -1,0 +1,14 @@
+{
+  "id": "emergency",
+  "name": "Emergency",
+  "icon": {
+    "font": "MaterialCommunityIcons",
+    "name": "alert-decagram",
+    "color": "white"
+  },
+  "fontColor": "white",
+  "backgroundColor": "#d9534f",
+  "title": "¡¡SOS!! ¡Emergencia!",
+  "message": "A 200m",
+  "followable": true
+}

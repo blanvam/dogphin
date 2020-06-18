@@ -9,10 +9,7 @@ import * as notificationActions from '../notification/notification.actions'
 import alerts from './alerts.json'
 import CreateAlertScreen from './CreateAlertScreen'
 
-import { YellowBox } from 'react-native'
-YellowBox.ignoreWarnings(['Animated: `useNativeDriver` was not specified'])
 
-const alertElements = Object.values(alerts)
 const { width, height } = Dimensions.get('window')
 const styles = StyleSheet.create({
   modal: {
@@ -60,14 +57,12 @@ const AlertScreen = props => {
 
   successAlertCreated = () => {
     props.toggleModal(false)
-      Toast.show({
-        text: `${modalAlert.name} created!`,
-        textStyle: { color: "white" },
-        buttonText: "Okay",
-        duration: 3000,
-        position: "top"
-      })
-      props.createNotificationSuccess(false)
+    props.changeNotificationSuccess(false)
+  }
+
+  const buttonAlertPressed = (item) => {
+    setShowCreateModal(true)
+    setModalAlert(item)
   }
 
   useEffect(() => {
@@ -82,12 +77,10 @@ const AlertScreen = props => {
     return (
       <Button 
         transparent
-        onPress={() => { setShowCreateModal(true); setModalAlert(item) }}
+        onPress={() => buttonAlertPressed(item)}
         style={styles.itemButton}
       >
-        <View
-          style={{...styles.iconBorder, borderColor: item.icon.color}}
-        >
+        <View style={{...styles.iconBorder, borderColor: item.icon.color}}>
           <Icon
             style={{ color: item.icon.color, fontSize: 30 }}
             type={item.icon.font} 
@@ -111,7 +104,7 @@ const AlertScreen = props => {
       <View style={styles.container}>
         <Title style={styles.title}>Send an Alerts</Title>
         <FlatList
-          data={alertElements}
+          data={alerts}
           numColumns={2}
           keyExtractor={(item) => item.id }
           renderItem={renderItem}
@@ -143,7 +136,7 @@ const mapDispatchToProps = dispatch => {
   return {
     selectAlert: (alert) => dispatch(alertActions.selectAlert(alert)),
     toggleModal: (value) => dispatch(alertActions.toggleModal(value)),
-    createNotificationSuccess: (value) => dispatch(notificationActions.createNotificationSuccess(value)),
+    changeNotificationSuccess: (value) => dispatch(notificationActions.changeNotificationSuccess(value)),
   }
 }
 

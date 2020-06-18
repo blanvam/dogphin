@@ -7,7 +7,7 @@ import Modal from 'react-native-modal'
 
 import * as notificationActions from '../notification/notification.actions'
 
-const { height, width } = Dimensions.get('window')
+const { height, _ } = Dimensions.get('window')
 const styles = StyleSheet.create({
   modal: {
     width: '80%',
@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
     marginBottom: '2%',
     flexDirection: 'row',
     alignItems: 'flex-end',
-    //justifyContent: 'space-evenly'
   },
   button: {
     margin: 10,
@@ -55,6 +54,7 @@ const CreateAlertScreen = props => {
   createAlert = () => {
     let newAlert = {
       ...alert,
+      'name': props.alert.name,
       'type': props.alert.id,
       'follow': props.alert.followable
     }
@@ -76,17 +76,15 @@ const CreateAlertScreen = props => {
         <Text>Are you sure you want to publish this?</Text>
         <View style={styles.buttonContainer}>
           <Button bordered transparent
-            title="Agree and Exit Dogphin" 
+            title="Cancel"
             onPress={() => props.setShowModal(false)}
-            color="#CD5C5C"
             style={styles.button}
           >
             <Text>Cancel</Text>
           </Button>
           <Button bordered transparent
-            title="Agree and Exit Dogphin" 
+            title="Agree" 
             onPress={createAlert}
-            color="#CD5C5C"
             style={styles.button}
           >
             <Text>OK</Text>

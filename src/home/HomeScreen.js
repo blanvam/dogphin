@@ -5,10 +5,12 @@ import { Container, Header, Right, Content } from 'native-base'
 import { Icon, Button, Text, View } from 'native-base'
 
 import PermissionExitModal from '../permission/PermissionExitModal'
+import EmergencyScreen from '../emergency/EmergencyScreen'
 import AlertScreen from '../alert/AlertScreen'
 import FooterBar from '../components/FooterBar'
 import Map from './map/Map'
 import NotificationBar from '../notification/NotificationBar'
+import * as emergencyActions from '../emergency/emergency.actions'
 import * as alertActions from '../alert/alert.actions'
 import * as userActions from '../user/user.actions'
 import userServices from '../user/user.services'
@@ -46,7 +48,6 @@ const HomeScreen = props => {
   }
 
   useEffect(() => {
-    console.log('aaaa')
     const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
     return (unlisten)
   }, [locationEnabled, props.user?.email])
@@ -91,7 +92,7 @@ const HomeScreen = props => {
       <Content>
         <View style={styles.mapBar}>
           <View style={styles.alertBar}>
-            <Button first rounded danger onPress={() => props.navigation.navigate('Alert')} >
+            <Button first rounded danger onPress={() => props.toggleEmergencyModal(true)} >
               <Icon type="Octicons" name="alert" style={{ fontSize: 30, color: 'white' }} />
             </Button>
             <Button block rounded success style={{ width: '55%', marginLeft: 20, marginRight: 20 }} >
@@ -105,6 +106,7 @@ const HomeScreen = props => {
         </View>
         <Map />
         <PermissionExitModal />
+        <EmergencyScreen />
         <AlertScreen />
       </Content>
       <FooterBar active='Home' navigation={props.navigation} />
@@ -122,6 +124,7 @@ const mapDispatchToProps = dispatch => {
   return {
     updateUser: (user) => dispatch(userActions.update(user)),
     toggleAlertModal: (value) => dispatch(alertActions.toggleModal(value)),
+    toggleEmergencyModal: (value) => dispatch(emergencyActions.toggleEmergencyModal(value)),
   }
 }
 

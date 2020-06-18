@@ -42,16 +42,24 @@ export const createNotification = notification => {
     return alertService.create(
       notification,
       (result, _) => {
-        dispatch(createNotificationSuccess(result === 'success'))
+        dispatch(changeNotificationName(notification.name))
+        dispatch(changeNotificationSuccess(result === 'success'))
         return notification
       }
     )
   }
 }
 
-export const createNotificationSuccess = created => {
+export const changeNotificationSuccess = value => {
   return {
     type: actionTypes.CREATE_NOTIFICATION_SUCCESS,
-    created,
+    value,
+  }
+}
+
+export const changeNotificationName = value => {
+  return {
+    type: actionTypes.CREATE_NOTIFICATION_NAME,
+    value,
   }
 }
