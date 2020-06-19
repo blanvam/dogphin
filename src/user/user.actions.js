@@ -23,7 +23,7 @@ export const updateUserLocation = location => {
       {currentLocation: dblocation},
       () => {}
     )
-    notificationService.updateQuery('user', '==', email, {location: dblocation})
+    notificationService.updateLocationUserQuery(email, {location: dblocation})
     dispatch(updateLocationSuccess(location))
   }
 }

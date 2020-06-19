@@ -2,8 +2,20 @@ import firestoreServices from '../services/firestore.service'
 
 const notificationsFirestoreServices = firestoreServices("notifications")
 
+const raw = (querySnapshot, action) => {
+  querySnapshot.forEach((doc, _) => { 
+    action(doc) 
+  })
+}
+
 export default {
   ...notificationsFirestoreServices,
+  updateLocationUserQuery: (email, data) => {
+    const updateNotification = (doc) => { notificationsFirestoreServices.update(doc.id, data, () => {}) }
+    notificationsFirestoreServices.collectionRef()
+      .where('user', '==', email)
+      .where('follow', '==', true)
+      .get().then(querySnapshot => raw(querySnapshot, updateNotification) )},
   lasts: (onResult, onError) => { notificationsFirestoreServices.all(onResult, onError) },
   timeAgo: (notification) => {
     let secAgo = (new Date().getTime() - notification.createdAt.toDate().getTime()) / 1000
@@ -19,11 +31,6 @@ export default {
     } else {
       return notification.createdAt.toDate().toDateString();
     }
-  },
-  updateQuery: (fieldPath, opStr, value, data) => {
-    const updateNotification = (doc) => { notificationsFirestoreServices.update(doc.id, data, () => {}) }
-    notificationsFirestoreServices.rawWhere(fieldPath, opStr, value, updateNotification)
-    return true
   },
   location: (notification) => (
     {
