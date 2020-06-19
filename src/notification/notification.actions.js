@@ -1,5 +1,6 @@
 import actionTypes from './notification.action-types'
 import notificationService from './notification.service'
+import firestore from '@react-native-firebase/firestore'
 
 
 export const toggleNotificationsLoader = status => {
@@ -37,9 +38,17 @@ export const getNotifications = num => {
 }
 
 export const createNotification = notification => {
-  return dispatch => {
+  const timestamp = firestore.Timestamp.now()
+  const milisExpiration = (12 * 60 * 60 * 1000)
+  return (dispatch, getState) => {
     return notificationService.add(
-      notification,
+      { 
+        ...notification,
+        user: getState().user.user.email,
+        location: new firestore.GeoPoint(notification.location.latitude, notification.location.longitude),
+        createdAt: new firestore.FieldValue.serverTimestamp(),
+        expiresAt: timestamp.toMillis() + milisExpiration,
+      },
       () => {
         dispatch(changeNotificationName(notification.name))
         dispatch(changeNotificationSuccess(true))

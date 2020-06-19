@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import firestore from '@react-native-firebase/firestore'
 import { StyleSheet, Dimensions, FlatList } from 'react-native'
 import { Text, View, Button, Icon, Title } from 'native-base'
 import Modal from 'react-native-modal'
@@ -76,9 +75,7 @@ const AlertScreen = props => {
 
   createAlertPressed = () => {
     let newAlert = {
-      user: props.user.email,
-      location: new firestore.GeoPoint(props.location.latitude, props.location.longitude),
-      createdAt: new firestore.FieldValue.serverTimestamp(),
+      location: props.location,
       name: modalAlert.name,
       type: modalAlert.id,
       follow: modalAlert.followable

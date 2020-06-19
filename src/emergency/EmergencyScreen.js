@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import firestore from '@react-native-firebase/firestore'
 import { StyleSheet, Dimensions, Linking } from 'react-native'
 import { Text, View, Button, Title, Toast, Icon } from 'native-base'
 import Modal from 'react-native-modal'
@@ -81,9 +80,7 @@ const EmergencyScreen = props => {
 
   createEmergencyPressed = () => {
     let alert = {
-      user: props.user.email,
-      location: new firestore.GeoPoint(props.location.latitude, props.location.longitude),
-      createdAt: new firestore.FieldValue.serverTimestamp(),
+      location: props.location,
       name: emergency.name,
       type: emergency.id,
       follow: emergency.followable,

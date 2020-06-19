@@ -1,3 +1,4 @@
+import firestore from '@react-native-firebase/firestore'
 import firestoreServices from '../services/firestore.service'
 
 const notificationsFirestoreServices = firestoreServices("notifications")
@@ -11,10 +12,12 @@ const raw = (querySnapshot, action) => {
 export default {
   ...notificationsFirestoreServices,
   updateLocationUserQuery: (email, data) => {
+    const timestamp = firestore.Timestamp.now()
     const updateNotification = (doc) => { notificationsFirestoreServices.update(doc.id, data, () => {}) }
     notificationsFirestoreServices.collectionRef()
       .where('user', '==', email)
       .where('follow', '==', true)
+      .where('expiresAt', '>=', timestamp)
       .get().then(querySnapshot => raw(querySnapshot, updateNotification) )},
   lasts: (onResult, onError) => { notificationsFirestoreServices.all(onResult, onError) },
   timeAgo: (notification) => {
