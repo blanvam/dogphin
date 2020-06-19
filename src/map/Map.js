@@ -155,7 +155,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateUserLocation: (location) => dispatch(userActions.updateLocation(location)),
+    updateUserLocation: (location) => dispatch(userActions.updateUserLocation(location)),
   }
 }
 

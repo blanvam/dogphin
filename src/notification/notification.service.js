@@ -1,8 +1,10 @@
-import alertService from '../services/alert.service'
+import firestoreServices from '../services/firestore.service'
 
+const notificationsFirestoreServices = firestoreServices("notifications")
 
 export default {
-  lasts: (onResult, onError) => { alertService.all(onResult, onError) },
+  ...notificationsFirestoreServices,
+  lasts: (onResult, onError) => { notificationsFirestoreServices.all(onResult, onError) },
   timeAgo: (notification) => {
     let secAgo = (new Date().getTime() - notification.createdAt.toDate().getTime()) / 1000
     let minAgo, hoursAgo, daysAgo;
@@ -17,6 +19,11 @@ export default {
     } else {
       return notification.createdAt.toDate().toDateString();
     }
+  },
+  updateQuery: (fieldPath, opStr, value, data) => {
+    const updateNotification = (doc) => { notificationsFirestoreServices.update(doc.id, data, () => {}) }
+    notificationsFirestoreServices.rawWhere(fieldPath, opStr, value, updateNotification)
+    return true
   },
   location: (notification) => (
     {

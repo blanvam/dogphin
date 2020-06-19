@@ -1,6 +1,5 @@
 import actionTypes from './notification.action-types'
 import notificationService from './notification.service'
-import alertService from '../services/alert.service'
 
 
 export const toggleNotificationsLoader = status => {
@@ -39,11 +38,16 @@ export const getNotifications = num => {
 
 export const createNotification = notification => {
   return dispatch => {
-    return alertService.create(
+    return notificationService.add(
       notification,
-      (result, _) => {
+      () => {
         dispatch(changeNotificationName(notification.name))
-        dispatch(changeNotificationSuccess(result === 'success'))
+        dispatch(changeNotificationSuccess(true))
+        return notification
+      },
+      () => {
+        dispatch(changeNotificationName(notification.name))
+        dispatch(changeNotificationSuccess(false))
         return notification
       }
     )
