@@ -51,7 +51,6 @@ const Map = props => {
     if (props.permissionsGranted && !watchID) {
       set_geolocation()
       return (() => { 
-        console.log('ADDIOS')
         watchID && Geolocation.clearWatch(watchID)
       })
     }
@@ -61,20 +60,18 @@ const Map = props => {
     if (props.permissionsGranted && !watchID) {
       set_geolocation()
       return (() => { 
-        console.log('ADDIOS')
         watchID && Geolocation.clearWatch(watchID)
       })
     }
   }, [props.permissionsGranted])
 
-  useEffect(() => {    
+  useEffect(() => {
     if (watchID && props.mapLocation.latitude !== region.latitude && props.mapLocation.longitude !== region.longitude ) {
       move(props.mapLocation.latitude, props.mapLocation.longitude)
     }
-  }, [props.mapLocation])
+  }, [props.mapLocation, props.userLocation])
 
   moveUser = (latitude, longitude) => {
-    console.log(`UUSER POSITION ${latitude} --- ${longitude}`)
     // TODO: send to firestore actual location (new firestore.GeoPoint(53.483959, -2.244644))
     props.updateUserLocation({latitude: latitude, longitude: longitude})
     let location = new firestore.GeoPoint(latitude, longitude)
@@ -87,7 +84,6 @@ const Map = props => {
   }
   
   set_geolocation = () => {
-    console.log('HOLA')
     Geolocation.setRNConfiguration({"authorizationLevel": "always"})
     Geolocation.getCurrentPosition(
       position => { moveUser(position.coords.latitude, position.coords.longitude)},
@@ -103,7 +99,6 @@ const Map = props => {
   }
 
   move = (latitude, longitude) => {
-    console.log(`MMMAP POSITION --- ${latitude} --- ${longitude}`)
     let newRegion = {
       ...region,
       latitude: latitude,
@@ -171,6 +166,7 @@ const Map = props => {
 const mapStateToProps = state => {
   return {
     user: state.user.user,
+    userLocation: state.user.location,
     mapLocation: state.map.location,
     permissionsGranted: state.user.permissions,
     notifications: state.notification.notifications,
