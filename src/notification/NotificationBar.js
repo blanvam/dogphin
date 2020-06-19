@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import TextTicker from 'react-native-text-ticker'
 import { Item, Icon, View } from 'native-base'
 
-import * as userActions from '../user/user.actions'
+import * as mapActions from '../map/map.actions'
 import * as notificationsActions from './notification.actions'
 import notificationService from './notification.service'
 
@@ -33,7 +33,7 @@ const NotificationBar = props => {
   if (props.notifications && props.notifications[index]) {
     return (
       <Item 
-        onPress={() => props.updateLocation(notificationService.location(props.notifications[index]))} 
+        onPress={() => props.updateMapLocation(notificationService.location(props.notifications[index]))} 
         style={{backgroundColor: notificationService.backgroundColor(props.notifications[index])}}
       >
         <Icon
@@ -83,7 +83,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getNotifications: (n) => dispatch(notificationsActions.getNotifications(n)),
-    updateLocation: (location) => dispatch(userActions.updateLocation(location)),
+    updateMapLocation: (location) => dispatch(mapActions.updateMapLocation(location)),
   }
 }
 

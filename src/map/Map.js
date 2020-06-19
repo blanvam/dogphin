@@ -6,11 +6,12 @@ import MapView, { Marker } from 'react-native-maps'
 import Geolocation from '@react-native-community/geolocation'
 import firestore from '@react-native-firebase/firestore'
 
-import * as userActions from '../../user/user.actions'
-import userServices from '../../user/user.services'
+import * as userActions from '../user/user.actions'
+import userServices from '../user/user.services'
+import * as mapActions from './map.actions'
 //import mapStyle from './mapStyle.json'
 
-import notificationService from '../../notification/notification.service'
+import notificationService from '../notification/notification.service'
 
 
 const styles = StyleSheet.create({
@@ -37,75 +38,83 @@ const {height, width} = Dimensions.get('window');
 
 const Map = props => {
 
+  const [watchID, setWatchID] = useState(null)
+  const [mapRef, setMapRef] = useState(null)
   const [region, setRegion] = useState({
-    latitude: props.location.latitude,
-    longitude: props.location.longitude,
+    latitude: props.mapLocation.latitude,
+    longitude: props.mapLocation.longitude,
     latitudeDelta: 0.5,
     longitudeDelta: 0.5,
   })
-  const [watchID, setWatchID] = useState(null)
-  const [mapRef, setMapRef] = useState(null)
  
   useEffect(() => {
     if (props.permissionsGranted && !watchID) {
       set_geolocation()
+      return (() => { 
+        console.log('ADDIOS')
+        watchID && Geolocation.clearWatch(watchID)
+      })
     }
-    return (() => { 
-      watchID && Geolocation.clearWatch(watchID)
-    })
   }, [])
 
   useEffect(() => {
     if (props.permissionsGranted && !watchID) {
       set_geolocation()
+      return (() => { 
+        console.log('ADDIOS')
+        watchID && Geolocation.clearWatch(watchID)
+      })
     }
-    return (() => { 
-      watchID && Geolocation.clearWatch(watchID)
-    })
   }, [props.permissionsGranted])
 
   useEffect(() => {    
-    if (watchID && props.location.latitude !== region.latitude && props.location.longitude !== region.longitude ) {
-      move(props.location.latitude, props.location.longitude)
+    if (watchID && props.mapLocation.latitude !== region.latitude && props.mapLocation.longitude !== region.longitude ) {
+      move(props.mapLocation.latitude, props.mapLocation.longitude)
     }
-  }, [props.location])
+  }, [props.mapLocation])
 
+  moveUser = (latitude, longitude) => {
+    console.log(`UUSER POSITION ${latitude} --- ${longitude}`)
+    // TODO: send to firestore actual location (new firestore.GeoPoint(53.483959, -2.244644))
+    props.updateUserLocation({latitude: latitude, longitude: longitude})
+    let location = new firestore.GeoPoint(latitude, longitude)
+    userServices.update(
+      props.user.email,
+      {currentLocation: location},
+      () => {}
+    )
+    move(latitude, longitude)
+  }
+  
   set_geolocation = () => {
+    console.log('HOLA')
     Geolocation.setRNConfiguration({"authorizationLevel": "always"})
     Geolocation.getCurrentPosition(
-      position => { move(position.coords.latitude, position.coords.longitude)},
+      position => { moveUser(position.coords.latitude, position.coords.longitude)},
       error => console.log('Error getCurrentPosition', JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000},
     )
     let watchID = Geolocation.watchPosition(
-      position => { move(position.coords.latitude, position.coords.longitude)},
+      position => { moveUser(position.coords.latitude, position.coords.longitude)},
       error => console.log('Error watchPosition', JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000, distanceFilter: 200},
+      {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000, distanceFilter: 100},
     )
     setWatchID(watchID)
   }
 
   move = (latitude, longitude) => {
+    console.log(`MMMAP POSITION --- ${latitude} --- ${longitude}`)
     let newRegion = {
+      ...region,
       latitude: latitude,
       longitude: longitude,
-      latitudeDelta: region.latitudeDelta,
-      longitudeDelta: region.longitudeDelta
     }
     mapRef.animateToRegion(newRegion, 5000)
   }
 
   set_region = (region) => {
     setRegion(region)
-    let actualLocation = {latitude: region.latitude, longitude: region.longitude}
-    props.updateLocation(actualLocation)
-    // TODO: send to firestore actual location (new firestore.GeoPoint(53.483959, -2.244644))
-    let location = new firestore.GeoPoint(region.latitude, region.longitude)
-    userServices.update(
-      props.user.email,
-      {currentLocation: location},
-      () => {}
-    )
+    props.updateMapLocation({latitude: region.latitude, longitude: region.longitude})
   }
 
   get_markers = () => (
@@ -162,7 +171,7 @@ const Map = props => {
 const mapStateToProps = state => {
   return {
     user: state.user.user,
-    location: state.user.location,
+    mapLocation: state.map.location,
     permissionsGranted: state.user.permissions,
     notifications: state.notification.notifications,
   }
@@ -170,7 +179,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateLocation: (location) => dispatch(userActions.updateLocation(location)),
+    updateUserLocation: (location) => dispatch(userActions.updateLocation(location)),
+    updateMapLocation: (location) => dispatch(mapActions.updateMapLocation(location)),
   }
 }
 

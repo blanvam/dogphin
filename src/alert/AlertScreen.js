@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import firestore from '@react-native-firebase/firestore'
 import { StyleSheet, Dimensions, FlatList } from 'react-native'
-import { Text, View, Button, Icon, Title, Toast } from 'native-base'
+import { Text, View, Button, Icon, Title } from 'native-base'
 import Modal from 'react-native-modal'
 
 import * as alertActions from './alert.actions'
@@ -55,8 +56,16 @@ const AlertScreen = props => {
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [modalAlert, setModalAlert] = useState({})
 
-  successAlertCreated = () => {
-    props.toggleModal(false)
+  useEffect(() => {
+    if (props.notificationCreated) {
+      successAlertCreated()
+    }
+  }, [props.notificationCreated])
+
+  //useEffect(() => {}, [props.showModal, showCreateModal])
+
+  const successAlertCreated = () => {
+    props.toggleAlertModal(false)
     props.changeNotificationSuccess(false)
   }
 
@@ -65,13 +74,18 @@ const AlertScreen = props => {
     setModalAlert(item)
   }
 
-  useEffect(() => {
-    if (props.notificationCreated) {
-      successAlertCreated()
+  createAlertPressed = () => {
+    let newAlert = {
+      user: modalAlert.email,
+      location: new firestore.GeoPoint(props.location.latitude, props.location.longitude),
+      createdAt: new firestore.FieldValue.serverTimestamp(),
+      name: modalAlert.name,
+      type: modalAlert.id,
+      follow: modalAlert.followable
     }
-  }, [props.notificationCreated])
-
-  useEffect(() => {}, [props.showModal, showCreateModal])
+    props.createAlert(newAlert)
+    setShowCreateModal(false)
+  }
 
   renderItem = ({item}) => {
     return (
@@ -99,7 +113,7 @@ const AlertScreen = props => {
       isVisible={props.showModal}
       deviceWidth={width}
       deviceHeight={height}
-      onBackdropPress={() => props.toggleModal(false)}
+      onBackdropPress={() => props.toggleAlertModal(false)}
     >
       <View style={styles.container}>
         <Title style={styles.title}>Send an Alerts</Title>
@@ -111,7 +125,7 @@ const AlertScreen = props => {
         />
         <Button bordered transparent
           title="Agree and Exit Dogphin" 
-          onPress={() => props.toggleModal(false)}
+          onPress={() => props.toggleAlertModal(false)}
         >
           <Text>Cancel</Text>
         </Button>
@@ -120,6 +134,7 @@ const AlertScreen = props => {
         showModal={showCreateModal} 
         setShowModal={setShowCreateModal} 
         alert={modalAlert}
+        createAlertPressed={createAlertPressed}
       />
     </Modal>
   )
@@ -127,15 +142,17 @@ const AlertScreen = props => {
 
 const mapStateToProps = state => {
   return {
-    notificationCreated: state.notification.notificationCreated,
+    user: state.user.user,
+    location: state.user.location,
     showModal: state.alert.showModal,
+    notificationCreated: state.notification.notificationCreated,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    selectAlert: (alert) => dispatch(alertActions.selectAlert(alert)),
-    toggleModal: (value) => dispatch(alertActions.toggleModal(value)),
+    toggleAlertModal: (value) => dispatch(alertActions.toggleModal(value)),
+    createAlert: (params) => dispatch(notificationActions.createNotification(params)),
     changeNotificationSuccess: (value) => dispatch(notificationActions.changeNotificationSuccess(value)),
   }
 }

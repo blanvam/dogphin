@@ -46,19 +46,21 @@ const styles = StyleSheet.create({
 
 const EmergencyScreen = props => {
   const [errorMessage, setErrorMessage] = useState('')
-  const [alert, _] = useState({
-    'user': props.user.email,
-    'location': new firestore.GeoPoint(props.location.latitude, props.location.longitude),
-    'createdAt': new firestore.FieldValue.serverTimestamp(),
-    'type': emergency.id,
-    'follow': emergency.followable,
-    'name': emergency.name
-  })
+
+  useEffect(() => {
+    if (props.notificationCreated) {
+      successEmergencyCreated()
+    }
+  }, [props.notificationCreated])
+
+  //useEffect(() => {}, [props.showEmergencyModal])
 
   successEmergencyCreated = () => {
-    setErrorMessage('')
-    props.toggleEmergencyModal(false)
-    props.changeNotificationSuccess(false)
+    if (props.notificationCreatedName == emergency.name) {
+      props.toggleEmergencyModal(false)
+      props.changeNotificationSuccess(false)
+      setErrorMessage('')
+    }
     Toast.show({
       text: `${props.notificationCreatedName} notification created!`,
       textStyle: { color: "white" },
@@ -67,20 +69,27 @@ const EmergencyScreen = props => {
       position: "top"
     })
     props.changeNotificationName('')
+    if (props.notificationCreatedName == emergency.name) {
+      Linking.openURL(`tel:${emergency.phoneNumber}`)
+    }
   }
 
-  cancelEmergencyCreation = () => {
+  const cancelEmergencyCreation = () => {
     setErrorMessage('')
     props.toggleEmergencyModal(false)
   }
 
-  useEffect(() => {
-    if (props.notificationCreated) {
-      successEmergencyCreated()
+  createEmergencyPressed = () => {
+    let alert = {
+      user: props.user.email,
+      location: new firestore.GeoPoint(props.location.latitude, props.location.longitude),
+      createdAt: new firestore.FieldValue.serverTimestamp(),
+      name: emergency.name,
+      type: emergency.id,
+      follow: emergency.followable,
     }
-  }, [props.notificationCreated])
-
-  useEffect(() => {}, [props.showEmergencyModal])
+    props.createEmergency(alert)
+  }
 
   const emergencyIcon = () => (
     <Icon type={emergency.icon.font} name={emergency.icon.name} style={{color: emergency.icon.color}} />
@@ -109,7 +118,7 @@ const EmergencyScreen = props => {
           thumbIconComponent={emergencyIcon}
           onSwipeStart={() => setErrorMessage('')}
           onSwipeFail={() => setErrorMessage('Incomplete swipe!')}
-          onSwipeSuccess={() => {props.createEmergency(alert); Linking.openURL(`tel:${emergency.phoneNumber}`)}}
+          onSwipeSuccess={createEmergencyPressed}
         />
         <TextError error={errorMessage}/>
         <View style={styles.buttonContainer} >
@@ -129,9 +138,9 @@ const mapStateToProps = state => {
   return {
     user: state.user.user,
     location: state.user.location,
+    showEmergencyModal: state.emergency.showEmergencyModal,
     notificationCreated: state.notification.notificationCreated,
     notificationCreatedName: state.notification.notificationCreatedName,
-    showEmergencyModal: state.emergency.showEmergencyModal,
   }
 }
 

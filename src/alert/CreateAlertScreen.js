@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
-import firestore from '@react-native-firebase/firestore'
+import React from 'react'
 import { StyleSheet, Dimensions } from 'react-native'
 import { Text, View, Button, Title } from 'native-base'
 import Modal from 'react-native-modal'
 
-import * as notificationActions from '../notification/notification.actions'
 
 const { height, _ } = Dimensions.get('window')
 const styles = StyleSheet.create({
@@ -41,26 +38,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const CreateAlertScreen = props => {
-
-  const [alert, _] = useState({
-    'user': props.user.email,
-    'location': new firestore.GeoPoint(props.location.latitude, props.location.longitude),
-    'createdAt': new firestore.FieldValue.serverTimestamp(),
-  })
-
-  useEffect(() => {}, [props.showModal, props.alert])
-
-  createAlert = () => {
-    let newAlert = {
-      ...alert,
-      'name': props.alert.name,
-      'type': props.alert.id,
-      'follow': props.alert.followable
-    }
-    props.createAlert(newAlert)
-    props.setShowModal(false)
-  }
+export default CreateAlertScreen = props => {
 
   return(
     <Modal 
@@ -84,7 +62,7 @@ const CreateAlertScreen = props => {
           </Button>
           <Button bordered transparent
             title="Agree" 
-            onPress={createAlert}
+            onPress={props.createAlertPressed}
             style={styles.button}
           >
             <Text>OK</Text>
@@ -94,18 +72,3 @@ const CreateAlertScreen = props => {
     </Modal>
   )
 }
-
-const mapStateToProps = state => {
-  return {
-    user: state.user.user,
-    location: state.user.location,
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    createAlert: (params) => dispatch(notificationActions.createNotification(params)),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateAlertScreen)
