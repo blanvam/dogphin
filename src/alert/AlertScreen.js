@@ -76,7 +76,7 @@ const AlertScreen = props => {
 
   createAlertPressed = () => {
     let newAlert = {
-      user: modalAlert.email,
+      user: props.user.email,
       location: new firestore.GeoPoint(props.location.latitude, props.location.longitude),
       createdAt: new firestore.FieldValue.serverTimestamp(),
       name: modalAlert.name,

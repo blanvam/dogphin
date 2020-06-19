@@ -4,11 +4,8 @@ import { StyleSheet, Dimensions } from 'react-native'
 import { View, Icon } from 'native-base'
 import MapView, { Marker } from 'react-native-maps'
 import Geolocation from '@react-native-community/geolocation'
-import firestore from '@react-native-firebase/firestore'
 
 import * as userActions from '../user/user.actions'
-import userServices from '../user/user.services'
-import * as mapActions from './map.actions'
 //import mapStyle from './mapStyle.json'
 
 import notificationService from '../notification/notification.service'
@@ -69,29 +66,17 @@ const Map = props => {
     if (watchID && props.mapLocation.latitude !== region.latitude && props.mapLocation.longitude !== region.longitude ) {
       move(props.mapLocation.latitude, props.mapLocation.longitude)
     }
-  }, [props.mapLocation, props.userLocation])
+  }, [props.mapLocation])
 
-  moveUser = (latitude, longitude) => {
-    // TODO: send to firestore actual location (new firestore.GeoPoint(53.483959, -2.244644))
-    props.updateUserLocation({latitude: latitude, longitude: longitude})
-    let location = new firestore.GeoPoint(latitude, longitude)
-    userServices.update(
-      props.user.email,
-      {currentLocation: location},
-      () => {}
-    )
-    move(latitude, longitude)
-  }
-  
   set_geolocation = () => {
     Geolocation.setRNConfiguration({"authorizationLevel": "always"})
     Geolocation.getCurrentPosition(
-      position => { moveUser(position.coords.latitude, position.coords.longitude)},
+      position => {props.updateUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})},
       error => console.log('Error getCurrentPosition', JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000},
     )
     let watchID = Geolocation.watchPosition(
-      position => { moveUser(position.coords.latitude, position.coords.longitude)},
+      position => {props.updateUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})},
       error => console.log('Error watchPosition', JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000, distanceFilter: 100},
     )
@@ -105,11 +90,6 @@ const Map = props => {
       longitude: longitude,
     }
     mapRef.animateToRegion(newRegion, 5000)
-  }
-
-  set_region = (region) => {
-    setRegion(region)
-    props.updateMapLocation({latitude: region.latitude, longitude: region.longitude})
   }
 
   get_markers = () => (
@@ -151,7 +131,7 @@ const Map = props => {
         mapType="hybrid"
         //customMapStyle={mapStyle}
         region={region}
-        onRegionChangeComplete={(v) => set_region(v)}
+        onRegionChangeComplete={(r) => setRegion(r)}
         showsUserLocation={true}
         //followsUserLocation={true}
         loadingEnabled={true}
@@ -176,7 +156,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     updateUserLocation: (location) => dispatch(userActions.updateLocation(location)),
-    updateMapLocation: (location) => dispatch(mapActions.updateMapLocation(location)),
   }
 }
 
