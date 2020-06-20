@@ -39,8 +39,8 @@ export const getNotifications = num => {
 
 export const createNotification = notification => {
   const timestamp = firestore.Timestamp.now()
-  const milisExpiration = (12 * 60 * 60 * 1000)
   return (dispatch, getState) => {
+    const milisExpiration = (getState().home.config.notificationExpiration * 60 * 60 * 1000)
     return notificationService.add(
       { 
         ...notification,
