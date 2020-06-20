@@ -47,7 +47,7 @@ export const createNotification = notification => {
         user: getState().user.user.email,
         location: new firestore.GeoPoint(notification.location.latitude, notification.location.longitude),
         createdAt: new firestore.FieldValue.serverTimestamp(),
-        expiresAt: timestamp.toMillis() + milisExpiration,
+        expiredAt: timestamp.toMillis() + milisExpiration,
       },
       () => {
         dispatch(changeNotificationName(notification.name))

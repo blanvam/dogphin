@@ -17,7 +17,7 @@ export default {
     notificationsFirestoreServices.collectionRef()
       .where('user', '==', email)
       .where('follow', '==', true)
-      .where('expiresAt', '>=', timestamp)
+      .where('expiredAt', '>=', timestamp.toMillis())
       .get().then(querySnapshot => raw(querySnapshot, updateNotification) )},
   lasts: (onResult, onError) => { notificationsFirestoreServices.all(onResult, onError) },
   timeAgo: (notification) => {
