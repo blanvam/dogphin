@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Switch } from 'react-native'
+import { StyleSheet, Platform, Switch } from 'react-native'
 import { Container, Header, Right, Content } from 'native-base'
 import { Icon, Button, Text, View } from 'native-base'
 
@@ -10,6 +10,7 @@ import AlertScreen from '../alert/AlertScreen'
 import FooterBar from '../components/FooterBar'
 import Map from '../map/Map'
 import NotificationBar from '../notification/NotificationBar'
+import * as homeActions from '../home/home.actions'
 import * as emergencyActions from '../emergency/emergency.actions'
 import * as alertActions from '../alert/alert.actions'
 import * as userActions from '../user/user.actions'
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
 })
 
 const HomeScreen = props => {
-  const [locationEnabled, setLocationEnabled] = useState(props.user?.locationEnabled || true)
+  const [locationEnabled, setLocationEnabled] = useState(props.user.locationEnabled || true)
 
   onUserLoadSuccess = (email, usr) => {
     if (usr) {
@@ -47,10 +48,12 @@ const HomeScreen = props => {
     props.updateUser({})
   }
 
+  useEffect(() => props.getConfiguration(Platform.OS), [])
+
   useEffect(() => {
     const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
     return (unlisten)
-  }, [locationEnabled, props.user?.email])
+  }, [locationEnabled, props.user.email])
 
   updateUserPositionSwitch = (value) => {
     setLocationEnabled(value)
@@ -62,7 +65,7 @@ const HomeScreen = props => {
   }
 
   switchPosition = () => {
-    if (props.user?.email) {
+    if (props.user.email) {
       return (
         <View style={styles.positionBar}>
           <Switch 
@@ -122,6 +125,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    getConfiguration: (id) => dispatch(homeActions.getConfiguration(id)),
     updateUser: (user) => dispatch(userActions.update(user)),
     toggleAlertModal: (value) => dispatch(alertActions.toggleModal(value)),
     toggleEmergencyModal: (value) => dispatch(emergencyActions.toggleEmergencyModal(value)),

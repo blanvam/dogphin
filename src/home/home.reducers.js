@@ -1,12 +1,13 @@
-import { INIT_HOME } from './home.action-types';
+import actionsTypes from './home.action-types'
 
 const INITIAL_STATE = {
-};
+  config: {}
+}
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case INIT_HOME:
-      return { ...state, ...INITIAL_STATE };
+    case actionsTypes.INIT_CONFIG:
+      return { ...state, config: action.config }
     default:
       return state;
   }
