@@ -9,11 +9,7 @@ export const getConfiguration = (id) => {
     return configurationService.get(
       id,
       configuration => {
-        if (configuration) {
-          dispatch(getConfigurationSuccess(configuration))
-        } else {
-          dispatch(getConfigurationSuccess(defaultConfiguration))
-        }        
+        dispatch(getConfigurationSuccess(configuration? configuration : defaultConfiguration))
         return configuration
       }
     )
