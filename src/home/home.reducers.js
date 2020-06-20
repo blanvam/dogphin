@@ -1,7 +1,14 @@
 import actionsTypes from './home.action-types'
+import emergency from '../emergency/emergency.json'
+import alerts from '../alert/alerts.json'
 
 const INITIAL_STATE = {
-  config: {}
+  config: {
+    queryDistance: 12, // millas
+    notificationExpiration: 12, // horas
+    emergency: emergency,
+    alerts: alerts,
+  }
 }
 
 export default (state = INITIAL_STATE, action) => {

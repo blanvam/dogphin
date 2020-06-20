@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Dimensions, Linking } from 'react-native'
+import { StyleSheet, Dimensions, Linking, Platform } from 'react-native'
 import { Text, View, Button, Title, Toast, Icon } from 'native-base'
 import Modal from 'react-native-modal'
 import SwipeButton from 'rn-swipe-button'
@@ -88,7 +88,7 @@ const EmergencyScreen = props => {
   }
 
   const emergencyIcon = () => (
-    <Icon type={props.emergency.icon.font} name={props.emergency.icon.name} style={{color: props.emergency.icon.color}} />
+    <Icon type={props.emergency.iconFont} name={props.emergency.iconName} style={{color: props.emergency.iconColor}} />
   )
 
   return(

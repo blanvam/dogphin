@@ -90,11 +90,11 @@ const AlertScreen = props => {
         onPress={() => buttonAlertPressed(item)}
         style={styles.itemButton}
       >
-        <View style={{...styles.iconBorder, borderColor: item.icon.color}}>
+        <View style={{...styles.iconBorder, borderColor: item.iconColor}}>
           <Icon
-            style={{ color: item.icon.color, fontSize: 30 }}
-            type={item.icon.font} 
-            name={item.icon.name} 
+            style={{ color: item.iconColor, fontSize: 30 }}
+            type={item.iconFont} 
+            name={item.iconName} 
           />
         </View>
         <Text style={{...styles.itemText, color: item.fontColor}}>{item.name}</Text>
