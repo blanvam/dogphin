@@ -6,7 +6,6 @@ import Modal from 'react-native-modal'
 
 import * as alertActions from './alert.actions'
 import * as notificationActions from '../notification/notification.actions'
-import alerts from './alerts.json'
 import CreateAlertScreen from './CreateAlertScreen'
 
 
@@ -115,7 +114,7 @@ const AlertScreen = props => {
       <View style={styles.container}>
         <Title style={styles.title}>Send an Alerts</Title>
         <FlatList
-          data={alerts}
+          data={props.alerts}
           numColumns={2}
           keyExtractor={(item) => item.id }
           renderItem={renderItem}
@@ -139,7 +138,7 @@ const AlertScreen = props => {
 
 const mapStateToProps = state => {
   return {
-    user: state.user.user,
+    alerts: state.home.config.alerts,
     location: state.user.location,
     showModal: state.alert.showModal,
     notificationCreated: state.notification.notificationCreated,

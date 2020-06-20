@@ -8,7 +8,6 @@ import SwipeButton from 'rn-swipe-button'
 import * as emergencyActions from './emergency.actions'
 import * as notificationActions from '../notification/notification.actions'
 import TextError from '../components/TextError'
-import emergency from './emergency.json'
 
 import { YellowBox } from 'react-native'
 YellowBox.ignoreWarnings(['Animated: `useNativeDriver` was not specified'])
@@ -55,7 +54,7 @@ const EmergencyScreen = props => {
   //useEffect(() => {}, [props.showEmergencyModal])
 
   successEmergencyCreated = () => {
-    if (props.notificationCreatedName == emergency.name) {
+    if (props.notificationCreatedName == props.emergency.name) {
       props.toggleEmergencyModal(false)
       props.changeNotificationSuccess(false)
       setErrorMessage('')
@@ -68,8 +67,8 @@ const EmergencyScreen = props => {
       position: "top"
     })
     props.changeNotificationName('')
-    if (props.notificationCreatedName == emergency.name) {
-      Linking.openURL(`tel:${emergency.phoneNumber}`)
+    if (props.notificationCreatedName == props.emergency.name) {
+      Linking.openURL(`tel:${props.emergency.phoneNumber}`)
     }
   }
 
@@ -81,15 +80,15 @@ const EmergencyScreen = props => {
   createEmergencyPressed = () => {
     let alert = {
       location: props.location,
-      name: emergency.name,
-      type: emergency.id,
-      follow: emergency.followable,
+      name: props.emergency.name,
+      type: props.emergency.id,
+      follow: props.emergency.followable,
     }
     props.createEmergency(alert)
   }
 
   const emergencyIcon = () => (
-    <Icon type={emergency.icon.font} name={emergency.icon.name} style={{color: emergency.icon.color}} />
+    <Icon type={props.emergency.icon.font} name={props.emergency.icon.name} style={{color: props.emergency.icon.color}} />
   )
 
   return(
@@ -102,15 +101,15 @@ const EmergencyScreen = props => {
       onBackdropPress={cancelEmergencyCreation}
     >
       <View style={styles.container}>
-        <Title style={styles.title}> {emergency.title} </Title>
+        <Title style={styles.title}> {props.emergency.title} </Title>
         <Text>Are you sure you want to create this emergency?</Text>
         <SwipeButton
           railBackgroundColor='#C0C0C0'
-          railFillBackgroundColor={emergency.backgroundColor}
-          containerStyles={{marginTop: 30, backgroundColor: emergency.backgroundColor }} 
-          thumbIconBackgroundColor={emergency.backgroundColor}
+          railFillBackgroundColor={props.emergency.backgroundColor}
+          containerStyles={{marginTop: 30, backgroundColor: props.emergency.backgroundColor }} 
+          thumbIconBackgroundColor={props.emergency.backgroundColor}
           title='Desliza!'
-          titleColor={emergency.fontColor}
+          titleColor={props.emergency.fontColor}
           width={'90%'} 
           thumbIconComponent={emergencyIcon}
           onSwipeStart={() => setErrorMessage('')}
@@ -133,7 +132,7 @@ const EmergencyScreen = props => {
 
 const mapStateToProps = state => {
   return {
-    user: state.user.user,
+    emergency: state.home.config.emergency,
     location: state.user.location,
     showEmergencyModal: state.emergency.showEmergencyModal,
     notificationCreated: state.notification.notificationCreated,
