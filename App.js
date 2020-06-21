@@ -6,22 +6,22 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-import { Provider } from 'react-redux';
-import { Container, Button, Icon } from 'native-base';
+import { Provider } from 'react-redux'
+import { Root, Container, Button, Icon } from 'native-base'
 
 import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack'
 import auth from '@react-native-firebase/auth'
 
 import store from './src/store/index'
-import HomeScreen from './src/home/HomeScreen';
-import NotificationScreen from './src/notification/NotificationScreen';
-import LoginScreen from './src/user/login/LoginScreen';
-import SignupScreen from './src/user/signup/SignupScreen';
-import ProfileScreen from './src/user/profile/ProfileScreen';
+import HomeScreen from './src/home/HomeScreen'
+import NotificationScreen from './src/notification/NotificationScreen'
+import LoginScreen from './src/user/login/LoginScreen'
+import SignupScreen from './src/user/signup/SignupScreen'
+import ProfileScreen from './src/user/profile/ProfileScreen'
 
 // TODO(you): import any additional firebase services that you require for your app, e.g for auth:
 //    1) install the npm package: `yarn add @react-native-firebase/auth@alpha` - you do not need to
@@ -62,21 +62,23 @@ const navigationProfileOptions = ({ navigation }) => {
 export default class App extends Component {
   render() {
     return (
-      <Container>
-        <Provider store={store}>
-          <NavigationContainer initialRouteName="Home">
-            <Stack.Navigator>
-              <Stack.Screen name="Home" component={HomeScreen} options={{ header: () => {} }} />
-              <Stack.Screen name="Notifications">
-                {props => <NotificationScreen {...props} />}
-              </Stack.Screen>
-              <Stack.Screen name="Profile" component={ProfileScreen} options={navigationProfileOptions} />
-              <Stack.Screen name="Login" component={LoginScreen} options={navigationAuthOptions} />
-              <Stack.Screen name="Signup" component={SignupScreen} options={navigationAuthOptions} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </Provider>
-      </Container>
+      <Root>
+        <Container>
+          <Provider store={store}>
+            <NavigationContainer initialRouteName="Home">
+              <Stack.Navigator>
+                <Stack.Screen name="Home" component={HomeScreen} options={{ header: () => {} }} />
+                <Stack.Screen name="Notifications">
+                  {props => <NotificationScreen {...props} />}
+                </Stack.Screen>
+                <Stack.Screen name="Profile" component={ProfileScreen} options={navigationProfileOptions} />
+                <Stack.Screen name="Login" component={LoginScreen} options={navigationAuthOptions} />
+                <Stack.Screen name="Signup" component={SignupScreen} options={navigationAuthOptions} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </Provider>
+        </Container>
+      </Root>
     )
   }
 }

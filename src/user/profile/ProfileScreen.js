@@ -101,8 +101,11 @@ const ProfileScreen = props => {
   }
 
   useEffect(() => {
-    const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
-    return unlisten
+    if (props.user.email) {
+      onUserLoadSuccess(props.user.email, props.user)
+    } else {
+      onUserLoadFail()
+    }
   }, [])
 
   updateProfileUser = () => {
@@ -143,7 +146,7 @@ const ProfileScreen = props => {
       <Content>
         <UserHeader height={150} style={{backgroundColor: 'transparent'}} />
         <Image style={styles.avatar} source={{uri: photo}}/>
-        < Loader show={isLoading}/>
+        <Loader show={isLoading}/>
         <Form style={styles.profileForm}>
           <FormItem 
             disabled={true}

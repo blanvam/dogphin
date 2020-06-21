@@ -79,6 +79,8 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = _ => {}
+const mapDispatchToProps = _ => {
+  return {}
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationScreen)

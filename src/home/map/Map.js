@@ -64,7 +64,7 @@ const Map = props => {
     })
   }, [props.permissionsGranted])
 
-  useEffect(() => { 
+  useEffect(() => {    
     if (watchID && props.location.latitude !== region.latitude && props.location.longitude !== region.longitude ) {
       move(props.location.latitude, props.location.longitude)
     }
@@ -98,12 +98,13 @@ const Map = props => {
   set_region = (region) => {
     setRegion(region)
     let actualLocation = {latitude: region.latitude, longitude: region.longitude}
-    // TODO send to firestore actual location (new firestore.GeoPoint(53.483959, -2.244644))
+    props.updateLocation(actualLocation)
+    // TODO: send to firestore actual location (new firestore.GeoPoint(53.483959, -2.244644))
     let location = new firestore.GeoPoint(region.latitude, region.longitude)
     userServices.update(
       props.user.email,
       {currentLocation: location},
-      () => { props.updateLocation(actualLocation) }
+      () => {}
     )
   }
 
@@ -148,7 +149,7 @@ const Map = props => {
         region={region}
         onRegionChangeComplete={(v) => set_region(v)}
         showsUserLocation={true}
-        followsUserLocation={true}
+        //followsUserLocation={true}
         loadingEnabled={true}
       >
         {get_markers()}

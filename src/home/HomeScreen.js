@@ -5,9 +5,11 @@ import { Container, Header, Right, Content } from 'native-base'
 import { Icon, Button, Text, View } from 'native-base'
 
 import PermissionExitModal from '../permission/PermissionExitModal'
+import AlertScreen from '../alert/AlertScreen'
 import FooterBar from '../components/FooterBar'
 import Map from './map/Map'
 import NotificationBar from '../notification/NotificationBar'
+import * as alertActions from '../alert/alert.actions'
 import * as userActions from '../user/user.actions'
 import userServices from '../user/user.services'
 
@@ -44,9 +46,10 @@ const HomeScreen = props => {
   }
 
   useEffect(() => {
+    console.log('aaaa')
     const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
     return (unlisten)
-  }, [locationEnabled])
+  }, [locationEnabled, props.user?.email])
 
   updateUserPositionSwitch = (value) => {
     setLocationEnabled(value)
@@ -94,7 +97,7 @@ const HomeScreen = props => {
             <Button block rounded success style={{ width: '55%', marginLeft: 20, marginRight: 20 }} >
               <Text> Salida </Text>
             </Button>
-            <Button last rounded light onPress={() => props.navigation.navigate('Alert')} >
+            <Button last rounded light onPress={() => props.toggleAlertModal(true)} >
               <Icon type="Octicons" name="issue-opened" style={{ fontSize: 30, color: 'orange' }} />
             </Button>
           </View>
@@ -102,6 +105,7 @@ const HomeScreen = props => {
         </View>
         <Map />
         <PermissionExitModal />
+        <AlertScreen />
       </Content>
       <FooterBar active='Home' navigation={props.navigation} />
     </Container>
@@ -117,6 +121,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     updateUser: (user) => dispatch(userActions.update(user)),
+    toggleAlertModal: (value) => dispatch(alertActions.toggleModal(value)),
   }
 }
 
