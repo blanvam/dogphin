@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { ActivityIndicator, FlatList, StyleSheet } from 'react-native'
 import { Container, View, Text, Icon, ListItem, Left, Body, Right } from 'native-base'
 
-import notificationService from './notification.service'
 import FooterBar from '../components/FooterBar'
 
 const styles = StyleSheet.create({
@@ -31,18 +30,19 @@ const styles = StyleSheet.create({
 
 const NotificationScreen = props => {
 
-  renderItem = ({ item }) => { 
+  renderItem = ({ item }) => {
+    let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
     return (
       <ListItem avatar>
         <Left>
-          <Icon type={notificationService.iconType(item)} name={notificationService.iconName(item)} style={styles.listItemIcon} />
+          <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
         </Left>
         <Body>
-          <Text style={styles.listItemTitle}>{notificationService.title(item)}</Text>
-          <Text note>{notificationService.message(item)}</Text>
+          <Text style={styles.listItemTitle}>{config.title}</Text>
+          <Text note>{config.message}</Text>
         </Body>
         <Right>
-          <Text note>{notificationService.timeAgo(item)}</Text>
+          <Text note>{config.timeAgo}</Text>
         </Right>
       </ListItem>
     )
@@ -74,11 +74,14 @@ const NotificationScreen = props => {
 
 const mapStateToProps = state => {
   return {
+    config: state.home.config,
     showNotificationsLoader: state.notification.showNotificationsLoader,
     notifications: state.notification.notifications,
   }
 }
 
-const mapDispatchToProps = _ => {}
+const mapDispatchToProps = _ => {
+  return {}
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationScreen)

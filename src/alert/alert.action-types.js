@@ -1,4 +1,3 @@
 module.exports = Object.freeze({
-  INIT_CONFIG: 'init_config'
+  TOGGLE_MODAL: 'toggleModal',
 })
-  

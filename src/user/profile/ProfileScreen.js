@@ -5,6 +5,7 @@ import { Container, Content, Form, Button } from 'native-base'
 
 import UserHeader from '../../components/UserHeader'
 import FormItem from '../../components/FormItem'
+import TextError from '../../components/TextError'
 import * as userActions from '../user.actions'
 import userServices from '../user.services'
 
@@ -37,19 +38,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20
   },
-  updateError: {
-    color: '#d9534f',
-    marginTop: 20
-  },
 })
-
-const TextError = props => {
-  if (props.error) {
-    return (<Text style={styles.updateError}>* {props.error}</Text>)
-  } else {
-    return null
-  }
-}
 
 const Loader = props => {
   if (props.show) {
@@ -101,8 +90,11 @@ const ProfileScreen = props => {
   }
 
   useEffect(() => {
-    const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
-    return unlisten
+    if (props.user.email) {
+      onUserLoadSuccess(props.user.email, props.user)
+    } else {
+      onUserLoadFail()
+    }
   }, [])
 
   updateProfileUser = () => {
@@ -143,7 +135,7 @@ const ProfileScreen = props => {
       <Content>
         <UserHeader height={150} style={{backgroundColor: 'transparent'}} />
         <Image style={styles.avatar} source={{uri: photo}}/>
-        < Loader show={isLoading}/>
+        <Loader show={isLoading}/>
         <Form style={styles.profileForm}>
           <FormItem 
             disabled={true}

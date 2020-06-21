@@ -1,0 +1,13 @@
+{
+  "id": "emergency",
+  "name": "Emergency",
+  "iconFont": "MaterialCommunityIcons",
+  "iconName": "alert-decagram",
+  "iconColor": "white",
+  "fontColor": "white",
+  "backgroundColor": "#d9534f",
+  "title": "¡¡SOS!! ¡Emergencia!",
+  "message": "A 200m",
+  "followable": true,
+  "phoneNumber": 112
+}

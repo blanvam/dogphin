@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, Switch } from 'react-native'
+import { StyleSheet, Platform, Switch } from 'react-native'
 import { Container, Header, Right, Content } from 'native-base'
 import { Icon, Button, Text, View } from 'native-base'
 
 import PermissionExitModal from '../permission/PermissionExitModal'
+import EmergencyScreen from '../emergency/EmergencyScreen'
+import AlertScreen from '../alert/AlertScreen'
 import FooterBar from '../components/FooterBar'
-import Map from './map/Map'
+import Map from '../map/Map'
 import NotificationBar from '../notification/NotificationBar'
+import * as homeActions from '../home/home.actions'
+import * as emergencyActions from '../emergency/emergency.actions'
+import * as alertActions from '../alert/alert.actions'
 import * as userActions from '../user/user.actions'
 import userServices from '../user/user.services'
 
@@ -30,7 +35,7 @@ const styles = StyleSheet.create({
 })
 
 const HomeScreen = props => {
-  const [locationEnabled, setLocationEnabled] = useState(props.user?.locationEnabled || true)
+  const [locationEnabled, setLocationEnabled] = useState(props.user.locationEnabled || true)
 
   onUserLoadSuccess = (email, usr) => {
     if (usr) {
@@ -43,10 +48,12 @@ const HomeScreen = props => {
     props.updateUser({})
   }
 
+  useEffect(() => props.getConfiguration(Platform.OS), [])
+
   useEffect(() => {
     const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
     return (unlisten)
-  }, [locationEnabled])
+  }, [locationEnabled, props.user.email])
 
   updateUserPositionSwitch = (value) => {
     setLocationEnabled(value)
@@ -58,7 +65,7 @@ const HomeScreen = props => {
   }
 
   switchPosition = () => {
-    if (props.user?.email) {
+    if (props.user.email) {
       return (
         <View style={styles.positionBar}>
           <Switch 
@@ -88,13 +95,13 @@ const HomeScreen = props => {
       <Content>
         <View style={styles.mapBar}>
           <View style={styles.alertBar}>
-            <Button first rounded danger onPress={() => props.navigation.navigate('Alert')} >
+            <Button first rounded danger onPress={() => props.toggleEmergencyModal(true)} >
               <Icon type="Octicons" name="alert" style={{ fontSize: 30, color: 'white' }} />
             </Button>
             <Button block rounded success style={{ width: '55%', marginLeft: 20, marginRight: 20 }} >
               <Text> Salida </Text>
             </Button>
-            <Button last rounded light onPress={() => props.navigation.navigate('Alert')} >
+            <Button last rounded light onPress={() => props.toggleAlertModal(true)} >
               <Icon type="Octicons" name="issue-opened" style={{ fontSize: 30, color: 'orange' }} />
             </Button>
           </View>
@@ -102,6 +109,8 @@ const HomeScreen = props => {
         </View>
         <Map />
         <PermissionExitModal />
+        <EmergencyScreen />
+        <AlertScreen />
       </Content>
       <FooterBar active='Home' navigation={props.navigation} />
     </Container>
@@ -116,7 +125,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    getConfiguration: (id) => dispatch(homeActions.getConfiguration(id)),
     updateUser: (user) => dispatch(userActions.update(user)),
+    toggleAlertModal: (value) => dispatch(alertActions.toggleModal(value)),
+    toggleEmergencyModal: (value) => dispatch(emergencyActions.toggleEmergencyModal(value)),
   }
 }
 

@@ -4,6 +4,8 @@ const INITIAL_STATE = {
   showNotificationsLoader: true,
   notifications: [],
   notificationsBar: [],
+  notificationCreated: false,
+  notificationCreatedName: '',
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -14,6 +16,10 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, notifications: action.notifications }
     case actionsTypes.GET_NOTIFICATIONS_BAR_SUCCESS:
       return { ...state, notificationsBar: action.notifications }
+    case actionsTypes.CREATE_NOTIFICATION_SUCCESS:
+      return { ...state, notificationCreated: action.value }
+    case actionsTypes.CREATE_NOTIFICATION_NAME:
+      return { ...state, notificationCreatedName: action.value }
     default:
       return state;
   }

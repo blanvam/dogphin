@@ -1,0 +1,74 @@
+[
+  {
+    "id": "boat_damage",
+    "name": "Boat Damage",
+    "iconFont": "MaterialCommunityIcons",
+    "iconName": "alert-circle-outline",
+    "iconColor": "orange",
+    "fontColor": "black",
+    "backgroundColor": "white",
+    "title": "¡Barco dañado!",
+    "message": "¡A 1Km parece que alguien tiene el barco dañado! ¿Puedes ayudarle?",
+    "followable": true
+  },
+  {
+    "id": "fuel_empty",
+    "name": "Fuel Empty",
+    "iconFont": "MaterialCommunityIcons",
+    "iconName": "fuel",
+    "iconColor": "orange",
+    "fontColor": "black",
+    "backgroundColor": "white",
+    "title": "Sin combustible",
+    "message": "A 200m hay alguien sin combustible, ponte en contacto si puedes ayudar.",
+    "followable": true
+  },
+  {
+    "id": "bad_weather",
+    "name": "Bad Weather",
+    "iconFont": "MaterialCommunityIcons",
+    "iconName": "weather-lightning-rainy",
+    "iconColor": "orange",
+    "fontColor": "black",
+    "backgroundColor": "white",
+    "title": "Mal tiempo/oleaje",
+    "message": "Parece que a 5Km hay oleaje o previsión de mal tiempo. ¡Tome precauciones!",
+    "followable": false
+  },
+  {
+    "id": "floating_object",
+    "name": "Floating Object",
+    "iconFont": "MaterialCommunityIcons",
+    "iconName": "alert",
+    "iconColor": "orange",
+    "fontColor": "black",
+    "backgroundColor": "white",
+    "title": "Objeto flotando/peligroso",
+    "message": "¡Tienes cerca un objeto flotante que podría ser peligroso!",
+    "followable": false
+  },
+  {
+    "id": "mechanic_failure",
+    "name": "Mechanic Failure",
+    "iconFont": "FontAwesome",
+    "iconName": "wrench",
+    "iconColor": "orange",
+    "fontColor": "black",
+    "backgroundColor": "white",
+    "title": "Fallo de motor/eléctrico",
+    "message": "Cerca hay alguien con un fallo de motor o eléctrico",
+    "followable": true
+  },
+  {
+    "id": "health_sos",
+    "name": "Health SOS",
+    "iconFont": "MaterialCommunityIcons",
+    "iconName": "heart-pulse",
+    "iconColor": "#d9534f",
+    "fontColor": "black",
+    "backgroundColor": "white",
+    "title": "¡SOS! Problemas de salud",
+    "message": "¡Alguien está teniendo problemas de salud! ¿Puedes ayudarle?",
+    "followable": true
+  }
+]

@@ -3,9 +3,8 @@ import { connect } from 'react-redux'
 import TextTicker from 'react-native-text-ticker'
 import { Item, Icon, View } from 'native-base'
 
-import * as userActions from '../user/user.actions'
+import * as mapActions from '../map/map.actions'
 import * as notificationsActions from './notification.actions'
-import notificationService from './notification.service'
 
 const NotificationBar = props => {
 
@@ -31,10 +30,17 @@ const NotificationBar = props => {
   }, [index, scrollNext])
 
   if (props.notifications && props.notifications[index]) {
+    let item = props.notifications[index]
+    let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
     return (
       <Item 
-        onPress={() => props.updateLocation(notificationService.location(props.notifications[index]))} 
-        style={{backgroundColor: notificationService.backgroundColor(props.notifications[index])}}
+        onPress={() => props.updateMapLocation(
+          config.location({
+            latitude: item.location.latitude,
+            longitude: item.location.longitude,
+          })
+        )} 
+        style={{backgroundColor: item.backgroundColor}}
       >
         <Icon
           style={{ /* color: 'white', */ transform: [{ rotateY: '360deg' }, { scaleX: -1 }] }}
@@ -42,17 +48,17 @@ const NotificationBar = props => {
         />
         <View style={{flex: 1, alignItems: 'flex-start'}} >
           <TextTicker 
-            style={{ color: notificationService.fontColor(props.notifications[index]) }}
+            style={{ color: config.fontColor}}
             scrollSpeed={5000}
             bounceSpeed={5000}
           >
-            {notificationService.title(props.notifications[index])} - {notificationService.message(props.notifications[index]) }
+            {config.title} - {config.message }
           </TextTicker>
         </View>
         <Icon
-          type={notificationService.iconType(props.notifications[index])} 
-          name={notificationService.iconName(props.notifications[index])} 
-          style={{ fontSize: 25, color: notificationService.iconColor(props.notifications[index]) }}
+          type={config.iconFont}
+          name={config.iconName}
+          style={{ fontSize: 25, color: config.iconColor}}
         />
       </Item>
     )
@@ -76,6 +82,7 @@ const NotificationBar = props => {
 
 const mapStateToProps = state => {
   return {
+    config: state.home.config,
     notifications: state.notification.notificationsBar,
   }
 }
@@ -83,7 +90,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getNotifications: (n) => dispatch(notificationsActions.getNotifications(n)),
-    updateLocation: (location) => dispatch(userActions.updateLocation(location)),
+    updateMapLocation: (location) => dispatch(mapActions.updateMapLocation(location)),
   }
 }
 
