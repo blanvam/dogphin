@@ -1,11 +1,9 @@
 {
   "id": "emergency",
   "name": "Emergency",
-  "icon": {
-    "font": "MaterialCommunityIcons",
-    "name": "alert-decagram",
-    "color": "white"
-  },
+  "iconFont": "MaterialCommunityIcons",
+  "iconName": "alert-decagram",
+  "iconColor": "white",
   "fontColor": "white",
   "backgroundColor": "#d9534f",
   "title": "¡¡SOS!! ¡Emergencia!",

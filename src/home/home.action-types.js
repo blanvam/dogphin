@@ -1,4 +1,4 @@
-export default Object.freeze({
-    INIT_HOME: 'init_home'
-  })
+module.exports = Object.freeze({
+  INIT_CONFIG: 'init_config'
+})
   

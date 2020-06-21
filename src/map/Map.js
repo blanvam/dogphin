@@ -8,8 +8,6 @@ import Geolocation from '@react-native-community/geolocation'
 import * as userActions from '../user/user.actions'
 //import mapStyle from './mapStyle.json'
 
-import notificationService from '../notification/notification.service'
-
 
 const styles = StyleSheet.create({
   map: {
@@ -94,28 +92,32 @@ const Map = props => {
 
   get_markers = () => (
     props.notifications.map(item => {
+      let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
       return (
         <Marker
           key={item.id}
-          coordinate={notificationService.location(item)}
-          title={notificationService.title(item)}
-          description={notificationService.message(item)}
+          coordinate={{
+            latitude: item.location.latitude,
+            longitude: item.location.longitude,
+          }}
+          title={config.title}
+          description={config.message}
         >
           <View 
           style={{
             width: 40,
             height: 40,
             borderRadius: 40 / 2,
-            backgroundColor: notificationService.backgroundColor(item),
+            backgroundColor: config.backgroundColor,
           }}>
             <Icon
               style={{ 
                 marginTop: 5,
                 fontWeight: 'bold',
                 textAlign: "center", 
-                color: notificationService.iconColor(item) }}
-              type={notificationService.iconType(item)} 
-              name={notificationService.iconName(item)} 
+                color: config.iconColor }}
+              type={config.iconFont} 
+              name={config.iconName} 
             />
           </View>
         </Marker>
@@ -145,8 +147,7 @@ const Map = props => {
 
 const mapStateToProps = state => {
   return {
-    user: state.user.user,
-    userLocation: state.user.location,
+    config: state.home.config,
     mapLocation: state.map.location,
     permissionsGranted: state.user.permissions,
     notifications: state.notification.notifications,
