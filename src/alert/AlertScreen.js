@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Dimensions, FlatList } from 'react-native'
-import { Text, View, Button, Icon, Title, Toast } from 'native-base'
+import { Text, View, Button, Icon, Title } from 'native-base'
 import Modal from 'react-native-modal'
 
 import * as alertActions from './alert.actions'
@@ -9,10 +9,7 @@ import * as notificationActions from '../notification/notification.actions'
 import alerts from './alerts.json'
 import CreateAlertScreen from './CreateAlertScreen'
 
-import { YellowBox } from 'react-native'
-YellowBox.ignoreWarnings(['Animated: `useNativeDriver` was not specified'])
 
-const alertElements = Object.values(alerts)
 const { width, height } = Dimensions.get('window')
 const styles = StyleSheet.create({
   modal: {
@@ -58,36 +55,43 @@ const AlertScreen = props => {
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [modalAlert, setModalAlert] = useState({})
 
-  successAlertCreated = () => {
-    props.toggleModal(false)
-      Toast.show({
-        text: `${modalAlert.name} created!`,
-        textStyle: { color: "white" },
-        buttonText: "Okay",
-        duration: 3000,
-        position: "top"
-      })
-      props.createNotificationSuccess(false)
-  }
-
   useEffect(() => {
     if (props.notificationCreated) {
       successAlertCreated()
     }
   }, [props.notificationCreated])
 
-  useEffect(() => {}, [props.showModal, showCreateModal])
+  //useEffect(() => {}, [props.showModal, showCreateModal])
+
+  const successAlertCreated = () => {
+    props.toggleAlertModal(false)
+    props.changeNotificationSuccess(false)
+  }
+
+  const buttonAlertPressed = (item) => {
+    setShowCreateModal(true)
+    setModalAlert(item)
+  }
+
+  createAlertPressed = () => {
+    let newAlert = {
+      location: props.location,
+      name: modalAlert.name,
+      type: modalAlert.id,
+      follow: modalAlert.followable
+    }
+    props.createAlert(newAlert)
+    setShowCreateModal(false)
+  }
 
   renderItem = ({item}) => {
     return (
       <Button 
         transparent
-        onPress={() => { setShowCreateModal(true); setModalAlert(item) }}
+        onPress={() => buttonAlertPressed(item)}
         style={styles.itemButton}
       >
-        <View
-          style={{...styles.iconBorder, borderColor: item.icon.color}}
-        >
+        <View style={{...styles.iconBorder, borderColor: item.icon.color}}>
           <Icon
             style={{ color: item.icon.color, fontSize: 30 }}
             type={item.icon.font} 
@@ -106,19 +110,19 @@ const AlertScreen = props => {
       isVisible={props.showModal}
       deviceWidth={width}
       deviceHeight={height}
-      onBackdropPress={() => props.toggleModal(false)}
+      onBackdropPress={() => props.toggleAlertModal(false)}
     >
       <View style={styles.container}>
         <Title style={styles.title}>Send an Alerts</Title>
         <FlatList
-          data={alertElements}
+          data={alerts}
           numColumns={2}
           keyExtractor={(item) => item.id }
           renderItem={renderItem}
         />
         <Button bordered transparent
           title="Agree and Exit Dogphin" 
-          onPress={() => props.toggleModal(false)}
+          onPress={() => props.toggleAlertModal(false)}
         >
           <Text>Cancel</Text>
         </Button>
@@ -127,6 +131,7 @@ const AlertScreen = props => {
         showModal={showCreateModal} 
         setShowModal={setShowCreateModal} 
         alert={modalAlert}
+        createAlertPressed={createAlertPressed}
       />
     </Modal>
   )
@@ -134,16 +139,18 @@ const AlertScreen = props => {
 
 const mapStateToProps = state => {
   return {
-    notificationCreated: state.notification.notificationCreated,
+    user: state.user.user,
+    location: state.user.location,
     showModal: state.alert.showModal,
+    notificationCreated: state.notification.notificationCreated,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    selectAlert: (alert) => dispatch(alertActions.selectAlert(alert)),
-    toggleModal: (value) => dispatch(alertActions.toggleModal(value)),
-    createNotificationSuccess: (value) => dispatch(notificationActions.createNotificationSuccess(value)),
+    toggleAlertModal: (value) => dispatch(alertActions.toggleModal(value)),
+    createAlert: (params) => dispatch(notificationActions.createNotification(params)),
+    changeNotificationSuccess: (value) => dispatch(notificationActions.changeNotificationSuccess(value)),
   }
 }
 

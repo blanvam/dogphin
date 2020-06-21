@@ -14,7 +14,7 @@ export default (collection) => {
     collectionRef: () => dbRef,
     all: (onResult, onError=(_ => {})) => (dbRef.onSnapshot(querySnapshot => onResult(listElements(querySnapshot)), onError)),
     get: (id, onResult, onError=(_ => {})) => (dbRef.doc(id).onSnapshot(documentSnapshot => onResult(documentSnapshot.data()), onError)),
-    where: (query, onResult) => (dbRef.where(...query).get().then(querySnapshot => onResult(listElements(querySnapshot)))),
+    where: (fieldPath, opStr, value, onResult) => (dbRef.where(fieldPath, opStr, value).get().then(querySnapshot => onResult(listElements(querySnapshot)))),
     set: (id, data, onSuccess, onError=(_ => {})) => (dbRef.doc(id).set(data).then(onSuccess).catch(onError)),
     add: (data, onSuccess, onError=(_ => {})) => (dbRef.add(data).then(onSuccess).catch(onError)),
     update: (id, data, onSuccess, onError=(_ => {})) => (dbRef.doc(id).update(data).then(onSuccess).catch(onError) ),

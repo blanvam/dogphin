@@ -12,8 +12,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, user: action.user }
     case actionsTypes.UPDATE_LOCATION_SUCCESS:
       return { ...state, location: action.location }
-      case actionsTypes.UPDATE_PERMISSIONS_SUCCESS:
-        return { ...state, permissions: action.value }
+    case actionsTypes.UPDATE_PERMISSIONS_SUCCESS:
+      return { ...state, permissions: action.value }
     default:
       return state
   }
