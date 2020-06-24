@@ -97,8 +97,8 @@ const Map = props => {
         <Marker
           key={item.id}
           coordinate={{
-            latitude: item.location.latitude,
-            longitude: item.location.longitude,
+            latitude: item.coordinates.latitude,
+            longitude: item.coordinates.longitude,
           }}
           title={config.title}
           description={config.message}

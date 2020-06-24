@@ -1,7 +1,9 @@
 import firestore from '@react-native-firebase/firestore'
 import firestoreServices from '../services/firestore.service'
+import geofirestoreServices from '../services/geofirestore.service'
 
 const notificationsFirestoreServices = firestoreServices("notifications")
+const notificationsGeoFirestoreServices = geofirestoreServices("notifications")
 
 const raw = (querySnapshot, action) => {
   querySnapshot.forEach((doc, _) => { 
@@ -11,6 +13,8 @@ const raw = (querySnapshot, action) => {
 
 export default {
   ...notificationsFirestoreServices,
+  near: notificationsGeoFirestoreServices.near,
+  add: notificationsGeoFirestoreServices.add,
   updateLocationUserQuery: (email, data) => {
     const timestamp = firestore.Timestamp.now()
     const updateNotification = (doc) => { notificationsFirestoreServices.update(doc.id, data, () => {}) }
@@ -19,7 +23,6 @@ export default {
       .where('follow', '==', true)
       .where('expiredAt', '>=', timestamp.toMillis())
       .get().then(querySnapshot => raw(querySnapshot, updateNotification) )},
-  lasts: (onResult, onError) => { notificationsFirestoreServices.all(onResult, onError) },
   timeAgo: (notification) => {
     let secAgo = (new Date().getTime() - notification.createdAt.toDate().getTime()) / 1000
     let minAgo, hoursAgo, daysAgo;

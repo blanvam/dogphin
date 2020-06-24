@@ -1,11 +1,15 @@
 import auth from '@react-native-firebase/auth'
 
 import firestoreServices from '../services/firestore.service'
+import geofirestoreServices from '../services/geofirestore.service'
 
 const usersFirestoreServices = firestoreServices("users")
+const usersGeoFirestoreServices = geofirestoreServices("users")
 
 export default {
   ...usersFirestoreServices,
+  near: usersGeoFirestoreServices.near,
+  add: usersGeoFirestoreServices.add,
   onAuthStateChanged: (onSuccess, onError) => (
     auth().onAuthStateChanged((user) => {
       if (user) {

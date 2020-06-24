@@ -2,7 +2,6 @@ import actionTypes from './user.action-types'
 import userServices from './user.services'
 import notificationService from '../notification/notification.service'
 import * as mapActions from '../map/map.actions'
-import * as notificationActions from '../notification/notification.actions'
 
 import firestore from '@react-native-firebase/firestore'
 
@@ -20,7 +19,7 @@ export const updateUserLocation = location => {
     let email = getState().user.user.email
     userServices.update(
       email,
-      {currentLocation: dblocation},
+      {coordinates: dblocation},
       () => {}
     )
     notificationService.updateLocationUserQuery(email, {location: dblocation})

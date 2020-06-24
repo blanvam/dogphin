@@ -25,11 +25,13 @@ export const getNotificationsBarSuccess = notifications => {
 }
 
 export const getNotifications = num => {
-  return dispatch => {
-    return notificationService.lasts(
+  return (dispatch, getState) => {
+    return notificationService.near(
+      getState().user.location,
+      getState().home.config.queryDistance,
       notifications => {
-        dispatch(getNotificationsSuccess(notifications))
-        dispatch(getNotificationsBarSuccess(notifications.slice(0, num)))
+        dispatch(getNotificationsSuccess(notifications.docs))
+        dispatch(getNotificationsBarSuccess(notifications.docs.slice(0, num)))
         dispatch(toggleNotificationsLoader(false))
         return notifications
       }
@@ -45,7 +47,7 @@ export const createNotification = notification => {
       { 
         ...notification,
         user: getState().user.user.email,
-        location: new firestore.GeoPoint(notification.location.latitude, notification.location.longitude),
+        coordinates: new firestore.GeoPoint(notification.coordinates.latitude, notification.coordinates.longitude),
         createdAt: new firestore.FieldValue.serverTimestamp(),
         expiredAt: timestamp.toMillis() + milisExpiration,
       },
