@@ -22,7 +22,7 @@ export const updateUserLocation = location => {
       {coordinates: dblocation},
       () => {}
     )
-    notificationService.updateLocationUserQuery(email, {location: dblocation})
+    notificationService.updateLocationUserQuery(email, dblocation)
     dispatch(updateLocationSuccess(location))
   }
 }

@@ -12,17 +12,20 @@ const raw = (querySnapshot, action) => {
 }
 
 export default {
-  ...notificationsFirestoreServices,
-  near: notificationsGeoFirestoreServices.near,
-  add: notificationsGeoFirestoreServices.add,
-  updateLocationUserQuery: (email, data) => {
+  ...notificationsGeoFirestoreServices,
+  updateLocationUserQuery: (email, coordinates) => {
     const timestamp = firestore.Timestamp.now()
-    const updateNotification = (doc) => { notificationsFirestoreServices.update(doc.id, data, () => {}) }
+    const updateNotification = (doc) => {
+      console.log(`NOTIFICATION updateNotification ${doc.id} - ${doc.data().expiredAt}`)
+      let data = { expired: timestamp >= doc.data().expiredAt }
+      if (doc.data().follow) { data.coordinates = coordinates }
+      notificationsGeoFirestoreServices.update(doc.id, data, () => {})
+    }
     notificationsFirestoreServices.collectionRef()
       .where('user', '==', email)
-      .where('follow', '==', true)
-      .where('expiredAt', '>=', timestamp.toMillis())
-      .get().then(querySnapshot => raw(querySnapshot, updateNotification) )},
+      .where('expired', '==', false)
+      .get().then(querySnapshot => raw(querySnapshot, updateNotification))
+  },
   timeAgo: (notification) => {
     let secAgo = (new Date().getTime() - notification.createdAt.toDate().getTime()) / 1000
     let minAgo, hoursAgo, daysAgo;
