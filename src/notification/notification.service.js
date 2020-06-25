@@ -1,6 +1,7 @@
 import firestore from '@react-native-firebase/firestore'
 import firestoreServices from '../services/firestore.service'
 import geofirestoreServices from '../services/geofirestore.service'
+import notificationHistory from '../services/notificationHistory.service'
 
 const notificationsFirestoreServices = firestoreServices("notifications")
 const notificationsGeoFirestoreServices = geofirestoreServices("notifications")
@@ -16,14 +17,15 @@ export default {
   updateLocationUserQuery: (email, coordinates) => {
     const timestamp = firestore.Timestamp.now()
     const updateNotification = (doc) => {
-      console.log(`NOTIFICATION updateNotification ${doc.id} - ${doc.data().expiredAt}`)
-      let data = { expired: timestamp >= doc.data().expiredAt }
-      if (doc.data().follow) { data.coordinates = coordinates }
-      notificationsGeoFirestoreServices.update(doc.id, data, () => {})
+      if (timestamp >= doc.data().expiredAt) {
+        const onSuccess = () => notificationsGeoFirestoreServices.delete(doc.id)
+        notificationHistory.set(doc.id, doc.data(), onSuccess, onError)
+      } else if (doc.data().follow) {
+        notificationsGeoFirestoreServices.update(doc.id, {coordinates: coordinates}, () => {})
+      }
     }
     notificationsFirestoreServices.collectionRef()
       .where('user', '==', email)
-      .where('expired', '==', false)
       .get().then(querySnapshot => raw(querySnapshot, updateNotification))
   },
   timeAgo: (notification) => {

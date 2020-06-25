@@ -8,7 +8,6 @@ import * as notificationsActions from './notification.actions'
 
 const NotificationBar = props => {
 
-  //const { notifications } = props.notifications
   const [numNotifications, _] = useState(5)
   const [index, setIndex] = useState(0)
 
@@ -25,6 +24,10 @@ const NotificationBar = props => {
   }, [])
 
   useEffect(() => {
+    props.getNotifications(numNotifications)
+  }, [props.config])
+
+  useEffect(() => {
     const timeout = setInterval(scrollNext, 10000) 
     return () => clearInterval(timeout)
   }, [index, scrollNext])
@@ -36,8 +39,8 @@ const NotificationBar = props => {
       <Item 
         onPress={() => props.updateMapLocation(
           config.location({
-            latitude: item.location.latitude,
-            longitude: item.location.longitude,
+            latitude: item.coordinates.latitude,
+            longitude: item.coordinates.longitude,
           })
         )} 
         style={{backgroundColor: item.backgroundColor}}
