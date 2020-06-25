@@ -1,9 +1,7 @@
 import firestore from '@react-native-firebase/firestore'
-import firestoreServices from '../services/firestore.service'
 import geofirestoreServices from '../services/geofirestore.service'
 import notificationHistory from '../services/notificationHistory.service'
 
-const notificationsFirestoreServices = firestoreServices("notifications")
 const notificationsGeoFirestoreServices = geofirestoreServices("notifications")
 
 const raw = (querySnapshot, action) => {
@@ -24,7 +22,7 @@ export default {
         notificationsGeoFirestoreServices.update(doc.id, {coordinates: coordinates}, () => {})
       }
     }
-    notificationsFirestoreServices.collectionRef()
+    notificationsGeoFirestoreServices.collectionRef()
       .where('user', '==', email)
       .get().then(querySnapshot => raw(querySnapshot, updateNotification))
   },
