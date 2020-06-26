@@ -1,11 +1,13 @@
 import firestore from '@react-native-firebase/firestore'
+import firestoreServices from '../services/firestore.service'
 import geofirestoreServices from '../services/geofirestore.service'
 import notificationHistory from '../services/notificationHistory.service'
 
+const notificationsFirestoreServices = firestoreServices("notifications")
 const notificationsGeoFirestoreServices = geofirestoreServices("notifications")
 
 const raw = (querySnapshot, action) => {
-  querySnapshot.forEach((doc, _) => { 
+  querySnapshot.forEach((doc, _) => {
     action(doc) 
   })
 }
@@ -13,16 +15,18 @@ const raw = (querySnapshot, action) => {
 export default {
   ...notificationsGeoFirestoreServices,
   updateLocationUserQuery: (email, coordinates) => {
-    const timestamp = firestore.Timestamp.now()
+    const timestamp = firestore.Timestamp.now().toMillis()
     const updateNotification = (doc) => {
       if (timestamp >= doc.data().expiredAt) {
-        const onSuccess = () => notificationsGeoFirestoreServices.delete(doc.id)
-        notificationHistory.set(doc.id, doc.data(), onSuccess, onError)
+        const onSuccess = () => { 
+          notificationsGeoFirestoreServices.delete(doc.id)
+        }
+        notificationHistory.set(doc.id, doc.data(), onSuccess)
       } else if (doc.data().follow) {
         notificationsGeoFirestoreServices.update(doc.id, {coordinates: coordinates}, () => {})
       }
     }
-    notificationsGeoFirestoreServices.collectionRef()
+    notificationsFirestoreServices.collectionRef()
       .where('user', '==', email)
       .get().then(querySnapshot => raw(querySnapshot, updateNotification))
   },

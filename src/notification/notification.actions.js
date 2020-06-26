@@ -30,6 +30,8 @@ export const getNotifications = num => {
       getState().user.location,
       getState().home.config.queryDistance,
       notifications => {
+        console.log(`NNNNNNNN ${JSON.stringify(notifications)} = ${getState().home.config.queryDistance}`)
+        console.log(`MMMMMMMM ${JSON.stringify(notificnotifications.docs)}`)
         dispatch(getNotificationsSuccess(notifications.docs))
         dispatch(getNotificationsBarSuccess(notifications.docs.slice(0, num)))
         dispatch(toggleNotificationsLoader(false))
@@ -63,6 +65,10 @@ export const createNotification = notification => {
       }
     )
   }
+}
+
+export const updateLocations = (email, coordinates) => {
+  notificationService.updateLocationUserQuery(email, coordinates)
 }
 
 export const changeNotificationSuccess = value => {
