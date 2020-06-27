@@ -9,6 +9,13 @@ const NotificationBar = props => {
 
   const [index, setIndex] = useState(0)
 
+  useEffect(() => {}, [props.notifications])
+
+  useEffect(() => {
+    const timeout = setInterval(scrollNext, 10000) 
+    return () => clearInterval(timeout)
+  }, [index, scrollNext])
+
   scrollNext = useCallback(async() => {
     let nextIndex = 0
     if (index < props.config.notificationsBarShow - 1) {
@@ -17,23 +24,16 @@ const NotificationBar = props => {
     setIndex(nextIndex)
   })
 
-  useEffect(() => {}, [props.notifications])
-
-  useEffect(() => {
-    const timeout = setInterval(scrollNext, 10000) 
-    return () => clearInterval(timeout)
-  }, [index, scrollNext])
-
   if (props.notifications && props.notifications[index]) {
     let item = props.notifications[index]
     let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
     return (
       <Item 
         onPress={() => props.updateMapLocation(
-          config.location({
+          {
             latitude: item.coordinates.latitude,
             longitude: item.coordinates.longitude,
-          })
+          }
         )} 
         style={{backgroundColor: item.backgroundColor}}
       >
@@ -65,7 +65,9 @@ const NotificationBar = props => {
           type="AntDesign" name="notification"
         />
         <View style={{flex: 1, alignItems: 'flex-start'}}>
-          <TextTicker style={{ color: 'black' }} scrollSpeed={5000} bounceSpeed={5000} >
+          <TextTicker style={{ color: 'black' }} scrollSpeed={5000} bounceSpeed={5000} 
+            onPress={() => props.navigation.navigate("Notifications")}
+          >
             Hello! Today is a good day for sailing...
           </TextTicker>
         </View>

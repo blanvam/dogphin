@@ -48,7 +48,10 @@ const HomeScreen = props => {
     props.updateUser({})
   }
 
-  useEffect(() => props.getConfiguration(Platform.OS), [])
+  useEffect(() => {
+    props.updateUser({email: userServices.currentUser.email})
+    props.getConfiguration(Platform.OS)
+  }, [])
 
   useEffect(() => {
     const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
@@ -85,7 +88,7 @@ const HomeScreen = props => {
   return (
     <Container>
       <Header searchBar rounded>
-        <NotificationBar />
+        <NotificationBar navigation={props.navigation} />
         <Right style={{ flex: null }}>
           <Button transparent onPress={() => props.navigation.navigate('Profile')}>
             <Icon type="MaterialIcons" name="person" />

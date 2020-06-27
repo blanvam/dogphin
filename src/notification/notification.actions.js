@@ -66,7 +66,9 @@ export const createNotification = notification => {
 }
 
 export const updateLocations = (email, coordinates) => {
-  notificationService.updateLocationUserQuery(email, coordinates)
+  return _ => {
+    notificationService.updateLocationUserQuery(email, coordinates)
+  }
 }
 
 export const changeNotificationSuccess = value => {
