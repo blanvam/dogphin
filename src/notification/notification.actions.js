@@ -46,7 +46,7 @@ export const createNotification = notification => {
     return notificationService.add(
       { 
         ...notification,
-        user: getState().user.user.email,
+        user: getState().user.user.uid,
         coordinates: new firestore.GeoPoint(notification.coordinates.latitude, notification.coordinates.longitude),
         createdAt: new firestore.FieldValue.serverTimestamp(),
         expiredAt: timestamp.toMillis() + milisExpiration,
@@ -65,9 +65,9 @@ export const createNotification = notification => {
   }
 }
 
-export const updateLocations = (email, coordinates) => {
+export const updateLocations = (userId, coordinates) => {
   return _ => {
-    notificationService.updateLocationUserQuery(email, coordinates)
+    notificationService.updateLocationUserQuery(userId, coordinates)
   }
 }
 

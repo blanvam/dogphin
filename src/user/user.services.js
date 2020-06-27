@@ -1,9 +1,9 @@
 import auth from '@react-native-firebase/auth'
 
-//import firestoreServices from '../services/firestore.service'
+import firestoreServices from '../services/firestore.service'
 import geofirestoreServices from '../services/geofirestore.service'
 
-//const usersFirestoreServices = firestoreServices("users")
+const usersFirestoreServices = firestoreServices("users")
 const usersGeoFirestoreServices = geofirestoreServices("users")
 
 export default {
@@ -12,12 +12,14 @@ export default {
   onAuthStateChanged: (onSuccess, onError) => (
     auth().onAuthStateChanged((user) => {
       if (user) {
-        usersGeoFirestoreServices.get(
-          user.email,
-          usr => onSuccess(user.email, usr),
-          onError
-        )
-      } else { onError() }
+        usersGeoFirestoreServices.get(user.uid, usr => onSuccess(user.uid, usr), () => onError(user.uid))
+      } else {
+        auth().signInAnonymously().then(usr => {
+          let userData = {locationEnabled: true, isAnonymous: true}
+          usersFirestoreServices.set(usr.user.uid, userData, onSuccess, () => onError(user.uid))
+          onSuccess(usr.user.uid, userData)
+        }).catch(() => onError(user.uid))  
+      }
     })
   ),
   signInWithEmail: (email, password, onSuccess, onError) => (
@@ -29,7 +31,7 @@ export default {
   signUp: (email, password, userData, onSuccess, onError) => (
     auth()
     .createUserWithEmailAndPassword(email, password)
-    .then(() => { usersGeoFirestoreServices.set(email, userData, onSuccess, onError) })
+    .then(r => { usersFirestoreServices.set(r.user.uid, userData, () => {onSuccess(r)}, onError) })
     .catch(onError)
   )
 }

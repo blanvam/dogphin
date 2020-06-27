@@ -14,7 +14,7 @@ const raw = (querySnapshot, action) => {
 
 export default {
   ...notificationsGeoFirestoreServices,
-  updateLocationUserQuery: (email, coordinates) => {
+  updateLocationUserQuery: (userId, coordinates) => {
     const timestamp = firestore.Timestamp.now().toMillis()
     const updateNotification = (doc) => {
       if (timestamp >= doc.data().expiredAt) {
@@ -27,7 +27,7 @@ export default {
       }
     }
     notificationsFirestoreServices.collectionRef()
-      .where('user', '==', email)
+      .where('user', '==', userId)
       .get().then(querySnapshot => raw(querySnapshot, updateNotification))
   },
   timeAgo: (notification) => {

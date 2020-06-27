@@ -19,7 +19,7 @@ const authErrors = {
   },
   'auth/operation-not-allowed': {
     'fields': ['email', 'password'],
-    'message': 'Unable to access your account at this time, please try again later'
+    'message': 'Unable to access your account at this time, please try again in a few minutes'
   },
   'auth/weak-password': {
     'fields': ['password'],
@@ -93,6 +93,7 @@ class SignupScreen extends Component {
     if (this._formFieldsValid()) {
       this.setState({errorFields: [], errorMessage: '', isLoading: true})
       let userData = {
+        email: this.state.email,
         firstname: this.state.firstname, 
         phoneNumber: this.state.phoneNumber, 
         positionEnabled: true,
@@ -101,8 +102,8 @@ class SignupScreen extends Component {
         this.state.email,
         this.state.password,
         userData,
-        () => {          
-          this.props.updateUser({email: this.state.email, ...userData})
+        result => {
+          this.props.updateUser({uid: result.user.uid, ...userData})
           this.setState({isLoading: false})
           this.props.navigation.navigate('Profile')
         },
