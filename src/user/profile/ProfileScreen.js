@@ -67,8 +67,9 @@ const ProfileScreen = props => {
   const [errorFields, setErrorFields] = useState([])
   const [errorMessage, setErrorMessage] = useState('')
 
-  onUserLoadSuccess = (email, usr) => {
+  onUserLoadSuccess = (uid, usr) => {
     if (usr) {
+      setEmail(usr.email)
       setPhoneNumber(usr.phoneNumber)
       setFirstname(usr.firstname)
       setSurname(usr.surname)
@@ -78,24 +79,23 @@ const ProfileScreen = props => {
       setInsuranceIdNumber(usr.insuranceIdNumber)
       setContactPhoneNumber(usr.contactPhoneNumber)
     }
-    setEmail(email)
-    props.updateUser({email: email, ...usr})
+    props.updateUser({uid: uid, ...usr})
     setLoading(false)
   }
 
-  onUserLoadFail = () => {
-    props.updateUser({})
+  onUserLoadFail = (uid) => {
+    props.updateUser({uid: uid})
     props.navigation.navigate('Login')
     setLoading(false)
   }
 
   useEffect(() => {
     if (props.user.email) {
-      onUserLoadSuccess(props.user.email, props.user)
+      onUserLoadSuccess(props.user.uid, props.user)
     } else {
-      onUserLoadFail()
+      onUserLoadFail(props.user.uid)
     }
-  }, [])
+  }, [props.user.email])
 
   updateProfileUser = () => {
     if(firstname == '') {
@@ -115,10 +115,10 @@ const ProfileScreen = props => {
         contactPhoneNumber: contactPhoneNumber,
       }
       userServices.update(
-        email,
+        props.user.uid,
         userData,
         () => {
-          props.updateUser({email: email, phoneNumber: phoneNumber, ...userData})
+          props.updateUser({uid: props.user.uid, email: email, phoneNumber: phoneNumber, ...userData})
           setLoading(false)
         },
         () => {

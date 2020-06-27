@@ -37,19 +37,20 @@ const styles = StyleSheet.create({
 const HomeScreen = props => {
   const [locationEnabled, setLocationEnabled] = useState(props.user.locationEnabled || true)
 
-  onUserLoadSuccess = (email, usr) => {
+  onUserLoadSuccess = (uid, usr) => {
     if (usr) {
       setLocationEnabled(usr.locationEnabled)
     }
-    props.updateUser({email: email, ...usr})
+    props.updateUser({uid: uid, ...usr})
   }
 
-  onUserLoadFail = () => {
-    props.updateUser({})
+  onUserLoadFail = (uid) => {
+    console.log('onUserLoadFail FAILED')
+    props.updateUser({uid: uid})
   }
 
   useEffect(() => {
-    props.updateUser({email: userServices.currentUser.email})
+    props.updateUser({uid: userServices.currentUser.uid, email: userServices.currentUser.email})
     props.getConfiguration(Platform.OS)
   }, [])
 
@@ -61,7 +62,7 @@ const HomeScreen = props => {
   updateUserPositionSwitch = (value) => {
     setLocationEnabled(value)
     userServices.update(
-      props.user.email,
+      props.user.uid,
       {locationEnabled: value},
       () => { props.updateUser({locationEnabled: value, ...props.user}) }
     )
