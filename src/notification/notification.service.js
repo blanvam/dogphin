@@ -1,25 +1,35 @@
 import firestore from '@react-native-firebase/firestore'
 import firestoreServices from '../services/firestore.service'
+import geofirestoreServices from '../services/geofirestore.service'
+import notificationHistory from '../services/notificationHistory.service'
 
 const notificationsFirestoreServices = firestoreServices("notifications")
+const notificationsGeoFirestoreServices = geofirestoreServices("notifications")
 
 const raw = (querySnapshot, action) => {
-  querySnapshot.forEach((doc, _) => { 
+  querySnapshot.forEach((doc, _) => {
     action(doc) 
   })
 }
 
 export default {
-  ...notificationsFirestoreServices,
-  updateLocationUserQuery: (email, data) => {
-    const timestamp = firestore.Timestamp.now()
-    const updateNotification = (doc) => { notificationsFirestoreServices.update(doc.id, data, () => {}) }
+  ...notificationsGeoFirestoreServices,
+  updateLocationUserQuery: (email, coordinates) => {
+    const timestamp = firestore.Timestamp.now().toMillis()
+    const updateNotification = (doc) => {
+      if (timestamp >= doc.data().expiredAt) {
+        const onSuccess = () => { 
+          notificationsGeoFirestoreServices.delete(doc.id)
+        }
+        notificationHistory.set(doc.id, doc.data(), onSuccess)
+      } else if (doc.data().follow) {
+        notificationsGeoFirestoreServices.update(doc.id, {coordinates: coordinates}, () => {})
+      }
+    }
     notificationsFirestoreServices.collectionRef()
       .where('user', '==', email)
-      .where('follow', '==', true)
-      .where('expiredAt', '>=', timestamp.toMillis())
-      .get().then(querySnapshot => raw(querySnapshot, updateNotification) )},
-  lasts: (onResult, onError) => { notificationsFirestoreServices.all(onResult, onError) },
+      .get().then(querySnapshot => raw(querySnapshot, updateNotification))
+  },
   timeAgo: (notification) => {
     let secAgo = (new Date().getTime() - notification.createdAt.toDate().getTime()) / 1000
     let minAgo, hoursAgo, daysAgo;

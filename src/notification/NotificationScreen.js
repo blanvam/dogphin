@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { ActivityIndicator, FlatList, StyleSheet } from 'react-native'
 import { Container, View, Text, Icon, ListItem, Left, Body, Right } from 'native-base'
@@ -29,6 +29,8 @@ const styles = StyleSheet.create({
 
 
 const NotificationScreen = props => {
+
+  useEffect(() => {}, [props.notifications])
 
   renderItem = ({ item }) => {
     let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)

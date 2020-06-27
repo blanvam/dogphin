@@ -43,36 +43,22 @@ const Map = props => {
   })
  
   useEffect(() => {
-    if (props.permissionsGranted && !watchID) {
+    if (props.permissionsGranted && watchID == null) {
       set_geolocation()
-      return (() => { 
-        watchID && Geolocation.clearWatch(watchID)
-      })
-    }
-  }, [])
-
-  useEffect(() => {
-    if (props.permissionsGranted && !watchID) {
-      set_geolocation()
-      return (() => { 
-        watchID && Geolocation.clearWatch(watchID)
+      return (() => {
+        watchID !== null && Geolocation.clearWatch(watchID)
       })
     }
   }, [props.permissionsGranted])
 
   useEffect(() => {
-    if (watchID && props.mapLocation.latitude !== region.latitude && props.mapLocation.longitude !== region.longitude ) {
+    if (watchID !== null && props.mapLocation.latitude !== region.latitude && props.mapLocation.longitude !== region.longitude ) {
       move(props.mapLocation.latitude, props.mapLocation.longitude)
     }
   }, [props.mapLocation])
 
   set_geolocation = () => {
     Geolocation.setRNConfiguration({"authorizationLevel": "always"})
-    Geolocation.getCurrentPosition(
-      position => {props.updateUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})},
-      error => console.log('Error getCurrentPosition', JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000},
-    )
     let watchID = Geolocation.watchPosition(
       position => {props.updateUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})},
       error => console.log('Error watchPosition', JSON.stringify(error)),
@@ -87,7 +73,7 @@ const Map = props => {
       latitude: latitude,
       longitude: longitude,
     }
-    mapRef.animateToRegion(newRegion, 5000)
+    mapRef.animateToRegion(newRegion, 1000)
   }
 
   get_markers = () => (
@@ -97,8 +83,8 @@ const Map = props => {
         <Marker
           key={item.id}
           coordinate={{
-            latitude: item.location.latitude,
-            longitude: item.location.longitude,
+            latitude: item.coordinates.latitude,
+            longitude: item.coordinates.longitude,
           }}
           title={config.title}
           description={config.message}

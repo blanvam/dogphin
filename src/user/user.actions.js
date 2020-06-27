@@ -1,6 +1,5 @@
 import actionTypes from './user.action-types'
 import userServices from './user.services'
-import notificationService from '../notification/notification.service'
 import * as mapActions from '../map/map.actions'
 import * as notificationActions from '../notification/notification.actions'
 
@@ -18,12 +17,11 @@ export const updateUserLocation = location => {
     dispatch(mapActions.updateMapLocation(location))
     let dblocation = new firestore.GeoPoint(location.latitude, location.longitude)
     let email = getState().user.user.email
-    userServices.update(
-      email,
-      {currentLocation: dblocation},
-      () => {}
-    )
-    notificationService.updateLocationUserQuery(email, {location: dblocation})
+    if (email) {
+      userServices.update(email, {coordinates: dblocation}, () => {})
+      dispatch(notificationActions.updateLocations(email, dblocation))
+    }
+    dispatch(notificationActions.getNotifications(dblocation))
     dispatch(updateLocationSuccess(location))
   }
 }

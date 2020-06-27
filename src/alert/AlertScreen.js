@@ -74,7 +74,7 @@ const AlertScreen = props => {
 
   createAlertPressed = () => {
     let newAlert = {
-      location: props.location,
+      coordinates: props.location,
       name: modalAlert.name,
       type: modalAlert.id,
       follow: modalAlert.followable

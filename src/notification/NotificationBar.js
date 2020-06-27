@@ -4,30 +4,26 @@ import TextTicker from 'react-native-text-ticker'
 import { Item, Icon, View } from 'native-base'
 
 import * as mapActions from '../map/map.actions'
-import * as notificationsActions from './notification.actions'
 
 const NotificationBar = props => {
 
-  //const { notifications } = props.notifications
-  const [numNotifications, _] = useState(5)
   const [index, setIndex] = useState(0)
 
   scrollNext = useCallback(async() => {
     let nextIndex = 0
-    if (index < numNotifications - 1) {
+    if (index < props.config.notificationsBarShow - 1) {
       nextIndex = index + 1
     }
     setIndex(nextIndex)
   })
 
-  useEffect(() => {
-    props.getNotifications(numNotifications)
-  }, [])
+  useEffect(() => {}, [props.notifications])
 
   useEffect(() => {
     const timeout = setInterval(scrollNext, 10000) 
     return () => clearInterval(timeout)
   }, [index, scrollNext])
+
 
   if (props.notifications && props.notifications[index]) {
     let item = props.notifications[index]
@@ -35,10 +31,10 @@ const NotificationBar = props => {
     return (
       <Item 
         onPress={() => props.updateMapLocation(
-          config.location({
-            latitude: item.location.latitude,
-            longitude: item.location.longitude,
-          })
+          {
+            latitude: item.coordinates.latitude,
+            longitude: item.coordinates.longitude,
+          }
         )} 
         style={{backgroundColor: item.backgroundColor}}
       >
@@ -70,7 +66,9 @@ const NotificationBar = props => {
           type="AntDesign" name="notification"
         />
         <View style={{flex: 1, alignItems: 'flex-start'}}>
-          <TextTicker style={{ color: 'black' }} scrollSpeed={5000} bounceSpeed={5000} >
+          <TextTicker style={{ color: 'black' }} scrollSpeed={5000} bounceSpeed={5000} 
+            onPress={() => props.navigation.navigate("Notifications")}
+          >
             Hello! Today is a good day for sailing...
           </TextTicker>
         </View>
@@ -89,7 +87,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getNotifications: (n) => dispatch(notificationsActions.getNotifications(n)),
     updateMapLocation: (location) => dispatch(mapActions.updateMapLocation(location)),
   }
 }
