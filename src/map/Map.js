@@ -38,8 +38,8 @@ const Map = props => {
   const [region, setRegion] = useState({
     latitude: props.mapLocation.latitude,
     longitude: props.mapLocation.longitude,
-    latitudeDelta: 0.5,
-    longitudeDelta: 0.5,
+    latitudeDelta: 0.35,
+    longitudeDelta: 0.35,
   })
  
   useEffect(() => {
@@ -73,7 +73,8 @@ const Map = props => {
       latitude: latitude,
       longitude: longitude,
     }
-    mapRef.animateToRegion(newRegion, 1000)
+    setRegion(newRegion)
+    //mapRef.animateToRegion(newRegion, 1000)
   }
 
   get_markers = () => (
