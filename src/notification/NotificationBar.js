@@ -4,28 +4,20 @@ import TextTicker from 'react-native-text-ticker'
 import { Item, Icon, View } from 'native-base'
 
 import * as mapActions from '../map/map.actions'
-import * as notificationsActions from './notification.actions'
 
 const NotificationBar = props => {
 
-  const [numNotifications, _] = useState(5)
   const [index, setIndex] = useState(0)
 
   scrollNext = useCallback(async() => {
     let nextIndex = 0
-    if (index < numNotifications - 1) {
+    if (index < props.config.notificationsBarShow - 1) {
       nextIndex = index + 1
     }
     setIndex(nextIndex)
   })
 
-  useEffect(() => {
-    props.getNotifications(numNotifications)
-  }, [])
-
-  useEffect(() => {
-    props.getNotifications(numNotifications)
-  }, [props.config])
+  useEffect(() => {}, [props.notifications])
 
   useEffect(() => {
     const timeout = setInterval(scrollNext, 10000) 
@@ -92,7 +84,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getNotifications: (n) => dispatch(notificationsActions.getNotifications(n)),
     updateMapLocation: (location) => dispatch(mapActions.updateMapLocation(location)),
   }
 }

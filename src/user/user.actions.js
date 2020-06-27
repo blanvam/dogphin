@@ -17,14 +17,12 @@ export const updateUserLocation = location => {
     dispatch(mapActions.updateMapLocation(location))
     let dblocation = new firestore.GeoPoint(location.latitude, location.longitude)
     let email = getState().user.user.email
-    userServices.update(
-      email,
-      {coordinates: dblocation},
-      () => {
-        dispatch(notificationActions.updateLocations(email, dblocation))
-        dispatch(updateLocationSuccess(location))
-      }
-    )
+    if (email) {
+      userServices.update(email, {coordinates: dblocation}, () => {})
+      dispatch(notificationActions.updateLocations(email, dblocation))
+    }
+    dispatch(notificationActions.getNotifications(dblocation))
+    dispatch(updateLocationSuccess(location))
   }
 }
 

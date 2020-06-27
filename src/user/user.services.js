@@ -8,6 +8,7 @@ const usersGeoFirestoreServices = geofirestoreServices("users")
 
 export default {
   ...usersGeoFirestoreServices,
+  currentUser: auth().currentUser,
   onAuthStateChanged: (onSuccess, onError) => (
     auth().onAuthStateChanged((user) => {
       if (user) {

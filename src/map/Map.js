@@ -42,22 +42,11 @@ const Map = props => {
     longitudeDelta: 0.5,
   })
  
-  //useEffect(() => {
-  //  if (props.permissionsGranted && !watchID) {
-  //    console.log(`set_geolocation [] ${props.permissionsGranted}`)
-  //    set_geolocation()
-  //    return (() => { 
-  //      console.log('clearWatch []')
-  //      watchID && Geolocation.clearWatch(watchID)
-  //    })
-  //  }
-  //}, [])
-
   useEffect(() => {
-    if (props.permissionsGranted && !watchID) {
+    if (props.permissionsGranted && watchID == null) {
       set_geolocation()
-      return (() => { 
-        watchID && Geolocation.clearWatch(watchID)
+      return (() => {
+        watchID !== null && Geolocation.clearWatch(watchID)
       })
     }
   }, [props.permissionsGranted])
@@ -66,15 +55,10 @@ const Map = props => {
     if (watchID !== null && props.mapLocation.latitude !== region.latitude && props.mapLocation.longitude !== region.longitude ) {
       move(props.mapLocation.latitude, props.mapLocation.longitude)
     }
-  }, [props.mapLocation, region])
+  }, [props.mapLocation])
 
   set_geolocation = () => {
     Geolocation.setRNConfiguration({"authorizationLevel": "always"})
-    //Geolocation.getCurrentPosition(
-    //  position => {props.updateUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})},
-    //  error => console.log('Error getCurrentPosition', JSON.stringify(error)),
-    //  {enableHighAccuracy: true, timeout: 10000, maximumAge: 10000},
-    //)
     let watchID = Geolocation.watchPosition(
       position => {props.updateUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})},
       error => console.log('Error watchPosition', JSON.stringify(error)),
@@ -95,7 +79,6 @@ const Map = props => {
   get_markers = () => (
     props.notifications.map(item => {
       let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
-      console.log(`item ${JSON.stringify(item)}`)
       return (
         <Marker
           key={item.id}

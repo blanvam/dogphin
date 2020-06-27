@@ -24,16 +24,14 @@ export const getNotificationsBarSuccess = notifications => {
   }
 }
 
-export const getNotifications = num => {
+export const getNotifications = dblocation => {
   return (dispatch, getState) => {
     return notificationService.near(
-      getState().user.location,
+      dblocation,
       getState().home.config.queryDistance,
       notifications => {
-        console.log(`NNNNNNNN ${JSON.stringify(notifications)} = ${getState().home.config.queryDistance}`)
-        console.log(`MMMMMMMM ${JSON.stringify(notificnotifications.docs)}`)
-        dispatch(getNotificationsSuccess(notifications.docs))
-        dispatch(getNotificationsBarSuccess(notifications.docs.slice(0, num)))
+        dispatch(getNotificationsSuccess(notifications))
+        dispatch(getNotificationsBarSuccess(notifications.slice(0, getState().home.config.notificationsBarShow)))
         dispatch(toggleNotificationsLoader(false))
         return notifications
       }

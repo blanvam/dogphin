@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   config: {
     queryDistance: 12, // millas
     notificationExpiration: 12, // horas
+    notificationsBarShow: 4,
     emergency: emergency,
     alerts: alerts,
   }
