@@ -9,13 +9,6 @@ const NotificationBar = props => {
 
   const [index, setIndex] = useState(0)
 
-  useEffect(() => {}, [props.notifications])
-
-  useEffect(() => {
-    const timeout = setInterval(scrollNext, 10000) 
-    return () => clearInterval(timeout)
-  }, [index, scrollNext])
-
   scrollNext = useCallback(async() => {
     let nextIndex = 0
     if (index < props.config.notificationsBarShow - 1) {
@@ -23,6 +16,14 @@ const NotificationBar = props => {
     }
     setIndex(nextIndex)
   })
+
+  useEffect(() => {}, [props.notifications])
+
+  useEffect(() => {
+    const timeout = setInterval(scrollNext, 10000) 
+    return () => clearInterval(timeout)
+  }, [index, scrollNext])
+
 
   if (props.notifications && props.notifications[index]) {
     let item = props.notifications[index]
