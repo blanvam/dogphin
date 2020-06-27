@@ -73,7 +73,7 @@ const Map = props => {
       latitude: latitude,
       longitude: longitude,
     }
-    mapRef.animateToRegion(newRegion, 5000)
+    mapRef.animateToRegion(newRegion, 1000)
   }
 
   get_markers = () => (
