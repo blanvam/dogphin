@@ -4,7 +4,7 @@ import alerts from '../alert/alerts.json'
 
 const INITIAL_STATE = {
   config: {
-    queryDistance: 12, // millas
+    queryDistance: 100, // kms
     notificationExpiration: 12, // horas
     notificationsBarShow: 4,
     emergency: emergency,
