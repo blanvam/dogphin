@@ -12,6 +12,20 @@ export const update = user => {
   }
 }
 
+export const getNearUsers = dblocation => {
+  return (dispatch, getState) => {
+    return userServices.near(
+      dblocation,
+      getState().home.config.queryDistance,
+      users => {
+        dispatch(getNearUsersSuccess(users))
+        return users
+      }
+    )
+  }
+}
+
+
 export const updateUserLocation = location => {
   return (dispatch, getState) => {
     dispatch(mapActions.updateMapLocation(location))
@@ -21,6 +35,7 @@ export const updateUserLocation = location => {
       userServices.update(userId, {coordinates: dblocation}, () => {})
       dispatch(notificationActions.updateLocations(userId, dblocation))
     }
+    dispatch(getNearUsers(dblocation))
     dispatch(notificationActions.getNotifications(dblocation))
     dispatch(updateLocationSuccess(location))
   }
@@ -37,5 +52,12 @@ export const updatePermissions = value => {
   return {
     type: actionTypes.UPDATE_PERMISSIONS_SUCCESS,
     value,
+  }
+}
+
+export const getNearUsersSuccess = nearUsers => {
+  return {
+    type: actionTypes.UPDATE_NEAR_USERS_SUCCESS,
+    nearUsers,
   }
 }
