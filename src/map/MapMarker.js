@@ -3,10 +3,9 @@ import { Marker } from 'react-native-maps'
 import { View, Icon } from 'native-base'
 
 export default MapMarker = props => {
-  console.log(props.item.id)
   return (
     <Marker
-        key={props.item.id}
+        key={`${props.item.prefixId}_${props.item.id}`}
         coordinate={{
           latitude: props.item.coordinates.latitude,
           longitude: props.item.coordinates.longitude,
@@ -14,6 +13,7 @@ export default MapMarker = props => {
         title={props.config.title}
         description={props.config.message}
         zIndex={props.zIndex}
+        pointerEvents="auto"
       >
         <View 
         style={{
