@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Dimensions } from 'react-native'
-import { View, Icon } from 'native-base'
-import MapView, { Marker } from 'react-native-maps'
+import { View } from 'native-base'
+import MapView from 'react-native-maps'
 import Geolocation from '@react-native-community/geolocation'
 
 import * as userActions from '../user/user.actions'
+import MapMarker from './MapMarker'
 //import mapStyle from './mapStyle.json'
 
 
@@ -14,19 +15,32 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   marker: {
-    position: 'absolute',
-    top: 40,
-    left: 50,
-    marginLeft: -115,
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 0,
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    // border: '4px solid #fff',
-    width: 20,
-    height: 20,
-    //transform: 'rotate(-45deg)'
-  }
+    marginTop: 0,
+    width: 30,
+    height: 30,
+    borderRadius: 30 / 2,
+  },
+  iconMarker: {
+    marginTop: 0,
+    fontWeight: 'bold',
+    textAlign: "center", 
+  },
+  userMarker: {
+    width: 40,
+    height: 40,
+    borderRadius: 40 / 2,
+  },
+  userIconMarker: {
+    marginTop: 5,
+    fontWeight: 'bold',
+    textAlign: "center", 
+  },
+  meMarker: {
+    backgroundColor: '#00576a',
+    width: 40,
+    height: 40,
+    borderRadius: 40 / 2,
+  },
 })
 const {height, width} = Dimensions.get('window');
 
@@ -77,40 +91,25 @@ const Map = props => {
     //mapRef.animateToRegion(newRegion, 1000)
   }
 
-  get_markers = () => (
-    props.notifications.map(item => {
+  get_markers = () => {
+    let markers = props.notifications.map(item => {
       let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
-      return (
-        <Marker
-          key={item.id}
-          coordinate={{
-            latitude: item.coordinates.latitude,
-            longitude: item.coordinates.longitude,
-          }}
-          title={config.title}
-          description={config.message}
-        >
-          <View 
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 40 / 2,
-            backgroundColor: config.backgroundColor,
-          }}>
-            <Icon
-              style={{ 
-                marginTop: 5,
-                fontWeight: 'bold',
-                textAlign: "center", 
-                color: config.iconColor }}
-              type={config.iconFont} 
-              name={config.iconName} 
-            />
-          </View>
-        </Marker>
-      )
+      return <MapMarker 
+        item={item} config={config} 
+        markerStyle={styles.marker} iconMarkerStyle={styles.iconMarker}
+        zIndex={(config.id == 'emergency') ? 99 : 98 }
+      />
     })
-  )
+    let nearUsers = props.nearUsers.map(item => {
+      return <MapMarker 
+        item={item} config={props.config.user} 
+        markerStyle={(item.id === props.user.uid) ? styles.meMarker: styles.userMarker}
+        iconMarkerStyle={styles.userIconMarker}
+        zIndex={97}
+      />
+    })
+    return markers.concat(nearUsers) 
+  }
   
   return (
     <View style={{height:height, width: width}}>
@@ -136,7 +135,9 @@ const mapStateToProps = state => {
   return {
     config: state.home.config,
     mapLocation: state.map.location,
+    user: state.user.user,
     permissionsGranted: state.user.permissions,
+    nearUsers: state.user.nearUsers,
     notifications: state.notification.notifications,
   }
 }

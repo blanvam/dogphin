@@ -33,5 +33,11 @@ export default {
     .createUserWithEmailAndPassword(email, password)
     .then(r => { usersFirestoreServices.set(r.user.uid, userData, () => {onSuccess(r)}, onError) })
     .catch(onError)
+  ),
+  nearVisible: (center, radius, onResult, onError) => (
+    usersGeoFirestoreServices.collectionRef()
+    .where('locationEnabled', '==', true)
+    .near({ center, radius})
+    .onSnapshot(querySnapshot => onResult(usersGeoFirestoreServices.listElements(querySnapshot)), onError)
   )
 }

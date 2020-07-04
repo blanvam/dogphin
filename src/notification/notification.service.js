@@ -17,6 +17,7 @@ export default {
   updateLocationUserQuery: (userId, coordinates) => {
     const timestamp = firestore.Timestamp.now().toMillis()
     const updateNotification = (doc) => {
+      // TODO: Could be better do it in schedule firebase functions and here just update location.
       if (timestamp >= doc.data().expiredAt) {
         const onSuccess = () => { 
           notificationsGeoFirestoreServices.delete(doc.id)
