@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
-import { Icon, Button, Text, View } from 'native-base'
+import { Icon, Button, View } from 'native-base'
 
 import * as alertActions from '../alert/alert.actions'
 import * as emergencyActions from '../emergency/emergency.actions'
