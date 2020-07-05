@@ -79,7 +79,6 @@ const EmergencyScreen = props => {
 
   createEmergencyPressed = () => {
     let alert = {
-      coordinates: props.location,
       name: props.emergency.name,
       type: props.emergency.id,
       follow: props.emergency.followable,
@@ -133,7 +132,6 @@ const EmergencyScreen = props => {
 const mapStateToProps = state => {
   return {
     emergency: state.home.config.emergency,
-    location: state.user.location,
     showEmergencyModal: state.emergency.showEmergencyModal,
     notificationCreated: state.notification.notificationCreated,
     notificationCreatedName: state.notification.notificationCreatedName,

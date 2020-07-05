@@ -74,7 +74,6 @@ const AlertScreen = props => {
 
   createAlertPressed = () => {
     let newAlert = {
-      coordinates: props.location,
       name: modalAlert.name,
       type: modalAlert.id,
       follow: modalAlert.followable
@@ -139,7 +138,6 @@ const AlertScreen = props => {
 const mapStateToProps = state => {
   return {
     alerts: state.home.config.alerts,
-    location: state.user.location,
     showModal: state.alert.showModal,
     notificationCreated: state.notification.notificationCreated,
   }

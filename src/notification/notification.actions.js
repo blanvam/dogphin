@@ -43,22 +43,19 @@ export const createNotification = notification => {
   const timestamp = firestore.Timestamp.now()
   return (dispatch, getState) => {
     const milisExpiration = (getState().home.config.notificationExpiration * 60 * 60 * 1000)
+    const coordinates = getState().user.location
     return notificationService.add(
       { 
         ...notification,
         user: getState().user.user.uid,
-        coordinates: new firestore.GeoPoint(notification.coordinates.latitude, notification.coordinates.longitude),
+        phoneNumber: getState().user.user.phoneNumber,
+        coordinates: new firestore.GeoPoint(coordinates.latitude, coordinates.longitude),
         createdAt: new firestore.FieldValue.serverTimestamp(),
         expiredAt: timestamp.toMillis() + milisExpiration,
       },
       () => {
         dispatch(changeNotificationName(notification.name))
         dispatch(changeNotificationSuccess(true))
-        return notification
-      },
-      () => {
-        dispatch(changeNotificationName(notification.name))
-        dispatch(changeNotificationSuccess(false))
         return notification
       }
     )
