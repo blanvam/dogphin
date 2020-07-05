@@ -24,16 +24,15 @@ const FooterBar = props => {
         <FooterTab>
           <Button active={props.active=="Home"} onPress={() => props.navigation.navigate("Home")} >
             <Icon type="MaterialIcons" name="explore" />
-            <Text> Home </Text>
+            <Text> Mapa </Text>
           </Button>
           <Button active={props.active=="Weather"} onPress={() => openURL(`http://windy.com/?${props.location.latitude},${props.location.longitude},${zoom}`)}>
             <Icon type="MaterialCommunityIcons" name="weather-partlycloudy" />
-            <Text>Weather</Text>
+            <Text> Tiempo </Text>
           </Button>
-          <Button active={props.active=="Notifications"} badge vertical onPress={() => props.navigation.navigate("Notifications")} >
-            <Badge ><Text>13</Text></Badge>
+          <Button active={props.active=="Notifications"} onPress={() => props.navigation.navigate("Notifications")} >
             <Icon type="MaterialCommunityIcons" name="bell-outline" />
-            <Text>Notifications</Text>
+            <Text> Notificationes </Text>
           </Button>
         </FooterTab>
       </Footer>

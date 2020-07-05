@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
 const MapMarkerList = props => {
 
   get_markers = () => {
-    console.log('INI')
     let markers = props.notifications.map(item => {
       let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
       return <MapMarker 
@@ -58,7 +57,6 @@ const MapMarkerList = props => {
         zIndex={97}
       />
     })
-    console.log('FIN')
     return markers.concat(nearUsers) 
   }
   
