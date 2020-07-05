@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Linking } from 'react-native'
-import { Footer, FooterTab, Button, Icon, Text, Badge} from 'native-base'
+import { Footer, FooterTab, Button, Icon, Text} from 'native-base'
 
 const FooterBar = props => {
 

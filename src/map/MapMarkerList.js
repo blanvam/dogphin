@@ -57,7 +57,7 @@ const MapMarkerList = props => {
         zIndex={97}
       />
     })
-    return markers.concat(nearUsers) 
+    return markers.concat(nearUsers)
   }
   
   return (

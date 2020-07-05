@@ -2,10 +2,9 @@ import React from 'react'
 import { Marker } from 'react-native-maps'
 import { View, Icon } from 'native-base'
 
-export default MapMarker = props => {
-  return (
+export default MapMarker = props => 
     <Marker
-        key={`${props.item.prefixId}_${props.item.id}`}
+        key={`${props.prefixId}_${props.item.id}`}
         coordinate={{
           latitude: props.item.coordinates.latitude,
           longitude: props.item.coordinates.longitude,
@@ -30,5 +29,3 @@ export default MapMarker = props => {
           />
         </View>
       </Marker>
-  )
-}
