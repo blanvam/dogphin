@@ -3,14 +3,15 @@ import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
 
 import MapMarker from './MapMarker'
+import * as notificationActions from '../notification/notification.actions'
 
 
 const styles = StyleSheet.create({
   marker: {
     marginTop: 0,
-    width: 30,
-    height: 30,
-    borderRadius: 30 / 2,
+    width: 34,
+    height: 34,
+    borderRadius: 34 / 2,
   },
   iconMarker: {
     marginTop: 0,
@@ -27,11 +28,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: "center", 
   },
+  meNotmarker: {
+    backgroundColor: '#60f0f0',
+    width: 34,
+    height: 34,
+    borderRadius: 34 / 2,
+  },
   meMarker: {
     backgroundColor: '#00576a',
-    width: 40,
-    height: 40,
-    borderRadius: 40 / 2,
+    width: 44,
+    height: 44,
+    borderRadius: 44 / 2,
   },
 })
 
@@ -43,15 +50,19 @@ const MapMarkerList = props => {
       let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
       return <MapMarker 
         prefixId='notifications'
-        item={item} config={config} 
-        markerStyle={styles.marker} iconMarkerStyle={styles.iconMarker}
+        item={item}
+        config={config} 
+        markerStyle={(item.user === props.user.uid) ? styles.meNotmarker: styles.marker}
+        iconMarkerStyle={styles.iconMarker}
         zIndex={(config.id == 'emergency') ? 99 : 98 }
+        delete={item.user === props.user.uid ? () => props.deleteNotification(item.id) : false}
       />
     })
     let nearUsers = props.nearUsers.map(item => {
       return <MapMarker
         prefixId='users'
-        item={item} config={props.config.user} 
+        item={item} 
+        config={props.config.user} 
         markerStyle={(item.id === props.user.uid) ? styles.meMarker: styles.userMarker}
         iconMarkerStyle={styles.userIconMarker}
         zIndex={97}
@@ -77,8 +88,10 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = _ => {
-  return {}
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteNotification: (id) => dispatch(notificationActions.deleteNotification(id)),
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapMarkerList)
