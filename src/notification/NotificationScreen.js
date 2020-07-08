@@ -4,6 +4,8 @@ import { ActivityIndicator, FlatList, StyleSheet } from 'react-native'
 import { Container, View, Text, Icon, ListItem, Left, Body, Right } from 'native-base'
 
 import FooterBar from '../components/FooterBar'
+import notificationService from './notification.service'
+
 
 const styles = StyleSheet.create({
   preloader: {
@@ -44,7 +46,7 @@ const NotificationScreen = props => {
           <Text note>{config.message}</Text>
         </Body>
         <Right>
-          <Text note>{config.timeAgo}</Text>
+          <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
         </Right>
       </ListItem>
     )
@@ -79,6 +81,7 @@ const mapStateToProps = state => {
     config: state.home.config,
     showNotificationsLoader: state.notification.showNotificationsLoader,
     notifications: state.notification.notifications,
+    user: state.user.user,
   }
 }
 

@@ -31,8 +31,8 @@ export default {
       .where('user', '==', userId)
       .get().then(querySnapshot => raw(querySnapshot, updateNotification))
   },
-  timeAgo: (notification) => {
-    let secAgo = (new Date().getTime() - notification.createdAt.toDate().getTime()) / 1000
+  timeAgo: (date) => {
+    let secAgo = (new Date().getTime() - date.toDate().getTime()) / 1000
     let minAgo, hoursAgo, daysAgo;
     if ((minAgo = secAgo/60) < 1) {
       return `${parseInt(secAgo)} seconds ago`;
@@ -43,7 +43,7 @@ export default {
     } else if ((daysAgo/30) < 1) {
       return `${parseInt(daysAgo)} days ago`;
     } else {
-      return notification.createdAt.toDate().toDateString();
+      return date.toDate().toDateString();
     }
   }
 }
