@@ -67,7 +67,7 @@ export default class App extends Component {
           <Provider store={store}>
             <NavigationContainer initialRouteName="Home">
               <Stack.Navigator>
-                <Stack.Screen name="Home" component={HomeScreen} options={{ header: () => {} }} />
+                <Stack.Screen name="Mapa" component={HomeScreen} options={{ header: () => {} }} />
                 <Stack.Screen name="Notifications">
                   {props => <NotificationScreen {...props} />}
                 </Stack.Screen>

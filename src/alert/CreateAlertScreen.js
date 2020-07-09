@@ -51,21 +51,21 @@ export default CreateAlertScreen = props => {
       <View style={styles.container}>
         <Title style={styles.title}> {props.alert.title}</Title>
         <Text style={{marginTop: 10, marginBottom: 20}}>{props.alert.message}</Text>
-        <Text>Are you sure you want to publish this?</Text>
+        <Text>Estás segura/o de publicar esta alerta?</Text>
         <View style={styles.buttonContainer}>
           <Button bordered transparent
             title="Cancel"
             onPress={() => props.setShowModal(false)}
             style={styles.button}
           >
-            <Text>Cancel</Text>
+            <Text>Cancelar</Text>
           </Button>
           <Button bordered transparent
             title="Agree" 
             onPress={props.createAlertPressed}
             style={styles.button}
           >
-            <Text>OK</Text>
+            <Text>Aceptar</Text>
           </Button>
         </View>
       </View>
