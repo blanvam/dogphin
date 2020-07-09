@@ -62,6 +62,12 @@ export const createNotification = notification => {
   }
 }
 
+export const deleteNotification = notificationId => {
+  return _ => {
+    notificationService.delete(notificationId)
+  }
+}
+
 export const updateLocations = (userId, coordinates) => {
   return _ => {
     notificationService.updateLocationUserQuery(userId, coordinates)

@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
 
 import MapMarker from './MapMarker'
-import * as notificationActions from '../notification/notification.actions'
 
 
 const styles = StyleSheet.create({
@@ -55,7 +54,6 @@ const MapMarkerList = props => {
         markerStyle={(item.user === props.user.uid) ? styles.meNotmarker: styles.marker}
         iconMarkerStyle={styles.iconMarker}
         zIndex={(config.id == 'emergency') ? 99 : 98 }
-        delete={item.user === props.user.uid ? () => props.deleteNotification(item.id) : false}
       />
     })
     let nearUsers = props.nearUsers.map(item => {
@@ -88,10 +86,8 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    deleteNotification: (id) => dispatch(notificationActions.deleteNotification(id)),
-  }
+const mapDispatchToProps = _ => {
+  return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapMarkerList)
