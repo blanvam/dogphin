@@ -44,6 +44,7 @@ const navigationAuthOptions = ({ navigation }) => {
 }
 const navigationProfileOptions = ({ navigation }) => {
   return {
+    title: 'Perfil',
     headerStyle: {
       backgroundColor: '#00576a',
     },
@@ -71,7 +72,7 @@ export default class App extends Component {
                 <Stack.Screen name="Notifications" options={{ title: 'Notificaciones'}} >
                   {props => <NotificationScreen {...props} />}
                 </Stack.Screen>
-                <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Perfil', ...navigationProfileOptions}} />
+                <Stack.Screen name="Profile" component={ProfileScreen} options={navigationProfileOptions} />
                 <Stack.Screen name="Login" component={LoginScreen} options={navigationAuthOptions} />
                 <Stack.Screen name="Signup" component={SignupScreen} options={navigationAuthOptions} />
               </Stack.Navigator>
