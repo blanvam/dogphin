@@ -5,6 +5,7 @@ import { View } from 'native-base'
 import MapView from 'react-native-maps'
 
 import MapMarkerList from './MapMarkerList'
+import * as userActions from '../user/user.actions'
 //import mapStyle from './mapStyle.json'
 
 
@@ -17,7 +18,7 @@ const {height, width} = Dimensions.get('window');
 
 
 const Map = props => {
-  const [mapRef, setMapRef] = useState(null)
+  //const [mapRef, setMapRef] = useState(null)
   const [region, setRegion] = useState({
     latitude: props.mapLocation.latitude,
     longitude: props.mapLocation.longitude,
@@ -40,20 +41,26 @@ const Map = props => {
     setRegion(newRegion)
     //mapRef.animateToRegion(newRegion, 1000)
   }
-  
+
+  locationChanged = (locationChangedResult) => {
+    let coordinate = locationChangedResult.nativeEvent.coordinate
+    props.updateUserLocation({latitude: coordinate.latitude, longitude: coordinate.longitude})
+  }
+
   return (
     <View style={{height:height, width: width}}>
       <MapView
         //provider={PROVIDER_GOOGLE}
-        ref={(ref) => setMapRef(ref)}
+        //ref={(ref) => setMapRef(ref)}
         style={[styles.map]}
         mapType="hybrid"
         //customMapStyle={mapStyle}
         region={region}
-        onRegionChangeComplete={(r) => setRegion(r)}
         showsUserLocation={true}
         //followsUserLocation={true}
         loadingEnabled={true}
+        onRegionChangeComplete={setRegion}
+        onUserLocationChange={locationChanged}
       >
         <MapMarkerList />
       </MapView>
@@ -68,8 +75,10 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = _ => {
-  return {}
+const mapDispatchToProps = dispatch => {
+  return {
+    updateUserLocation: (location) => dispatch(userActions.updateUserLocation(location)),
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map)

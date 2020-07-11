@@ -8,7 +8,7 @@ import PermissionExitModal from '../permission/PermissionExitModal'
 import EmergencyScreen from '../emergency/EmergencyScreen'
 import AlertScreen from '../alert/AlertScreen'
 import FooterBar from '../components/FooterBar'
-import Location from '../map/Location'
+//import Location from '../map/Location'
 import MapBar from '../map/MapBar'
 import Map from '../map/Map'
 import NotificationBar from '../notification/NotificationBar'
@@ -34,7 +34,6 @@ const HomeScreen = props => {
         </Right>
       </Header>
       <Content>
-        <Location />
         <MapBar />
         <Map />
         <PermissionExitModal />

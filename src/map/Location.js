@@ -4,6 +4,7 @@ import Geolocation from '@react-native-community/geolocation'
 
 import * as userActions from '../user/user.actions'
 
+// THIS IS NOT USED. '@react-native-community/geolocation' library can be deleted
 const Location = props => {
 
   const [watchID, setWatchID] = useState(null)
