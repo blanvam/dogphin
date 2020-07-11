@@ -46,7 +46,7 @@ const LocationSwitch = props => {
     if (props.user.email) {
       return (
         <>
-          <Text> Visible </Text>
+          <Text> {locationEnabled ? "Visible" : "Invisible"} </Text>
           <View style={styles.positionBar}>
             <Switch 
               trackColor={{ false: "#767577", true: "#81b0ff" }}
