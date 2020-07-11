@@ -36,7 +36,7 @@ const NotificationBar = props => {
             longitude: item.coordinates.longitude,
           }
         )} 
-        style={{backgroundColor: item.backgroundColor}}
+        style={{backgroundColor: config.backgroundColor}}
       >
         <Icon
           style={{ /* color: 'white', */ transform: [{ rotateY: '360deg' }, { scaleX: -1 }] }}

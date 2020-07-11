@@ -1,0 +1,11 @@
+{
+  "id": "user",
+  "name": "User",
+  "iconFont": "Fontisto",
+  "iconName": "sait-boat",
+  "iconColor": "white",
+  "fontColor": "white",
+  "backgroundColor": "#4fb4d9",
+  "title": "Barco",
+  "message": ""
+}

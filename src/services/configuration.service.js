@@ -4,4 +4,5 @@ const notificationsFirestoreServices = firestoreServices("configurations")
 
 export default {
   get: notificationsFirestoreServices.get,
+  // set: notificationsFirestoreServices.set,
 }

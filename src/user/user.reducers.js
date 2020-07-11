@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   user: {},
   location: { latitude: 36.374665, longitude: -6.240144 },
   permissions: true,
+  nearUsers: [],
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -14,6 +15,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, location: action.location }
     case actionsTypes.UPDATE_PERMISSIONS_SUCCESS:
       return { ...state, permissions: action.value }
+    case actionsTypes.UPDATE_NEAR_USERS_SUCCESS:
+      return {...state, nearUsers: action.nearUsers }
     default:
       return state
   }

@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { ActivityIndicator, FlatList, StyleSheet } from 'react-native'
-import { Container, View, Text, Icon, ListItem, Left, Body, Right } from 'native-base'
+import { Container, View, Text, Icon, ListItem, Left, Body, Right, Button } from 'native-base'
 
 import FooterBar from '../components/FooterBar'
+import notificationService from './notification.service'
+import * as notificationActions from './notification.actions'
+
 
 const styles = StyleSheet.create({
   preloader: {
@@ -24,7 +27,16 @@ const styles = StyleSheet.create({
     fontSize:16,
     fontWeight: 'bold',
     color:"#1E90FF"
-  }
+  },
+  listDeleteButton: {
+    height: 35,
+    marginBottom: 0,
+    paddingBottom: 0,
+  },
+  listItemButton: {
+    fontSize: 30,
+    width:30,
+  },
 })
 
 
@@ -34,20 +46,40 @@ const NotificationScreen = props => {
 
   renderItem = ({ item }) => {
     let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
-    return (
-      <ListItem avatar>
-        <Left>
-          <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
-        </Left>
-        <Body>
-          <Text style={styles.listItemTitle}>{config.title}</Text>
-          <Text note>{config.message}</Text>
-        </Body>
-        <Right>
-          <Text note>{config.timeAgo}</Text>
-        </Right>
-      </ListItem>
-    )
+    if (props.user.uid == item.user) {
+      return (
+        <ListItem avatar>
+          <Left>
+            <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
+          </Left>
+          <Body>
+            <Text style={styles.listItemTitle}>{config.title}</Text>
+            <Text note>{config.message}</Text>
+          </Body>
+          <Right>
+            <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
+            <Button transparent iconLeft style={styles.listDeleteButton} onPress={() => props.deleteNotification(item.id)}>
+              <Icon type="FontAwesome" name="remove" style={{...styles.listItemButton, color: 'red'}} />
+            </Button>
+          </Right>
+        </ListItem>
+      )
+    } else {
+      return (
+        <ListItem avatar>
+          <Left>
+            <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
+          </Left>
+          <Body>
+            <Text style={styles.listItemTitle}>{config.title}</Text>
+            <Text note>{config.message}</Text>
+          </Body>
+          <Right>
+            <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
+          </Right>
+        </ListItem>
+      )
+    }
   }
 
   showLoader = () => {
@@ -79,11 +111,14 @@ const mapStateToProps = state => {
     config: state.home.config,
     showNotificationsLoader: state.notification.showNotificationsLoader,
     notifications: state.notification.notifications,
+    user: state.user.user,
   }
 }
 
-const mapDispatchToProps = _ => {
-  return {}
+const mapDispatchToProps = dispatch => {
+  return {
+    deleteNotification: (id) => dispatch(notificationActions.deleteNotification(id)),
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotificationScreen)

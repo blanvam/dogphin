@@ -74,7 +74,6 @@ const AlertScreen = props => {
 
   createAlertPressed = () => {
     let newAlert = {
-      coordinates: props.location,
       name: modalAlert.name,
       type: modalAlert.id,
       follow: modalAlert.followable
@@ -112,7 +111,7 @@ const AlertScreen = props => {
       onBackdropPress={() => props.toggleAlertModal(false)}
     >
       <View style={styles.container}>
-        <Title style={styles.title}>Send an Alerts</Title>
+        <Title style={styles.title}>Notificar una Alerta</Title>
         <FlatList
           data={props.alerts}
           numColumns={2}
@@ -123,7 +122,7 @@ const AlertScreen = props => {
           title="Agree and Exit Dogphin" 
           onPress={() => props.toggleAlertModal(false)}
         >
-          <Text>Cancel</Text>
+          <Text>Cancelar</Text>
         </Button>
       </View>
       < CreateAlertScreen 
@@ -139,7 +138,6 @@ const AlertScreen = props => {
 const mapStateToProps = state => {
   return {
     alerts: state.home.config.alerts,
-    location: state.user.location,
     showModal: state.alert.showModal,
     notificationCreated: state.notification.notificationCreated,
   }

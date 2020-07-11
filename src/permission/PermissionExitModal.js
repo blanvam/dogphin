@@ -64,8 +64,8 @@ const PermissionExitModal = props => {
       // deviceWidth={width/2}
       >
       <View style={styles.container}>
-        <Text>Dogphin need location permission to run!</Text>
-        <Text>Please give Dogphin permission and we will run correctly</Text>
+        <Text>Dogphin necesita permisios de geolocalización para funcionar!</Text>
+        <Text>Por favor, conceda los permisos necesarios para que Dogphin funcione correctamente</Text>
         <Text></Text>
         <Button 
           title="Go to app settings" 

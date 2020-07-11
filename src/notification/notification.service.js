@@ -17,6 +17,7 @@ export default {
   updateLocationUserQuery: (userId, coordinates) => {
     const timestamp = firestore.Timestamp.now().toMillis()
     const updateNotification = (doc) => {
+      // TODO: Could be better do it in schedule firebase functions and here just update location.
       if (timestamp >= doc.data().expiredAt) {
         const onSuccess = () => { 
           notificationsGeoFirestoreServices.delete(doc.id)
@@ -30,8 +31,8 @@ export default {
       .where('user', '==', userId)
       .get().then(querySnapshot => raw(querySnapshot, updateNotification))
   },
-  timeAgo: (notification) => {
-    let secAgo = (new Date().getTime() - notification.createdAt.toDate().getTime()) / 1000
+  timeAgo: (date) => {
+    let secAgo = (new Date().getTime() - date.toDate().getTime()) / 1000
     let minAgo, hoursAgo, daysAgo;
     if ((minAgo = secAgo/60) < 1) {
       return `${parseInt(secAgo)} seconds ago`;
@@ -42,7 +43,7 @@ export default {
     } else if ((daysAgo/30) < 1) {
       return `${parseInt(daysAgo)} days ago`;
     } else {
-      return notification.createdAt.toDate().toDateString();
+      return date.toDate().toDateString();
     }
   }
 }

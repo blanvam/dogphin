@@ -38,18 +38,19 @@ const navigationAuthOptions = ({ navigation }) => {
     },
     headerTintColor: 'white',
     headerLeft: () => (
-      <HeaderBackButton tintColor='white' onPress={() => {navigation.navigate('Home')}}/>
+      <HeaderBackButton label='Atrás' tintColor='white' onPress={() => {navigation.navigate('Home')}}/>
     )
   }
 }
 const navigationProfileOptions = ({ navigation }) => {
   return {
+    title: 'Perfil',
     headerStyle: {
       backgroundColor: '#00576a',
     },
     headerTintColor: 'white',
     headerLeft: () => (
-      <HeaderBackButton tintColor='white' onPress={() => {navigation.navigate('Home')}}/>
+      <HeaderBackButton label='Atrás' tintColor='white' onPress={() => {navigation.navigate('Home')}}/>
     ),
     headerRight: () => (
       <Button transparent onPress={() => {auth().signOut()}} color="white" >
@@ -67,8 +68,8 @@ export default class App extends Component {
           <Provider store={store}>
             <NavigationContainer initialRouteName="Home">
               <Stack.Navigator>
-                <Stack.Screen name="Home" component={HomeScreen} options={{ header: () => {} }} />
-                <Stack.Screen name="Notifications">
+                <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Mapa', header: () => {} }} />
+                <Stack.Screen name="Notifications" options={{ title: 'Notificaciones'}} >
                   {props => <NotificationScreen {...props} />}
                 </Stack.Screen>
                 <Stack.Screen name="Profile" component={ProfileScreen} options={navigationProfileOptions} />

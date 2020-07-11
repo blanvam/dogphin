@@ -79,7 +79,6 @@ const EmergencyScreen = props => {
 
   createEmergencyPressed = () => {
     let alert = {
-      coordinates: props.location,
       name: props.emergency.name,
       type: props.emergency.id,
       follow: props.emergency.followable,
@@ -102,7 +101,7 @@ const EmergencyScreen = props => {
     >
       <View style={styles.container}>
         <Title style={styles.title}> {props.emergency.title} </Title>
-        <Text>Are you sure you want to create this emergency?</Text>
+        <Text>Estás segura/o de publicar esta emergencia?</Text>
         <SwipeButton
           railBackgroundColor='#C0C0C0'
           railFillBackgroundColor={props.emergency.backgroundColor}
@@ -122,7 +121,7 @@ const EmergencyScreen = props => {
             title="Cancel" 
             onPress={cancelEmergencyCreation}
           >
-            <Text>Cancel</Text>
+            <Text>Cancelar</Text>
           </Button>
         </View>
       </View>
@@ -133,7 +132,6 @@ const EmergencyScreen = props => {
 const mapStateToProps = state => {
   return {
     emergency: state.home.config.emergency,
-    location: state.user.location,
     showEmergencyModal: state.emergency.showEmergencyModal,
     notificationCreated: state.notification.notificationCreated,
     notificationCreatedName: state.notification.notificationCreatedName,

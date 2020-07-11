@@ -199,7 +199,7 @@ const ProfileScreen = props => {
           />
           <TextError error={errorMessage}/>
           <Button warning block style={styles.profileButton} onPress={updateProfileUser}>
-            <Text> Update </Text>
+            <Text> Actualizar </Text>
           </Button>
         </Form>  
       </Content>
