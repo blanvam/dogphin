@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { ActivityIndicator, FlatList, StyleSheet } from 'react-native'
-import { Container, View, Text, Icon, ListItem, Left, Body, Right, Button } from 'native-base'
+import { Container, View, Text, Icon, ListItem, Left, Body, Right, Button, Tab, Tabs } from 'native-base'
 
 import FooterBar from '../components/FooterBar'
 import notificationService from './notification.service'
@@ -46,40 +46,41 @@ const NotificationScreen = props => {
 
   renderItem = ({ item }) => {
     let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
-    if (props.user.uid == item.user) {
-      return (
-        <ListItem avatar>
-          <Left>
-            <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
-          </Left>
-          <Body>
-            <Text style={styles.listItemTitle}>{config.title}</Text>
-            <Text note>{config.message}</Text>
-          </Body>
-          <Right>
-            <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
-            <Button transparent iconLeft style={styles.listDeleteButton} onPress={() => props.deleteNotification(item.id)}>
-              <Icon type="FontAwesome" name="remove" style={{...styles.listItemButton, color: 'red'}} />
-            </Button>
-          </Right>
-        </ListItem>
-      )
-    } else {
-      return (
-        <ListItem avatar>
-          <Left>
-            <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
-          </Left>
-          <Body>
-            <Text style={styles.listItemTitle}>{config.title}</Text>
-            <Text note>{config.message}</Text>
-          </Body>
-          <Right>
-            <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
-          </Right>
-        </ListItem>
-      )
-    }
+    return (
+      <ListItem avatar>
+        <Left>
+          <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
+        </Left>
+        <Body>
+          <Text style={styles.listItemTitle}>{config.title}</Text>
+          <Text note>{config.message}</Text>
+        </Body>
+        <Right>
+          <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
+        </Right>
+      </ListItem>
+    )
+  }
+
+  renderMyItem = ({ item }) => {
+    let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
+    return (
+      <ListItem avatar>
+        <Left>
+          <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
+        </Left>
+        <Body>
+          <Text style={styles.listItemTitle}>{config.title}</Text>
+          <Text note>{config.message}</Text>
+        </Body>
+        <Right>
+          <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
+          <Button transparent iconLeft style={styles.listDeleteButton} onPress={() => props.deleteNotification(item.id)}>
+            <Icon type="FontAwesome" name="trash-o" style={{...styles.listItemButton, color: 'red'}} />
+          </Button>
+        </Right>
+      </ListItem>
+    )
   }
 
   showLoader = () => {
@@ -95,11 +96,22 @@ const NotificationScreen = props => {
   return (
     <Container>
       {showLoader()}
-      <FlatList
-        data={props.notifications}
-        keyExtractor={(item) => item.id }
-        renderItem={renderItem}
-      />
+      <Tabs>
+        <Tab heading="General">
+            <FlatList
+              data={props.notifications.filter(item => props.user.uid != item.user)}
+              keyExtractor={(item) => item.id }
+              renderItem={renderItem}
+            />
+        </Tab>
+        <Tab heading="Mis alertas">
+            <FlatList
+              data={props.notifications.filter(item => props.user.uid == item.user)}
+              keyExtractor={(item) => item.id }
+              renderItem={renderMyItem}
+            />
+        </Tab>
+      </Tabs>
       <FooterBar active='Notifications' navigation={props.navigation} />
     </Container>
   )
