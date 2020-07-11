@@ -30,7 +30,7 @@ const MapBar = props => {
         <Button block rounded success style={{ width: '55%', marginLeft: 20, marginRight: 20 }} >
           <LocationSwitch />
         </Button>
-        <Button last rounded light onPress={() => props.toggleAlertModal(true)} >
+        <Button last rounded onPress={() => props.toggleAlertModal(true)} style={{backgroundColor: 'white'}}>
           <Icon type="Octicons" name="issue-opened" style={{ fontSize: 30, color: 'orange' }} />
         </Button>
       </View>
