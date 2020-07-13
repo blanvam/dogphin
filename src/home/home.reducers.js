@@ -8,6 +8,7 @@ const INITIAL_STATE = {
     queryDistance: 100, // kms
     notificationExpiration: 12, // horas
     notificationsBarShow: 4,
+    distanceUserUpdate: 20, // meters
     user: user,
     emergency: emergency,
     alerts: alerts,
