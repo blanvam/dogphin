@@ -29,7 +29,7 @@ const LocationSwitch = props => {
   }
 
   useEffect(() => {
-    const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
+    const unlisten = userServices.onAuthStateChanged(props.user, onUserLoadSuccess, onUserLoadFail)
     return (unlisten)
   }, [locationEnabled, props.user.email])
 

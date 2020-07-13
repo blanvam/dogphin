@@ -9,10 +9,12 @@ const usersGeoFirestoreServices = geofirestoreServices("users")
 export default {
   ...usersGeoFirestoreServices,
   currentUser: auth().currentUser || {},
-  onAuthStateChanged: (onSuccess, onError) => (
+  onAuthStateChanged: (oldUser, onSuccess, onError) => (
     auth().onAuthStateChanged((user) => {
       if (user) {
-        usersGeoFirestoreServices.get(user.uid, usr => onSuccess(user.uid, usr), () => onError(user.uid))
+        if (user.uid !== oldUser.uid) {
+          usersGeoFirestoreServices.get(user.uid, usr => onSuccess(user.uid, usr), () => onError(user.uid))
+        }
       } else {
         auth().signInAnonymously().then(usr => {
           let userData = {locationEnabled: true, isAnonymous: true}
