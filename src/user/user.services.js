@@ -21,7 +21,7 @@ export default {
   onAuthStateChanged: (currentUser, onCompleted) => (
     auth().onAuthStateChanged((user) => {
       if (user) {
-        if (user.uid != currentUser.uid) {
+        if (user.uid !== currentUser.uid) {
           usersGeoFirestoreServices.get(user.uid, usr => onCompleted(user.uid, usr), () => onCompleted(user.uid, {}))
         }
       } else {

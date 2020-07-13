@@ -7,7 +7,7 @@ import MapView from 'react-native-maps'
 import MapMarkerList from './MapMarkerList'
 import * as userActions from '../user/user.actions'
 //import mapStyle from './mapStyle.json'
-
+import getDistance from './getDistance'
 
 const styles = StyleSheet.create({
   map: {
@@ -44,7 +44,13 @@ const Map = props => {
 
   locationChanged = (locationChangedResult) => {
     let coordinate = locationChangedResult.nativeEvent.coordinate
-    props.updateUserLocation({latitude: coordinate.latitude, longitude: coordinate.longitude})
+    let distance = getDistance(
+      {latitude: coordinate.latitude, longitude: coordinate.longitude},
+      {latitude: props.mapLocation.latitude, longitude: props.mapLocation.longitude}
+    )
+    if (distance > props.distanceUserUpdate) {
+      props.updateUserLocation({latitude: coordinate.latitude, longitude: coordinate.longitude})
+    }
   }
 
   return (
@@ -59,7 +65,7 @@ const Map = props => {
         showsUserLocation={true}
         //followsUserLocation={true}
         loadingEnabled={true}
-        userLocationUpdateInterval={30}
+        userLocationUpdateInterval={60}
         onRegionChangeComplete={setRegion}
         onUserLocationChange={locationChanged}
       >
@@ -73,6 +79,7 @@ const Map = props => {
 const mapStateToProps = state => {
   return {
     mapLocation: state.map.location,
+    distanceUserUpdate: state.home.config.distanceUserUpdate,
   }
 }
 
