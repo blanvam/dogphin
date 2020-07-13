@@ -17,19 +17,15 @@ const styles = StyleSheet.create({
 const LocationSwitch = props => {
   const [locationEnabled, setLocationEnabled] = useState(props.user.locationEnabled || true)
 
-  onUserLoadSuccess = (uid, usr) => {
+  onUserCompleted = (uid, usr) => {
     if (usr) {
       setLocationEnabled(usr.locationEnabled)
     }
     props.updateUser({uid: uid, ...usr})
   }
 
-  onUserLoadFail = (uid) => {
-    props.updateUser({uid: uid})
-  }
-
   useEffect(() => {
-    const unlisten = userServices.onAuthStateChanged(onUserLoadSuccess, onUserLoadFail)
+    const unlisten = userServices.onAuthStateChanged(props.user, onUserCompleted)
     return (unlisten)
   }, [locationEnabled, props.user.email])
 

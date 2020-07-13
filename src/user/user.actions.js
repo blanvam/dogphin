@@ -5,10 +5,36 @@ import * as notificationActions from '../notification/notification.actions'
 
 import firestore from '@react-native-firebase/firestore'
 
+
+export const signOut = _ => {
+  return dispatch => {
+    return userServices.authSignOut(
+      (usr) => {
+        dispatch(update(usr))
+      }
+    )
+  }
+}
+
 export const update = user => {
   return {
     type: actionTypes.UPDATE_USER_SUCCESS,
     user,
+  }
+}
+
+export const updateNewUser = user => {
+  return (dispatch, getState) => {
+    console.log(`updateNewUser`)
+    let oldUseruId = getState().user.user.uid
+    let newUserUid = user.uid
+    console.log(`AAAABBBCCCC ${oldUseruId} - ${newUserUid} - ${JSON.stringify(user)}`)
+    if (newUserUid != oldUseruId) {
+      dispatch(notificationActions.moveUserOwnerNotifications(oldUseruId, newUserUid))
+      userServices.update(newUserUid, {locationEnabled: true}, () => {})
+      userServices.delete(oldUseruId) 
+    }
+    dispatch(update(user))
   }
 }
 
