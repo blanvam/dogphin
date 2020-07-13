@@ -65,7 +65,7 @@ const Map = props => {
         showsUserLocation={true}
         //followsUserLocation={true}
         loadingEnabled={true}
-        userLocationUpdateInterval={30}
+        userLocationUpdateInterval={60}
         onRegionChangeComplete={setRegion}
         onUserLocationChange={locationChanged}
       >
