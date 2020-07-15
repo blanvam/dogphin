@@ -15,6 +15,7 @@ export default MapMarker = props => (
     description={props.config.message}
     zIndex={props.zIndex}
     pointerEvents="auto"
+    tracksViewChanges={false} // Due to https://github.com/react-native-community/react-native-maps/issues/2658
   >
     <View 
     style={{
