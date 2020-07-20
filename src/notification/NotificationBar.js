@@ -72,7 +72,7 @@ const NotificationBar = props => {
           <TextTicker style={{ color: 'black' }} scrollSpeed={5000} bounceSpeed={5000} 
             onPress={() => props.navigation.navigate("Notifications")}
           >
-            Hello! Today is a good day for sailing...
+            Hola! Hoy es un buen día para navegar ...
           </TextTicker>
         </View>
       </Item>

@@ -8,7 +8,7 @@
     "fontColor": "black",
     "backgroundColor": "white",
     "title": "¡Barco dañado!",
-    "message": "¡A 1Km parece que alguien tiene el barco dañado! ¿Puedes ayudarle?",
+    "message": "¡Parece que alguien tiene el barco dañado! ¿Puedes ayudarle?",
     "followable": true
   },
   {
@@ -20,7 +20,7 @@
     "fontColor": "black",
     "backgroundColor": "white",
     "title": "Sin combustible",
-    "message": "A 200m hay alguien sin combustible, ponte en contacto si puedes ayudar.",
+    "message": "Hay alguien sin combustible, ponte en contacto si puedes ayudar.",
     "followable": true
   },
   {

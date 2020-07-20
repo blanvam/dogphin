@@ -85,7 +85,7 @@ const NotificationScreen = props => {
         <Left>
           <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
         </Left>
-        <Body>
+        <Body style={{minHeight: 70}}>
           <Text style={styles.listItemTitle}>{config.title}</Text>
           <Text note>{config.message}</Text>
         </Body>
