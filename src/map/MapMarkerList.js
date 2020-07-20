@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
 
 import MapMarker from './MapMarker'
-
+import * as mapActions from './map.actions'
 
 const styles = StyleSheet.create({
   marker: {
@@ -45,12 +45,14 @@ const styles = StyleSheet.create({
 const MapMarkerList = props => {
 
   get_markers = () => {
+    props.setMapMarkers([])
     let markers = props.notifications.map(item => {
       let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
       return <MapMarker 
         prefixId='notifications'
         item={item}
-        config={config} 
+        config={config}
+        addMarkers={props.addMapMarkers}
         markerStyle={(item.user === props.user.uid) ? styles.meNotmarker: styles.marker}
         iconMarkerStyle={styles.iconMarker}
         zIndex={(config.id == 'emergency') ? 99 : 98 }
@@ -59,8 +61,9 @@ const MapMarkerList = props => {
     let nearUsers = props.nearUsers.map(item => {
       return <MapMarker
         prefixId='users'
-        item={item} 
-        config={props.config.user} 
+        item={item}
+        config={props.config.user}
+        addMarkers={(_) => {}}
         markerStyle={(item.id === props.user.uid) ? styles.meMarker: styles.userMarker}
         iconMarkerStyle={styles.userIconMarker}
         zIndex={97}
@@ -83,11 +86,15 @@ const mapStateToProps = state => {
     user: state.user.user,
     nearUsers: state.user.nearUsers,
     notifications: state.notification.notifications,
+    markersRef: state.map.markersRef,
   }
 }
 
-const mapDispatchToProps = _ => {
-  return {}
+const mapDispatchToProps = dispatch => {
+  return {
+    setMapMarkers: (value) => dispatch(mapActions.setMapMarkers(value)),    
+    addMapMarkers: (id, ref) => dispatch(mapActions.addMapMarkers(id, ref)),    
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapMarkerList)

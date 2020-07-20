@@ -7,6 +7,7 @@ import MapMarkerCallout from './MapMarkerCallout'
 export default MapMarker = props => (
   <Marker
     key={`${props.prefixId}_${props.item.id}`}
+    ref={(ref) => props.addMarkers(props.item.id, ref)}
     coordinate={{
       latitude: props.item.coordinates.latitude,
       longitude: props.item.coordinates.longitude,

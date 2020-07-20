@@ -10,6 +10,13 @@ export const toggleNotificationsLoader = status => {
   }
 }
 
+export const selectNotificationId = id => {
+  return {
+    type: actionTypes.NOTIFICATION_SELECTED_ID,
+    id,
+  }
+}
+
 export const getNotificationsSuccess = notifications => {
   return {
     type: actionTypes.GET_NOTIFICATIONS_SUCCESS,
