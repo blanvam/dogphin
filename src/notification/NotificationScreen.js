@@ -5,6 +5,7 @@ import { Container, View, Text, Icon, ListItem, Left, Body, Right, Button, Tab, 
 
 import FooterBar from '../components/FooterBar'
 import notificationService from './notification.service'
+import * as mapActions from '../map/map.actions'
 import * as notificationActions from './notification.actions'
 
 
@@ -28,12 +29,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color:"#1E90FF"
   },
-  listDeleteButton: {
+  listItemInlineButtons: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  listItemButton: {
     height: 35,
     marginBottom: 0,
     paddingBottom: 0,
   },
-  listItemButton: {
+  listItemIconButton: {
     fontSize: 30,
     width:30,
   },
@@ -42,12 +48,19 @@ const styles = StyleSheet.create({
 
 const NotificationScreen = props => {
 
-  useEffect(() => {}, [props.notifications])
+  useEffect(() => {}, [props.notifications, props.notificationSelectedId])
+
+  moveToNotification = (item) => {
+    props.selectNotificationId(item.id)
+    props.updateMapLocation({latitude: item.coordinates.latitude, longitude: item.coordinates.longitude})
+    props.markers[item.id].showCallout()
+    props.navigation.navigate("Home")
+  }
 
   renderItem = ({ item }) => {
     let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
     return (
-      <ListItem avatar>
+      <ListItem avatar selected={props.notificationSelectedId === item.id} >
         <Left>
           <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
         </Left>
@@ -57,6 +70,9 @@ const NotificationScreen = props => {
         </Body>
         <Right>
           <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
+          <Button transparent iconLeft style={styles.listItemButton} onPress={() => moveToNotification(item)}>
+            <Icon type="MaterialIcons" name="my-location" style={{...styles.listItemIconButton, color: 'green'}} />
+          </Button>
         </Right>
       </ListItem>
     )
@@ -65,7 +81,7 @@ const NotificationScreen = props => {
   renderMyItem = ({ item }) => {
     let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
     return (
-      <ListItem avatar>
+      <ListItem avatar selected={props.notificationSelectedId === item.id} >
         <Left>
           <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
         </Left>
@@ -75,9 +91,14 @@ const NotificationScreen = props => {
         </Body>
         <Right>
           <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
-          <Button transparent iconLeft style={styles.listDeleteButton} onPress={() => props.deleteNotification(item.id)}>
-            <Icon type="FontAwesome" name="trash-o" style={{...styles.listItemButton, color: 'red'}} />
-          </Button>
+          <View style={styles.listItemInlineButtons}>
+            <Button transparent iconLeft style={styles.listItemButton} onPress={() => props.deleteNotification(item.id)}>
+              <Icon type="FontAwesome" name="trash-o" style={{...styles.listItemIconButton, color: 'red'}} />
+            </Button>
+            <Button transparent iconLeft style={styles.listItemButton} onPress={() => moveToNotification(item)}>
+              <Icon type="MaterialIcons" name="my-location" style={{...styles.listItemIconButton, color: 'green'}} />
+            </Button>
+          </View>
         </Right>
       </ListItem>
     )
@@ -122,13 +143,17 @@ const mapStateToProps = state => {
   return {
     config: state.home.config,
     showNotificationsLoader: state.notification.showNotificationsLoader,
+    notificationSelectedId: state.notification.notificationSelectedId,
     notifications: state.notification.notifications,
+    markers: state.map.markers,
     user: state.user.user,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
+    updateMapLocation: (location) => dispatch(mapActions.updateMapLocation(location)),
+    selectNotificationId:  (id) => dispatch(notificationActions.selectNotificationId(id)),
     deleteNotification: (id) => dispatch(notificationActions.deleteNotification(id)),
   }
 }

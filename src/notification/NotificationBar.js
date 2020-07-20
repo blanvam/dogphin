@@ -4,6 +4,7 @@ import TextTicker from 'react-native-text-ticker'
 import { Item, Icon, View } from 'native-base'
 
 import * as mapActions from '../map/map.actions'
+import * as notificationActions from './notification.actions'
 
 const NotificationBar = props => {
 
@@ -28,14 +29,16 @@ const NotificationBar = props => {
   if (props.notifications && props.notifications[index]) {
     let item = props.notifications[index]
     let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
+
+    moveToNotification = (item) => {
+      props.selectNotificationId(item.id)
+      props.updateMapLocation({latitude: item.coordinates.latitude, longitude: item.coordinates.longitude})
+      props.markers[item.id].showCallout()
+    }
+
     return (
       <Item 
-        onPress={() => props.updateMapLocation(
-          {
-            latitude: item.coordinates.latitude,
-            longitude: item.coordinates.longitude,
-          }
-        )} 
+        onPress={() => moveToNotification(item)}
         style={{backgroundColor: config.backgroundColor}}
       >
         <Icon
@@ -82,12 +85,14 @@ const mapStateToProps = state => {
   return {
     config: state.home.config,
     notifications: state.notification.notificationsBar,
+    markers: state.map.markers,
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     updateMapLocation: (location) => dispatch(mapActions.updateMapLocation(location)),
+    selectNotificationId:  (id) => dispatch(notificationActions.selectNotificationId(id)),
   }
 }
 
