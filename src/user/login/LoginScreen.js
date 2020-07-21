@@ -5,6 +5,7 @@ import { Container, Content, Form, Button, View, Text } from 'native-base'
 
 import UserHeader from '../../components/UserHeader'
 import FormItem from '../../components/FormItem'
+import RecoverPassword from '../../components/RecoverPassword'
 import * as userActions from '../user.actions'
 import userServices from '../user.services'
 
@@ -47,8 +48,8 @@ const authErrors = {
     'message': 'Account is disabled.'
   },
   'auth/user-not-found': {
-    'fields': ['email', 'password'],
-    'message': 'Incorrect email or password.'
+    'fields': ['email'],
+    'message': 'Incorrect email.'
   },
   'auth/wrong-password': {
     'fields': ['email', 'password'],
@@ -100,6 +101,21 @@ class LoginScreen extends Component {
     }
   }
 
+  forgotPassword = (email) => {
+    userServices.forgotPassword(
+      email,
+      () => { 
+        this.setState({isLoading: false, email: '', password: ''})
+        alert(`Please check your email ...`)
+      },
+      (error) => {
+        console.log(`Error ${error} - ${JSON.stringify(error)}`)
+        let e = (authErrors[error.code] || authErrors['auth/user-not-found'])
+        this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
+      }
+    )
+  }
+  
   render() {
     if(this.state.isLoading){
       return(
@@ -127,6 +143,7 @@ class LoginScreen extends Component {
               secureTextEntry={true} 
             />
             <TextError error={this.state.errorMessage}/>
+            <RecoverPassword onPress={() => this.forgotPassword(this.state.email)} />
             <Button block style={styles.loginButton} onPress={() => this.userLogin()}>
               <Text> Login </Text>
             </Button>

@@ -27,9 +27,9 @@ export default FormItem = props => {
       return (
         <>
           <Button dark danger={props.error} transparent 
-            //onPress={() => setHideValue(!hideValue)}
-            onPressIn={() => setHideValue(false)}
-            onPressOut={() => setHideValue(true)}
+            onPress={() => setHideValue(!hideValue)}
+            //onPressIn={() => setHideValue(false)}
+            //onPressOut={() => setHideValue(true)}
           >
             <Icon type="MaterialCommunityIcons" name={hideValue ? 'eye-off' : 'eye-outline'} />
           </Button>
