@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, ActivityIndicator } from 'react-native'
 import { Container, Content, Form, Button, View, Text } from 'native-base'
+import { ListItem, CheckBox, Body } from 'native-base'
 
 import UserHeader from '../../components/UserHeader'
 import FormItem from '../../components/FormItem'
+import PrivacyModal from './PrivacyModal'
 import * as userActions from '../user.actions'
 import userServices from '../user.services'
 
@@ -48,7 +50,9 @@ class SignupScreen extends Component {
       phoneNumber: '+34 622 34 34 34',
       isLoading: false,
       errorFields: [],
-      errorMessage: ''
+      errorMessage: '',
+      privacyPolicy: false,
+      showPolicyModal: false,
     }
   }
 
@@ -79,6 +83,11 @@ class SignupScreen extends Component {
     if(this.state.firstname === '') {
       errorFields.push('firstname')
       let msg = 'Introduce your first name'
+      errorMessage += errorMessage  ? `\n   ${msg}` : msg
+    }
+    if(!this.state.privacyPolicy) {
+      errorFields.push('privacyPolicy')
+      let msg = 'Debe aceptar la polticia de privacidad'
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if (errorFields.length === 0) {
@@ -159,6 +168,16 @@ class SignupScreen extends Component {
               secureTextEntry={true} 
             />
             <TextError error={this.state.errorMessage}/>
+            <ListItem style={{borderBottomWidth: 0, minHeight: 100}}>
+              <CheckBox 
+                checked={this.state.privacyPolicy}
+                onPress={() => this.setState({privacyPolicy: !this.state.privacyPolicy})} 
+              />
+              <Body style={{flexDirection:'row', flexWrap:'wrap'}}>
+                <Text style={{marginRight: 0}}>Acepto la </Text>
+                <Text style={{marginLeft: 0, color: 'blue'}} onPress={() => this.setState({showPolicyModal: true})}>polticia de privacidad</Text>
+              </Body>
+            </ListItem>
             <Button block style={styles.loginButton} onPress={() => this.registerUser()}>
               <Text> Signup </Text>
             </Button>
@@ -167,6 +186,7 @@ class SignupScreen extends Component {
                 <Text> Login </Text>
             </Button>
           </Form>
+          <PrivacyModal showModal={this.state.showPolicyModal} toggleModal={() => this.setState({showPolicyModal: false})}/>
         </Content>
       </Container>
     )

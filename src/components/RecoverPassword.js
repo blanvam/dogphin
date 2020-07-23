@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { ListItem, CheckBox, Body, Text, Button, Icon } from 'native-base'
+import React, { useState } from 'react'
+import { ListItem, CheckBox, Body, Text, Button } from 'native-base'
 
 export default RecoverPassword = props => {
 
