@@ -86,7 +86,7 @@ export default PrivacyModal = props => {
           <Text style={styles.tcT}>1. Datos recopilados sobre usted.</Text>
           <Text style={styles.tcP}>Como parte de la aplicación DogPhin, recopilamos y utilizamos su información personal para el único propósito de esta Declaración. Por datos personales, nos referimos a cualquier información que nos permita identificarle como usuario directa o indirectamente.</Text>
           <Text style={styles.tcP}>Se recopilará y procesará la siguiente información:</Text>
-          <Text style={styles.tcL}>Información de la red, incluido el posición GPS GPS (latitud y longitud)</Text>
+          <Text style={styles.tcL}>Información de la red, incluido la posición GPS (latitud y longitud)</Text>
           <Text style={styles.tcL}>Información de contacto, incluyendo su nombre, dirección, número de teléfono, dirección de correo electrónico y código postal, número de póliza de seguro de barco, número de teléfono de su contacto preferido, número de teléfono de capitanía del puerto o puerto de origen, número de registro de su barco.</Text>
           <Text style={styles.tcP}>Para ofrecer estos servicios, DogPhin necesita acceso a Internet, almacenamiento, información de ubicación. Los permisos de DogPhin se pueden administrar Parametros > Aplicaciones > DogPhin</Text>
 
