@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet } from 'react-native'
 import { Icon, Button, View, Toast } from 'native-base'
