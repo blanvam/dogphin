@@ -35,7 +35,7 @@ const HomeScreen = props => {
       </Header>
       <Content>
         <Location />
-        <MapBar />
+        <MapBar navigation={props.navigation} />
         <Map />
         <PermissionExitModal />
         <EmergencyScreen />
