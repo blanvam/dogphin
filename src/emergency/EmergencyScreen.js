@@ -101,7 +101,7 @@ const EmergencyScreen = props => {
     >
       <View style={styles.container}>
         <Title style={styles.title}> {props.emergency.title} </Title>
-        <Text>Estás segura/o de publicar esta emergencia?</Text>
+        <Text>¿Estás segura/o de publicar esta emergencia?</Text>
         <SwipeButton
           railBackgroundColor='#C0C0C0'
           railFillBackgroundColor={props.emergency.backgroundColor}

@@ -72,8 +72,8 @@ class LoginScreen extends Component {
   constructor(props) {
     super(props)
     this.state = { 
-      email: 'dogphin.app@gmail.com', 
-      password: 'password',
+      email: '', 
+      password: '',
       isLoading: false,
       errorFields: [],
       errorMessage: ''
@@ -82,11 +82,11 @@ class LoginScreen extends Component {
 
   userLogin = () => {
     if(this.state.email === '' || this.state.password === '') {
-      Alert.alert('Enter details to signin!')
+      Alert.alert('¡Introduzca los datos para acceder!')
     } else {
       this.setState({errorFields: [], errorMessage: '', isLoading: true})
       userServices.signInWithEmail(
-        this.state.email, 
+        this.state.email.trim(), 
         this.state.password,
         (res) => {
           this.setState({isLoading: false, email: '', password: ''})
@@ -106,7 +106,7 @@ class LoginScreen extends Component {
       email,
       () => { 
         this.setState({isLoading: false, email: '', password: ''})
-        alert(`Please check your email ...`)
+        alert(`Por favor, revise su email...`)
       },
       (error) => {
         console.log(`Error ${error} - ${JSON.stringify(error)}`)
@@ -131,13 +131,13 @@ class LoginScreen extends Component {
           <Form style={styles.loginForm}>
             <FormItem 
               error={this.state.errorFields.includes('email')}
-              label='Username'
+              label='Email'
               value={this.state.email}
               onChangeText={(v) => this.setState({email: v})} 
             />
             <FormItem 
               error={this.state.errorFields.includes('password')}
-              label='Password'
+              label='Contraseña'
               value={this.state.password}
               onChangeText={(v) => this.setState({password: v})}
               secureTextEntry={true} 
@@ -145,11 +145,11 @@ class LoginScreen extends Component {
             <TextError error={this.state.errorMessage}/>
             <RecoverPassword onPress={() => this.forgotPassword(this.state.email)} />
             <Button block style={styles.loginButton} onPress={() => this.userLogin()}>
-              <Text> Login </Text>
+              <Text> Acceder </Text>
             </Button>
             <Text style={styles.loginText}>or</Text>
             <Button block warning bordered onPress={() => this.props.navigation.navigate('Signup')}>
-                <Text> Signup </Text>
+                <Text> Registrarse </Text>
             </Button>
           </Form>
         </Content>

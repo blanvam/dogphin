@@ -36,8 +36,9 @@ const styles = StyleSheet.create({
     width: '50%'
   },
   itemText: {
-    fontSize: 12,
-    marginTop: 5
+    fontSize: 11,
+    marginTop: 5,
+    textAlign: "center"
   },
   iconBorder: {
     borderWidth: 2,
@@ -119,7 +120,7 @@ const AlertScreen = props => {
           renderItem={renderItem}
         />
         <Button bordered transparent
-          title="Agree and Exit Dogphin" 
+          title="Aceptar y salir de Dogphin" 
           onPress={() => props.toggleAlertModal(false)}
         >
           <Text>Cancelar</Text>

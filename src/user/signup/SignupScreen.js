@@ -44,10 +44,10 @@ class SignupScreen extends Component {
   constructor() {
     super();
     this.state = { 
-      firstname: 'Test 1',
-      email: 'dogphin.app@gmail.com', 
-      password: 'password',
-      phoneNumber: '+34 622 34 34 34',
+      firstname: '',
+      email: '', 
+      password: '',
+      phoneNumber: '',
       isLoading: false,
       errorFields: [],
       errorMessage: '',
@@ -68,26 +68,26 @@ class SignupScreen extends Component {
     let errorFields = []
     if (emailFormat.test(this.state.email) === false) {
       errorFields.push('email')
-      errorMessage += 'Introduce a correct email'
+      errorMessage += 'Introduce un email válido'
     }
     if (phoneFormat.test(this._cleanedPhoneNumber()) === false) {
       errorFields.push('phoneNumber')
-      let msg = 'Introduce a correct phone number'
+      let msg = 'Introduce un teléfono válido'
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if(this.state.password === ''){
       errorFields.push('password')
-      let msg = 'Introduce password'
+      let msg = 'Introduce una contraseña'
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if(this.state.firstname === '') {
       errorFields.push('firstname')
-      let msg = 'Introduce your first name'
+      let msg = 'Introduce tu nombre'
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if(!this.state.privacyPolicy) {
       errorFields.push('privacyPolicy')
-      let msg = 'Debe aceptar la polticia de privacidad'
+      let msg = 'Debe aceptar la política de privacidad'
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if (errorFields.length === 0) {
@@ -139,7 +139,7 @@ class SignupScreen extends Component {
           <Form style={styles.loginForm}>
             <FormItem
               error={this.state.errorFields.includes('firstname')}
-              label='Name'
+              label='Nombre'
               value={this.state.firstname}
               onChangeText={(v) => this.setState({firstname: v})}
               obligatory={true}
@@ -153,7 +153,7 @@ class SignupScreen extends Component {
             />
             <FormItem 
               error={this.state.errorFields.includes('phoneNumber')}
-              label='Phone Number'
+              label='Teléfono'
               value={this.state.phoneNumber}
               onChangeText={(v) => this.setState({phoneNumber: v})}
               obligatory={true}
@@ -161,7 +161,7 @@ class SignupScreen extends Component {
             />
             <FormItem 
               error={this.state.errorFields.includes('password')}
-              label='Password'
+              label='Contraseña'
               value={this.state.password}
               onChangeText={(v) => this.setState({password: v})}
               obligatory={true}

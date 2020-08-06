@@ -1,6 +1,6 @@
 {
   "name": "dogphin",
-  "version": "6.3.4",
+  "version": "0.9.5",
   "private": true,
   "scripts": {
     "start": "react-native start",
@@ -47,6 +47,7 @@
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
     "patch-package": "^6.1.4",
+    "react-native-cli-bump-version": "^1.0.3",
     "react-test-renderer": "16.9.0"
   },
   "jest": {
