@@ -33,9 +33,9 @@ export default MapMarker = props => (
       />
     </View>
     <MapMarkerCallout
+      callout={props.callout}
       title={props.config.title}
       description={props.config.message}
-      phoneNumber={props.item.phoneNumber}
     />
   </Marker>
 )

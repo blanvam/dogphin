@@ -20,9 +20,9 @@ export default MapMarkerCallout = props => {
     if (props.description) { return <Text style={{marginBottom: 10}}> {props.description} </Text> }
   }
 
-  if (props.phoneNumber) {
+  if (props.callout) {
     return (
-      <Callout style={{ width: props.title.length * 10, ...styles.container, ...props.style}} onPress={() => Linking.openURL(`tel:${props.phoneNumber}`)} >
+      <Callout style={{ width: props.title.length * 10, ...styles.container, ...props.style}} onPress={props.callout} >
         <Text style={styles.title}>{props.title}</Text>
         {getDescription()}
         <Text style={{color: 'blue'}} > Llamar </Text>
