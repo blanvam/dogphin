@@ -1,7 +1,7 @@
 [
   {
     "id": "boat_damage",
-    "name": "Boat Damage",
+    "name": "Barco dañado",
     "iconFont": "MaterialCommunityIcons",
     "iconName": "alert-circle-outline",
     "iconColor": "orange",
@@ -13,7 +13,7 @@
   },
   {
     "id": "fuel_empty",
-    "name": "Fuel Empty",
+    "name": "Sin combustible",
     "iconFont": "MaterialCommunityIcons",
     "iconName": "fuel",
     "iconColor": "orange",
@@ -25,7 +25,7 @@
   },
   {
     "id": "bad_weather",
-    "name": "Bad Weather",
+    "name": "Mal tiempo",
     "iconFont": "MaterialCommunityIcons",
     "iconName": "weather-lightning-rainy",
     "iconColor": "orange",
@@ -37,7 +37,7 @@
   },
   {
     "id": "floating_object",
-    "name": "Floating Object",
+    "name": "Objeto peligroso",
     "iconFont": "MaterialCommunityIcons",
     "iconName": "alert",
     "iconColor": "orange",
@@ -49,7 +49,7 @@
   },
   {
     "id": "mechanic_failure",
-    "name": "Mechanic Failure",
+    "name": "Fallo mecánico",
     "iconFont": "FontAwesome",
     "iconName": "wrench",
     "iconColor": "orange",
@@ -61,7 +61,7 @@
   },
   {
     "id": "health_sos",
-    "name": "Health SOS",
+    "name": "Ayuda sanitaria",
     "iconFont": "MaterialCommunityIcons",
     "iconName": "heart-pulse",
     "iconColor": "#d9534f",

@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, ActivityIndicator } from 'react-native'
 import { Container, Content, Form, Button, View, Text } from 'native-base'
+import { ListItem, CheckBox, Body } from 'native-base'
 
 import UserHeader from '../../components/UserHeader'
 import FormItem from '../../components/FormItem'
+import PrivacyModal from './PrivacyModal'
 import * as userActions from '../user.actions'
 import userServices from '../user.services'
 
@@ -42,13 +44,15 @@ class SignupScreen extends Component {
   constructor() {
     super();
     this.state = { 
-      firstname: 'Test 1',
-      email: 'dogphin.app@gmail.com', 
-      password: 'password',
-      phoneNumber: '+34 622 34 34 34',
+      firstname: '',
+      email: '', 
+      password: '',
+      phoneNumber: '',
       isLoading: false,
       errorFields: [],
-      errorMessage: ''
+      errorMessage: '',
+      privacyPolicy: false,
+      showPolicyModal: false,
     }
   }
 
@@ -64,21 +68,26 @@ class SignupScreen extends Component {
     let errorFields = []
     if (emailFormat.test(this.state.email) === false) {
       errorFields.push('email')
-      errorMessage += 'Introduce a correct email'
+      errorMessage += 'Introduce un email válido'
     }
     if (phoneFormat.test(this._cleanedPhoneNumber()) === false) {
       errorFields.push('phoneNumber')
-      let msg = 'Introduce a correct phone number'
+      let msg = 'Introduce un teléfono válido'
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if(this.state.password === ''){
       errorFields.push('password')
-      let msg = 'Introduce password'
+      let msg = 'Introduce una contraseña'
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if(this.state.firstname === '') {
       errorFields.push('firstname')
-      let msg = 'Introduce your first name'
+      let msg = 'Introduce tu nombre'
+      errorMessage += errorMessage  ? `\n   ${msg}` : msg
+    }
+    if(!this.state.privacyPolicy) {
+      errorFields.push('privacyPolicy')
+      let msg = 'Debe aceptar la política de privacidad'
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if (errorFields.length === 0) {
@@ -130,7 +139,7 @@ class SignupScreen extends Component {
           <Form style={styles.loginForm}>
             <FormItem
               error={this.state.errorFields.includes('firstname')}
-              label='Name'
+              label='Nombre'
               value={this.state.firstname}
               onChangeText={(v) => this.setState({firstname: v})}
               obligatory={true}
@@ -144,7 +153,7 @@ class SignupScreen extends Component {
             />
             <FormItem 
               error={this.state.errorFields.includes('phoneNumber')}
-              label='Phone Number'
+              label='Teléfono'
               value={this.state.phoneNumber}
               onChangeText={(v) => this.setState({phoneNumber: v})}
               obligatory={true}
@@ -152,13 +161,23 @@ class SignupScreen extends Component {
             />
             <FormItem 
               error={this.state.errorFields.includes('password')}
-              label='Password'
+              label='Contraseña'
               value={this.state.password}
               onChangeText={(v) => this.setState({password: v})}
               obligatory={true}
               secureTextEntry={true} 
             />
             <TextError error={this.state.errorMessage}/>
+            <ListItem style={{borderBottomWidth: 0, minHeight: 100}}>
+              <CheckBox 
+                checked={this.state.privacyPolicy}
+                onPress={() => this.setState({privacyPolicy: !this.state.privacyPolicy})} 
+              />
+              <Body style={{flexDirection:'row', flexWrap:'wrap'}}>
+                <Text style={{marginRight: 0}}>Acepto la </Text>
+                <Text style={{marginLeft: 0, color: 'blue'}} onPress={() => this.setState({showPolicyModal: true})}>polticia de privacidad</Text>
+              </Body>
+            </ListItem>
             <Button block style={styles.loginButton} onPress={() => this.registerUser()}>
               <Text> Signup </Text>
             </Button>
@@ -167,6 +186,7 @@ class SignupScreen extends Component {
                 <Text> Login </Text>
             </Button>
           </Form>
+          <PrivacyModal showModal={this.state.showPolicyModal} toggleModal={() => this.setState({showPolicyModal: false})}/>
         </Content>
       </Container>
     )
