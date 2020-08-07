@@ -45,6 +45,12 @@ export default {
     .then(r => { usersFirestoreServices.set(r.user.uid, userData, () => {onSuccess(r)}, onError) })
     .catch(onError)
   ),
+  forgotPassword: (email, onSuccess, onError) => (
+    auth()
+    .sendPasswordResetEmail(email)
+    .then(onSuccess)
+    .catch(onError)
+  ),
   nearVisible: (center, radius, onResult, onError) => (
     usersGeoFirestoreServices.collectionRef()
     .where('locationEnabled', '==', true)

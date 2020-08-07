@@ -7,7 +7,7 @@
   "fontColor": "white",
   "backgroundColor": "#d9534f",
   "title": "¡¡SOS!! ¡Emergencia!",
-  "message": "A 200m",
+  "message": "Se necesita ayuda!",
   "followable": true,
   "phoneNumber": 112
 }

@@ -146,53 +146,53 @@ const ProfileScreen = props => {
           />
           <FormItem 
             disabled={true}
-            label='Phone Number'
+            label='Teléfono'
             value={phoneNumber}
             placeholder='Disabled field'
             obligatory={true}
           />
           <FormItem 
             error={errorFields.includes('firstname')}
-            label='Name'
+            label='Nombre'
             value={firstname}
             onChangeText={(v) => setFirstname(v)}
             obligatory={true}
           />
           <FormItem 
             error={errorFields.includes('surname')}
-            label='Surname'
+            label='Apellidos'
             value={surname}
             onChangeText={(v) => setSurname(v)} 
           />
           <FormItem 
             error={errorFields.includes('portNumber')}
-            label='Port phone number'
+            label='Telefóno del puerto'
             value={portNumber}
             onChangeText={(v) => setPortNumber(v)}
             keyboardType='number-pad'
           />
           <FormItem 
             error={errorFields.includes('insuranceName')}
-            label='Insurance name'
+            label='Empresa aseguradora'
             value={insuranceName}
             onChangeText={(v) => setInsuranceName(v)} 
           />
           <FormItem 
             error={errorFields.includes('insurancePhoneNumber')}
-            label='Insurance phone number'
+            label='Teléfono de la aseguradora'
             value={insurancePhoneNumber}
             onChangeText={(v) => setInsurancePhoneNumber(v)}
             keyboardType='number-pad'
           />
           <FormItem 
             error={errorFields.includes('insuranceIdNumber')}
-            label='Insurance id number'
+            label='Número de póliza'
             value={insuranceIdNumber}
             onChangeText={(v) => setInsuranceIdNumber(v)} 
           />
           <FormItem 
             error={errorFields.includes('contactPhoneNumber')}
-            label='Contact phone number'
+            label='Contacto de emergencias (Móvil)'
             value={contactPhoneNumber}
             onChangeText={(v) => setContactPhoneNumber(v)}
             keyboardType='number-pad'

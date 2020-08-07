@@ -5,6 +5,7 @@ import { Container, Content, Form, Button, View, Text } from 'native-base'
 
 import UserHeader from '../../components/UserHeader'
 import FormItem from '../../components/FormItem'
+import RecoverPassword from '../../components/RecoverPassword'
 import * as userActions from '../user.actions'
 import userServices from '../user.services'
 
@@ -47,8 +48,8 @@ const authErrors = {
     'message': 'Account is disabled.'
   },
   'auth/user-not-found': {
-    'fields': ['email', 'password'],
-    'message': 'Incorrect email or password.'
+    'fields': ['email'],
+    'message': 'Incorrect email.'
   },
   'auth/wrong-password': {
     'fields': ['email', 'password'],
@@ -71,8 +72,8 @@ class LoginScreen extends Component {
   constructor(props) {
     super(props)
     this.state = { 
-      email: 'dogphin.app@gmail.com', 
-      password: 'password',
+      email: '', 
+      password: '',
       isLoading: false,
       errorFields: [],
       errorMessage: ''
@@ -81,11 +82,11 @@ class LoginScreen extends Component {
 
   userLogin = () => {
     if(this.state.email === '' || this.state.password === '') {
-      Alert.alert('Enter details to signin!')
+      Alert.alert('¡Introduzca los datos para acceder!')
     } else {
       this.setState({errorFields: [], errorMessage: '', isLoading: true})
       userServices.signInWithEmail(
-        this.state.email, 
+        this.state.email.trim(), 
         this.state.password,
         (res) => {
           this.setState({isLoading: false, email: '', password: ''})
@@ -100,6 +101,21 @@ class LoginScreen extends Component {
     }
   }
 
+  forgotPassword = (email) => {
+    userServices.forgotPassword(
+      email,
+      () => { 
+        this.setState({isLoading: false, email: '', password: ''})
+        alert(`Por favor, revise su email...`)
+      },
+      (error) => {
+        console.log(`Error ${error} - ${JSON.stringify(error)}`)
+        let e = (authErrors[error.code] || authErrors['auth/user-not-found'])
+        this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
+      }
+    )
+  }
+  
   render() {
     if(this.state.isLoading){
       return(
@@ -115,24 +131,25 @@ class LoginScreen extends Component {
           <Form style={styles.loginForm}>
             <FormItem 
               error={this.state.errorFields.includes('email')}
-              label='Username'
+              label='Email'
               value={this.state.email}
               onChangeText={(v) => this.setState({email: v})} 
             />
             <FormItem 
               error={this.state.errorFields.includes('password')}
-              label='Password'
+              label='Contraseña'
               value={this.state.password}
               onChangeText={(v) => this.setState({password: v})}
               secureTextEntry={true} 
             />
             <TextError error={this.state.errorMessage}/>
+            <RecoverPassword onPress={() => this.forgotPassword(this.state.email)} />
             <Button block style={styles.loginButton} onPress={() => this.userLogin()}>
-              <Text> Login </Text>
+              <Text> Acceder </Text>
             </Button>
             <Text style={styles.loginText}>or</Text>
             <Button block warning bordered onPress={() => this.props.navigation.navigate('Signup')}>
-                <Text> Signup </Text>
+                <Text> Registrarse </Text>
             </Button>
           </Form>
         </Content>
