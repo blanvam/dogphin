@@ -81,12 +81,6 @@ export const updateLocations = (userId, coordinates) => {
   }
 }
 
-export const moveUserOwnerNotifications = (oldUserUid, newUserUid) => {
-  return _ => {
-    notificationService.moveNotificationsOwner(oldUserUid, newUserUid)
-  }
-}
-
 export const changeNotificationSuccess = value => {
   return {
     type: actionTypes.CREATE_NOTIFICATION_SUCCESS,

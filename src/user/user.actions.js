@@ -30,7 +30,6 @@ export const updateNewUser = user => {
     let newUserUid = user.uid
     console.log(`AAAABBBCCCC ${oldUseruId} - ${newUserUid} - ${JSON.stringify(user)}`)
     if (newUserUid != oldUseruId) {
-      dispatch(notificationActions.moveUserOwnerNotifications(oldUseruId, newUserUid))
       userServices.update(newUserUid, {locationEnabled: true}, () => {})
       userServices.delete(oldUseruId) 
     }

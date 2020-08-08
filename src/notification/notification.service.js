@@ -31,14 +31,6 @@ export default {
       .where('user', '==', userId)
       .get().then(querySnapshot => raw(querySnapshot, updateNotification))
   },
-  moveNotificationsOwner: (oldUserUid, newUserUid) => {
-    const updateNotification = (doc) => {
-      notificationsFirestoreServices.update(doc.id, {user: newUserUid}, () => {})
-    }
-    notificationsFirestoreServices.collectionRef()
-      .where('user', '==', oldUserUid)
-      .get().then(querySnapshot => raw(querySnapshot, updateNotification))
-  },
   timeAgo: (date) => {
     let secAgo = (new Date().getTime() - date.toDate().getTime()) / 1000
     let minAgo, hoursAgo, daysAgo;
