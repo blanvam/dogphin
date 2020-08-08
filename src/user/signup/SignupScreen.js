@@ -63,7 +63,8 @@ class SignupScreen extends Component {
   _formFieldsValid = () => {
     const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     //const phoneFormat = /^(\(?([+]?([0-9]{2}))\)?)?[-. ]?([0-9]{3})[-. ]?([0-9]{3})[-. ]?([0-9]{3})$/
-    const phoneFormat = /^([0-9]{2})?([0-9]{9})$/
+    // const phoneFormat = /^([0-9]{2})?([0-9]{9})$/
+    const phoneFormat = /^([0-9]*)$/
     let errorMessage = ''
     let errorFields = []
     if (emailFormat.test(this.state.email) === false) {

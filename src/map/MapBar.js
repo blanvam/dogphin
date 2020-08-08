@@ -56,9 +56,7 @@ const MapBar = props => {
         <Button first rounded danger onPress={showEmergencyModal} >
           <Icon type="Octicons" name="alert" style={{ fontSize: 30, color: 'white' }} />
         </Button>
-        <Button block rounded success style={{ width: '55%', marginLeft: 20, marginRight: 20 }} >
-          <LocationSwitch />
-        </Button>
+        <LocationSwitch />
         <Button last rounded onPress={showAlertModal} style={{backgroundColor: 'white'}}>
           <Icon type="Octicons" name="issue-opened" style={{ fontSize: 30, color: 'orange' }} />
         </Button>

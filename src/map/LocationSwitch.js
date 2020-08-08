@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { StyleSheet, Switch } from 'react-native'
-import { Text, View } from 'native-base'
+import { Button, Text, View } from 'native-base'
 
 import userServices from '../user/user.services'
 import * as userActions from '../user/user.actions'
@@ -41,7 +41,7 @@ const LocationSwitch = props => {
   switchPosition = () => {
     if (props.user.email) {
       return (
-        <>
+        <Button block rounded success style={{ width: '55%', marginLeft: 20, marginRight: 20 }} >
           <Text> {locationEnabled ? "Visible" : "Invisible"} </Text>
           <View style={styles.positionBar}>
             <Switch 
@@ -52,10 +52,10 @@ const LocationSwitch = props => {
               value={locationEnabled}
             />
           </View>
-        </>
+        </Button>
       )
     } else {
-      return null
+      return <View style={{ width: '55%', marginLeft: 20, marginRight: 20 }}></View>
     }
   }
 
