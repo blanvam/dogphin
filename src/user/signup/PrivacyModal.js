@@ -103,7 +103,7 @@ export default PrivacyModal = props => {
           <Text style={styles.tcP}>Esta aplicación está reservada para uso adulto. Si usted es menor de edad, su padre/tutor legal debe permitirle usarlo; y aceptar las condiciones de uso apropiadas. Los titulares de la patria potestad también deben tomar las medidas adecuadas para proteger a los menores, en particular controlando su uso de esta solicitud.</Text>
 
           <Text style={styles.tcT}>5. Compartir sus datos.</Text>
-          <Text style={styles.tcP}>Mantenemos sus datos en los centros de datos ubicados aquí: ????????? .</Text>
+          <Text style={styles.tcP}>Mantenemos sus datos en los centros de datos ubicados aquí: Londres, Fráncfort, Zurich (Google Firebase: eur3, europe-west)  .</Text>
           <Text style={styles.tcP}>Solo divulgamos sus datos en las siguientes circunstancias:</Text>
           <Text style={styles.tcL}>5.1 Divulgación en relación con requisitos legales o transferencias corporativas. </Text>
           <Text style={styles.tcL}>Trade & Goods puede divulgar sus datos en respuesta a un procedimiento judicial o a una solicitud de una autoridad competente de acuerdo con las leyes aplicables o como parte de un procedimiento o proceso judicial.</Text>
@@ -131,7 +131,7 @@ export default PrivacyModal = props => {
           <Text style={styles.tcL}>Usted tiene derecho a establecer pautas para la conservación, el borrado y la comunicación.</Text>
           <Text style={styles.tcL}>Si desea dar instrucciones sobre el destino de sus datos personales post-mortem, póngase en contacto con nosotros en tradegoods85@gmail.com.</Text>
           <Text style={styles.tcL}>6.6 Lista de oposición al servicio telefónico</Text>
-          <Text style={styles.tcL}>También puede registrarse en la lista de oposición al servicio telefónico "???????" en el sitio web www.???????????.</Text>
+          <Text style={styles.tcL}>También puede registrarse en la lista de oposición al servicio telefónico "Lista Robinson" en el sitio web https://www.listarobinson.es/.</Text>
           <Text style={styles.tcL}>6.7 Obtención de una copia de esta Declaración</Text>
           <Text style={styles.tcL}>Póngase en contacto con nosotros en tradegoods85@gmail.com para obtener una copia de esta Declaración.</Text>
           <Text style={styles.tcL}>6.8 Prospección comercial</Text>
@@ -139,7 +139,7 @@ export default PrivacyModal = props => {
           
           <Text style={styles.tcT}>7. Contáctenos.</Text>
           <Text style={styles.tcP}>Si desea ejercer sus derechos de privacidad, o si tiene problemas de privacidad para los que debe presentar una queja ante nuestro Responsable de Protección de Datos (RPD), o si desea consultar nuestro RPD con respecto a la protección de datos generales, póngase en contacto con nosotros en tradegoods85@gmail.com con su información de contacto y el propósito de su solicitud.</Text>
-          <Text style={styles.tcP}>Si cree que Trade & Goods no procesan sus datos personales bajo los términos de esta Declaración o las leyes de protección de datos aplicables, puede presentar una queja ante su autoridad de protección de datos o ante la ¿?????????.</Text>
+          <Text style={styles.tcP}>Si cree que Trade & Goods no procesan sus datos personales bajo los términos de esta Declaración o las leyes de protección de datos aplicables, puede presentar una queja ante su autoridad de protección de datos o ante la Agencia Española de Protección de Datos (AEPD).</Text>
           <Text style={styles.tcT}>8. Actualizaciones sobre esta declaración.</Text>
           <Text style={styles.tcP}>Le invitamos a comprobar regularmente desde la configuración de la aplicación para ver si hay una nueva versión de esta declaración disponible, ya que la actualizamos de vez en cuando. En caso de cambios materiales en esta Declaración, o la forma en que procesamos sus datos, le notificaremos a través de mensajes, avisos del sitio web, correos electrónicos u otros dependiendo de la naturaleza del cambio,.</Text>
         </ScrollView>
