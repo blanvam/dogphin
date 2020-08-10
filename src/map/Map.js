@@ -69,7 +69,7 @@ const Map = props => {
         onRegionChangeComplete={setRegion}
         onUserLocationChange={locationChanged}
       >
-        <MapMarkerList />
+        <MapMarkerList navigation={props.navigation} />
       </MapView>
     </View>
   )

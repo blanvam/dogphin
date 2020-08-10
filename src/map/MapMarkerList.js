@@ -44,6 +44,33 @@ const styles = StyleSheet.create({
 
 const MapMarkerList = props => {
 
+  showErrorAndGoLogin = () => {
+    Toast.show({
+      text: 'Debe logearse para poder ver el número!',
+      type: "warning",
+      buttonText: "Vale",
+      duration: 6000,
+      position: "top"
+    })
+    props.navigation.navigate('Login')
+  }
+
+  linkToPhone = () => {
+    Linking.openURL(`tel:${props.user.phoneNumber}`)
+  }
+
+  getCallout = () => {
+    if (props.user.email) {
+      if (props.user.phoneNumber) {
+        return linkToPhone
+      } else {
+        return false
+      }
+    } else {
+      return showErrorAndGoLogin
+    }
+  }
+
   get_markers = () => {
     props.setMapMarkers([])
     let markers = props.notifications.map(item => {
@@ -56,6 +83,7 @@ const MapMarkerList = props => {
         markerStyle={(item.user === props.user.uid) ? styles.meNotmarker: styles.marker}
         iconMarkerStyle={styles.iconMarker}
         zIndex={(config.id == 'emergency') ? 99 : 98 }
+        callout={getCallout()}
       />
     })
     let nearUsers = props.nearUsers.map(item => {
@@ -67,6 +95,7 @@ const MapMarkerList = props => {
         markerStyle={(item.id === props.user.uid) ? styles.meMarker: styles.userMarker}
         iconMarkerStyle={styles.userIconMarker}
         zIndex={97}
+        callout={getCallout()}
       />
     })
     return markers.concat(nearUsers)
