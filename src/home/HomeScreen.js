@@ -38,7 +38,7 @@ const HomeScreen = props => {
         <UserWatcher />
         <Location />
         <MapBar navigation={props.navigation} />
-        <Map />
+        <Map navigation={props.navigation} />
         <PermissionExitModal />
         <EmergencyScreen />
         <AlertScreen />
