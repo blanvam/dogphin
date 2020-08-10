@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Linking } from 'react-native'
+import { Toast } from 'native-base'
 
 import MapMarker from './MapMarker'
 import * as mapActions from './map.actions'
