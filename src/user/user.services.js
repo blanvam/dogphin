@@ -9,15 +9,6 @@ const usersGeoFirestoreServices = geofirestoreServices("users")
 export default {
   ...usersGeoFirestoreServices,
   currentUser: auth().currentUser || {},
-  authSignOut: (onCompleted) => {
-    auth().signOut().then(() => {
-      auth().signInAnonymously().then(usr => {
-        let userData = {locationEnabled: true, isAnonymous: true}
-        usersFirestoreServices.set(usr.user.uid, userData, () => {})
-        onCompleted({uid: usr.user.uid})
-      })
-    })
-  },
   onAuthStateChanged: (currentUser, onCompleted) => (
     auth().onAuthStateChanged((user) => {
       if (user) {
@@ -29,7 +20,7 @@ export default {
           let userData = {locationEnabled: true, isAnonymous: true}
           usersFirestoreServices.set(usr.user.uid, userData, () => {})
           onCompleted(usr.user.uid, userData)
-        }).catch(() => onCompleted(user.uid, {}))  
+        }).catch(() => onCompleted(usr.user.uid, {}) )
       }
     })
   ),
@@ -54,6 +45,7 @@ export default {
   nearVisible: (center, radius, onResult, onError) => (
     usersGeoFirestoreServices.collectionRef()
     .where('locationEnabled', '==', true)
+    .where('active', '==', true)
     .near({ center, radius})
     .onSnapshot(querySnapshot => onResult(usersGeoFirestoreServices.listElements(querySnapshot)), onError)
   )

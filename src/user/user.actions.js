@@ -6,16 +6,6 @@ import * as notificationActions from '../notification/notification.actions'
 import firestore from '@react-native-firebase/firestore'
 
 
-export const signOut = _ => {
-  return dispatch => {
-    return userServices.authSignOut(
-      (usr) => {
-        dispatch(update(usr))
-      }
-    )
-  }
-}
-
 export const update = user => {
   return {
     type: actionTypes.UPDATE_USER_SUCCESS,
@@ -24,16 +14,13 @@ export const update = user => {
 }
 
 export const updateNewUser = user => {
-  return (dispatch, getState) => {
-    console.log(`updateNewUser`)
-    let oldUseruId = getState().user.user.uid
+  return (_, getState) => {
+    let oldUserUid = getState().user.user.uid
     let newUserUid = user.uid
-    console.log(`AAAABBBCCCC ${oldUseruId} - ${newUserUid} - ${JSON.stringify(user)}`)
-    if (newUserUid != oldUseruId) {
-      userServices.update(newUserUid, {locationEnabled: true}, () => {})
-      userServices.delete(oldUseruId) 
+    if (newUserUid != oldUserUid) {
+      userServices.delete(oldUserUid)
+      console.log(`Deleted user ${oldUserUid}`)
     }
-    dispatch(update(user))
   }
 }
 
@@ -63,7 +50,7 @@ export const updateUserLocation = location => {
     let dblocation = new firestore.GeoPoint(location.latitude, location.longitude)
     let userId = getState().user.user.uid
     if (userId) {
-      userServices.update(userId, {coordinates: dblocation}, () => {})
+      userServices.update(userId, {active: true, coordinates: dblocation}, () => {})
       dispatch(notificationActions.updateLocations(userId, dblocation))
     }
     dispatch(getNearUsers(dblocation))

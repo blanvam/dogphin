@@ -106,14 +106,15 @@ class SignupScreen extends Component {
         email: this.state.email,
         firstname: this.state.firstname, 
         phoneNumber: this.state.phoneNumber, 
-        positionEnabled: true,
+        locationEnabled: true,
+        active: true,
       }
       userServices.signUp(
         this.state.email,
         this.state.password,
         userData,
         result => {
-          this.props.updateNewUser({uid: result.user.uid, ...userData})
+          this.props.updateUserNew({uid: result.user.uid, ...userData})
           this.setState({isLoading: false})
           this.props.navigation.navigate('Profile')
         },
@@ -230,7 +231,7 @@ const mapStateToProps = _ => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateNewUser: (user) => dispatch(userActions.updateNewUser(user)),
+    updateUserNew: (user) => dispatch(userActions.updateNewUser(user)),
   }
 }
 
