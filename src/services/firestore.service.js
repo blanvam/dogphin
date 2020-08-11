@@ -17,7 +17,6 @@ export default (collection) => {
     where: (fieldPath, opStr, value, onResult) => (dbRef.where(fieldPath, opStr, value).get().then(querySnapshot => onResult(listElements(querySnapshot)))),
     set: (id, data, onSuccess, onError=(_ => {})) => {
       const timeStamp = new firestore.FieldValue.serverTimestamp()
-      console.log(`WILL SET ${JSON.stringify(data)}`)
       dbRef.doc(id).set({createdAt: timeStamp, updatedAt: timeStamp, ...data}).then(onSuccess).catch(onError)
     },
     add: (data, onSuccess, onError=(_ => {})) => (dbRef.add(data).then(onSuccess).catch(onError)),

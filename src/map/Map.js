@@ -54,7 +54,6 @@ const Map = props => {
       {latitude: props.mapLocation.latitude, longitude: props.mapLocation.longitude}
     )
     if (distance > props.distanceUserUpdate || dateExpiration > dateUser) {
-      console.log('SEND UPDATE USER LOCATION')
       props.updateUserLocation({latitude: coordinate.latitude, longitude: coordinate.longitude})
     }
   }
