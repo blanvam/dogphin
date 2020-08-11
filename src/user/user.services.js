@@ -11,6 +11,7 @@ export default {
   currentUser: auth().currentUser || {},
   onAuthStateChanged: (currentUser, onCompleted) => (
     auth().onAuthStateChanged((user) => {
+      console.log(`STATE CHANGED ${user?.uid} - ${currentUser.uid}`)
       if (user) {
         if (user.uid !== currentUser.uid) {
           usersGeoFirestoreServices.get(user.uid, usr => onCompleted(user.uid, usr), () => onCompleted(user.uid, {}))
@@ -20,7 +21,7 @@ export default {
           let userData = {locationEnabled: true, isAnonymous: true}
           usersFirestoreServices.set(usr.user.uid, userData, () => {})
           onCompleted(usr.user.uid, userData)
-        }).catch(() => onCompleted(usr.user.uid, {}) )
+        }).catch((e) => { console.log(`ERROR ${e}`); onCompleted(usr.user.uid, {})} )
       }
     })
   ),

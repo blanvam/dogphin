@@ -9,6 +9,7 @@ const INITIAL_STATE = {
     notificationExpiration: 12, // horas
     notificationsBarShow: 4,
     distanceUserUpdate: 20, // meters
+    expirationTimeUserUpdate: 300000, // milis
     user: user,
     emergency: emergency,
     alerts: alerts,

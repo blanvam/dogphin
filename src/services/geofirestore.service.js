@@ -26,7 +26,10 @@ export default (collection) => {
       return dbRef.doc(id).set({createdAt: timeStamp, updatedAt: timeStamp, ...data}).then(onSuccess).catch(onError)
     },
     add: (data, onSuccess, onError=(_ => {})) => (dbRef.add(data).then(onSuccess).catch(onError)),
-    update: (id, data, onSuccess, onError=(_ => {})) => (dbRef.doc(id).update({updatedAt: new firestore.FieldValue.serverTimestamp(), ...data}).then(onSuccess).catch(onError) ),
+    update: (id, data, onSuccess, onError=(_ => {})) => {
+      const timeStamp = new firestore.FieldValue.serverTimestamp()
+      return dbRef.doc(id).update({updatedAt: timeStamp, ...data}).then(onSuccess).catch(onError) 
+    },
     delete: (id, onSuccess=(_ => {}), onError=(_ => {})) => (dbRef.doc(id).delete().then(onSuccess).catch(onError) ),
     near: (center, radius, onResult, onError=(_ => {})) =>
       (dbRef.near({center, radius}).onSnapshot(querySnapshot => onResult(listElements(querySnapshot)), onError)),

@@ -12,8 +12,8 @@ const UserWatcher = props => {
 
   useEffect(() => {
     const unlisten = userServices.onAuthStateChanged(props.user, onUserCompleted)
-    return (() => unlisten())
-  }, [])
+    return unlisten
+  }, [props.user.uid])
   
   return (<></>)
 }

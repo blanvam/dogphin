@@ -116,7 +116,7 @@ class SignupScreen extends Component {
         result => {
           this.props.updateUserNew({uid: result.user.uid, ...userData})
           this.setState({isLoading: false})
-          this.props.navigation.navigate('Profile')
+          this.props.navigation.navigate('Home')
         },
         (error) => {
           let e = (authErrors[error.code] || authErrors['default'])

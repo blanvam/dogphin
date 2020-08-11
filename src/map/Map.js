@@ -4,6 +4,8 @@ import { StyleSheet, Dimensions } from 'react-native'
 import { View } from 'native-base'
 import MapView from 'react-native-maps'
 
+import firestore from '@react-native-firebase/firestore'
+
 import MapMarkerList from './MapMarkerList'
 import * as userActions from '../user/user.actions'
 //import mapStyle from './mapStyle.json'
@@ -43,12 +45,16 @@ const Map = props => {
   }
 
   locationChanged = (locationChangedResult) => {
+    let dateNow = firestore.Timestamp.now()
+    let dateExpiration = dateNow.toMillis() + props.expirationTimeUserUpdate
+    let dateUser = (props.user.updatedAt || props.user.createdAt)
     let coordinate = locationChangedResult.nativeEvent.coordinate
     let distance = getDistance(
       {latitude: coordinate.latitude, longitude: coordinate.longitude},
       {latitude: props.mapLocation.latitude, longitude: props.mapLocation.longitude}
     )
-    if (distance > props.distanceUserUpdate) {
+    if (distance > props.distanceUserUpdate || dateExpiration > dateUser) {
+      console.log('SEND UPDATE USER LOCATION')
       props.updateUserLocation({latitude: coordinate.latitude, longitude: coordinate.longitude})
     }
   }
@@ -78,8 +84,10 @@ const Map = props => {
 
 const mapStateToProps = state => {
   return {
+    user: state.user.user,
     mapLocation: state.map.location,
     distanceUserUpdate: state.home.config.distanceUserUpdate,
+    expirationTimeUserUpdate: state.home.config.expirationTimeUserUpdate,
   }
 }
 

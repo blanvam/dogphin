@@ -91,7 +91,7 @@ class LoginScreen extends Component {
         (res) => {
           this.setState({isLoading: false, email: '', password: ''})
           this.props.updateUserNew(res.user)
-          this.props.navigation.navigate('Profile')
+          this.props.navigation.navigate('Home')
         },
         (error) => {
           let e = (authErrors[error.code] || authErrors['default'])
