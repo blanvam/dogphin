@@ -39,7 +39,8 @@ export const getNearUsers = dblocation => {
       users => {
         dispatch(getNearUsersSuccess(users))
         return users
-      }
+      },
+      e => console.log(`ERROR in getNearUsers -> ${e}`)
     )
   }
 }
