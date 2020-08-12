@@ -17,21 +17,7 @@ const styles = StyleSheet.create({
 const LocationSwitch = props => {
   const [locationEnabled, setLocationEnabled] = useState(props.user.locationEnabled || true)
 
-  onUserLoadSuccess = (uid, usr) => {
-    if (usr) {
-      setLocationEnabled(usr.locationEnabled)
-    }
-    props.updateUser({uid: uid, ...usr})
-  }
-
-  onUserLoadFail = (uid) => {
-    props.updateUser({uid: uid})
-  }
-
-  useEffect(() => {
-    const unlisten = userServices.onAuthStateChanged(props.user, onUserLoadSuccess, onUserLoadFail)
-    return (unlisten)
-  }, [locationEnabled, props.user.email])
+  useEffect(() => {}, [locationEnabled])
 
   updateUserPositionSwitch = (value) => {
     setLocationEnabled(value)
@@ -45,7 +31,11 @@ const LocationSwitch = props => {
   switchPosition = () => {
     if (props.user.email) {
       return (
-        <Button block rounded success style={{ width: '55%', marginLeft: 20, marginRight: 20 }} >
+        <Button 
+          block rounded success 
+          style={{ width: '55%', marginLeft: 20, marginRight: 20 }} 
+          onPress={() => updateUserPositionSwitch(!locationEnabled)}
+        >
           <Text> {locationEnabled ? "Visible" : "Invisible"} </Text>
           <View style={styles.positionBar}>
             <Switch 

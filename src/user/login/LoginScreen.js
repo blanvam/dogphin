@@ -86,12 +86,12 @@ class LoginScreen extends Component {
     } else {
       this.setState({errorFields: [], errorMessage: '', isLoading: true})
       userServices.signInWithEmail(
-        this.state.email.trim(), 
+        this.state.email.trim(),
         this.state.password,
         (res) => {
           this.setState({isLoading: false, email: '', password: ''})
-          this.props.updateUser(res)
-          this.props.navigation.navigate('Profile')
+          this.props.updateUserNew(res.user)
+          this.props.navigation.navigate('Home')
         },
         (error) => {
           let e = (authErrors[error.code] || authErrors['default'])
@@ -109,7 +109,6 @@ class LoginScreen extends Component {
         alert(`Por favor, revise su email...`)
       },
       (error) => {
-        console.log(`Error ${error} - ${JSON.stringify(error)}`)
         let e = (authErrors[error.code] || authErrors['auth/user-not-found'])
         this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
       }
@@ -158,15 +157,13 @@ class LoginScreen extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    user: state.user.user,
-  }
+const mapStateToProps = _ => {
+  return { }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateUser: (user) => dispatch(userActions.update(user)),
+    updateUserNew: (user) => dispatch(userActions.updateNewUser(user)),
   }
 }
 

@@ -5,10 +5,22 @@ import * as notificationActions from '../notification/notification.actions'
 
 import firestore from '@react-native-firebase/firestore'
 
+
 export const update = user => {
   return {
     type: actionTypes.UPDATE_USER_SUCCESS,
     user,
+  }
+}
+
+export const updateNewUser = user => {
+  return (_, getState) => {
+    let oldUserUid = getState().user.user.uid
+    let newUserUid = user.uid
+    if (newUserUid != oldUserUid) {
+      userServices.delete(oldUserUid)
+      console.log(`Deleted user ${oldUserUid}`)
+    }
   }
 }
 
@@ -27,7 +39,8 @@ export const getNearUsers = dblocation => {
       users => {
         dispatch(getNearUsersSuccess(users))
         return users
-      }
+      },
+      e => console.log(`ERROR in getNearUsers -> ${e}`)
     )
   }
 }
@@ -38,7 +51,7 @@ export const updateUserLocation = location => {
     let dblocation = new firestore.GeoPoint(location.latitude, location.longitude)
     let userId = getState().user.user.uid
     if (userId) {
-      userServices.update(userId, {coordinates: dblocation}, () => {})
+      userServices.update(userId, {active: true, coordinates: dblocation}, () => {})
       dispatch(notificationActions.updateLocations(userId, dblocation))
     }
     dispatch(getNearUsers(dblocation))

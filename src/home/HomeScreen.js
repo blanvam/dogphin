@@ -11,6 +11,7 @@ import FooterBar from '../components/FooterBar'
 import Location from '../map/Location'
 import MapBar from '../map/MapBar'
 import Map from '../map/Map'
+import UserWatcher from '../user/UserWatcher'
 import NotificationBar from '../notification/NotificationBar'
 import * as homeActions from '../home/home.actions'
 import * as userActions from '../user/user.actions'
@@ -34,6 +35,7 @@ const HomeScreen = props => {
         </Right>
       </Header>
       <Content>
+        <UserWatcher />
         <Location />
         <MapBar navigation={props.navigation} />
         <Map navigation={props.navigation} />
