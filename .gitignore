@@ -60,3 +60,4 @@ buck-out/
 
 #Android gen
 /android/app/src/main/gen
+*.hprof

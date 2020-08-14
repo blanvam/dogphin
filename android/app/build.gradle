@@ -133,8 +133,8 @@ android {
         multiDexEnabled true
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "0.9.6"
+        versionCode 4
+        versionName "0.10.0"
         aaptOptions{
             noCompress "tflite","model"
         }
