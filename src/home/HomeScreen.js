@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Platform } from 'react-native'
+import { Platform, Alert } from 'react-native'
 import { Container, Header, Right, Content } from 'native-base'
 import { Icon, Button } from 'native-base'
 
@@ -15,13 +15,24 @@ import UserWatcher from '../user/UserWatcher'
 import NotificationBar from '../notification/NotificationBar'
 import * as homeActions from '../home/home.actions'
 import * as userActions from '../user/user.actions'
+import * as pushActions from '../push/push.actions'
 import userServices from '../user/user.services'
+import PushService from '../push/PushService'
 
 const HomeScreen = props => {
+
+  const onRegister = (token) => {
+    this.setState({registerToken: token.token, fcmRegistered: true});
+  }
+  
+  const onNotif = (notif) => {
+    Alert.alert(notif.title, notif.message);
+  }
 
   useEffect(() => {
     props.updateUser({uid: userServices.currentUser.uid, email: userServices.currentUser.email})
     props.getConfiguration(Platform.OS)
+    props.setNotificationPush(new PushService(onRegister.bind(this), onNotif.bind(this)))
   }, [])
 
   return (
@@ -56,6 +67,7 @@ const mapDispatchToProps = dispatch => {
   return {
     getConfiguration: (id) => dispatch(homeActions.getConfiguration(id)),
     updateUser: (user) => dispatch(userActions.update(user)),
+    setNotificationPush: (notifier) => dispatch(pushActions.setPushNotification(notifier))
   }
 }
 

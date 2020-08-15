@@ -41,6 +41,12 @@ export const getNotifications = dblocation => {
         dispatch(getNotificationsBarSuccess(notifications.slice(0, getState().home.config.notificationsBarShow)))
         dispatch(toggleNotificationsLoader(false))
         return notifications
+      },
+      changes => {
+        console.log('Will notifier')
+        console.log(JSON.stringify(changes))
+        getState().push.notifier.localNotif()
+        console.log(`has notified ${changes['added'].length} new notificacions`)
       }
     )
   }

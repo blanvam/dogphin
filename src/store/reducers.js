@@ -6,6 +6,7 @@ import map from '../map/map.reducers'
 import notification from './../notification/notification.reducers'
 import alert from './../alert/alert.reducers'
 import emergency from './../emergency/emergency.reducers'
+import push from './../push/push.reducers'
 
 export default combineReducers({
   home,
@@ -14,4 +15,5 @@ export default combineReducers({
   notification,
   alert,
   emergency,
+  push,
 })
