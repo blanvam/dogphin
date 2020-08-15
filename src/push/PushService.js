@@ -42,6 +42,7 @@ export default class PushService {
 
   localNotif(soundName) {
     this.lastId++;
+    console.log('LOCAL NOTIF WILL PUSH')
     PushNotification.localNotification({
       /* Android Only Properties */
       ticker: 'My Notification Ticker', // (optional)
@@ -72,6 +73,7 @@ export default class PushService {
       soundName: soundName ? soundName : 'default', // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
       number: 10, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
     });
+    console.log('LOCAL NOTIF PUSHES')
   }
 
   checkPermission(cbk) {
