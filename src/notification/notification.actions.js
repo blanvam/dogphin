@@ -43,10 +43,18 @@ export const getNotifications = dblocation => {
         return notifications
       },
       changes => {
-        console.log('Will notifier')
-        console.log(JSON.stringify(changes))
-        getState().push.notifier.localNotif()
-        console.log(`has notified ${changes['added'].length} new notificacions`)
+        let notifAddedLen = changes['added'].length
+        let title, message
+        if (notifAddedLen == 1) {
+          title = 'Nueva alerta cercana'
+          message = `Alguien ha publicado un mensaje de ${changes['added'][0]['name']}`
+        } else if (notifAddedLen > 1) {
+          title = 'Nuevas alertas cercanas'
+          message = `Hay ${notifAddedLen} nuevas notificaciones en el mapa`
+        }
+        if (title) {
+          getState().push.notifier.localNotif(title, message)
+        }
       }
     )
   }
