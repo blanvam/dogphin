@@ -112,7 +112,7 @@ const AlertScreen = props => {
       onBackdropPress={() => props.toggleAlertModal(false)}
     >
       <View style={styles.container}>
-        <Title style={styles.title}>Notificar una Alerta</Title>
+        <Title style={styles.title}>{props.i18n.createAlertTitle}</Title>
         <FlatList
           data={props.alerts}
           numColumns={2}
@@ -123,7 +123,7 @@ const AlertScreen = props => {
           title="Aceptar y salir de Dogphin" 
           onPress={() => props.toggleAlertModal(false)}
         >
-          <Text>Cancelar</Text>
+          <Text>{props.i18n.cancel}</Text>
         </Button>
       </View>
       < CreateAlertScreen 
