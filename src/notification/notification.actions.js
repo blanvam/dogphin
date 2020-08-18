@@ -37,24 +37,19 @@ export const getNotifications = dblocation => {
       dblocation,
       getState().home.config.queryDistance,
       notifications => {
+        let oldNotifs = getState().notification.notifications
+        console.log('AAAAAAA NEW NOTIF')
+        console.log(oldNotifs)
+        console.log('AAAAAAA OLD NOTIF')
+        console.log(notifications)
+        //let newNotifications = getState().notification.notifications - notifications
+        let newNotifications = notifications.filter(({ id: id1 }) => !oldNotifs.some(({ id: id2 }) => id2 === id1))        
+        console.log('AAAAAAA DIF')
+        console.log(newNotifications)
         dispatch(getNotificationsSuccess(notifications))
         dispatch(getNotificationsBarSuccess(notifications.slice(0, getState().home.config.notificationsBarShow)))
         dispatch(toggleNotificationsLoader(false))
         return notifications
-      },
-      changes => {
-        let notifAddedLen = changes['added'].length
-        let title, message
-        if (notifAddedLen == 1) {
-          title = 'Nueva alerta cercana'
-          message = `Alguien ha publicado un mensaje de ${changes['added'][0]['name']}`
-        } else if (notifAddedLen > 1) {
-          title = 'Nuevas alertas cercanas'
-          message = `Hay ${notifAddedLen} nuevas notificaciones en el mapa`
-        }
-        if (title) {
-          getState().push.notifier.localNotif(title, message)
-        }
       }
     )
   }
