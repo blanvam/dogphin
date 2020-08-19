@@ -41,7 +41,8 @@ const FooterBar = props => {
 
 const mapStateToProps = state => {
   return {
-    location: state.user.location
+    location: state.user.location,
+    i18n: state.home.translations,
   }
 }
 
