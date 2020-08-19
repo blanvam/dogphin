@@ -13,11 +13,11 @@ export const getConfiguration = (id, usedLanguages) => {
       configuration => {
         if (configuration) {
           dispatch(getConfigurationSuccess(configuration))
-          let i18n = configuration.i18n || []
+          let i18n = configuration.translations || []
           let allLanguages = Object.keys(i18n)
           let languages = usedLanguages.map(e => e.languageCode)
           let lenguage = languages.filter(e => allLanguages.includes(e))[0] || 'en'
-          let translations = i18n[lenguage] || getState().home.config.i18n[lenguage]
+          let translations = i18n[lenguage] || getState().home.config.translations[lenguage]
           dispatch(setTranslations(translations))
         }
         return configuration

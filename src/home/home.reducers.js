@@ -2,7 +2,7 @@ import actionsTypes from './home.action-types'
 import user from '../user/user.json'
 import emergency from '../emergency/emergency.json'
 import alerts from '../alert/alerts.json'
-import i18n from './i18n.json'
+import translations from './translations.json'
 
 const INITIAL_STATE = {
   config: {
@@ -14,9 +14,9 @@ const INITIAL_STATE = {
     user: user,
     emergency: emergency,
     alerts: alerts,
-    i18n: i18n,
+    translations: translations,
   },
-  translations: i18n['en']
+  translations: translations['en']
 }
 
 export default (state = INITIAL_STATE, action) => {
