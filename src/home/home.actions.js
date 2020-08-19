@@ -1,13 +1,14 @@
 import actionTypes from './home.action-types'
 import configurationService from '../services/configuration.service'
+import translations from './translations.json'
 
-//configurationService.set('android', getState().home.config, () => {console.log('SAVED')})
+    //configurationService.set('android', getState().home.config, () => {console.log('SAVED')}})
     //configurationService.set('default', getState().home.config, () => {console.log('SAVED')})
     //configurationService.set('ios', getState().home.config, () => {console.log('SAVED')})
     //configurationService.set('native', getState().home.config, () => {console.log('SAVED')})
-    
+
 export const getConfiguration = (id, usedLanguages) => {
-  return (dispatch, getState) => {
+  return dispatch => {    
     return configurationService.get(
       id,
       configuration => {
@@ -17,8 +18,8 @@ export const getConfiguration = (id, usedLanguages) => {
           let allLanguages = Object.keys(i18n)
           let languages = usedLanguages.map(e => e.languageCode)
           let lenguage = languages.filter(e => allLanguages.includes(e))[0] || 'en'
-          let translations = i18n[lenguage] || getState().home.config.translations[lenguage]
-          dispatch(setTranslations(translations))
+          let currentTranslations = i18n[lenguage] || translations[lenguage]
+          dispatch(setTranslations(currentTranslations.translation))
         }
         return configuration
       }

@@ -131,6 +131,7 @@ const AlertScreen = props => {
         setShowModal={setShowCreateModal} 
         alert={modalAlert}
         createAlertPressed={createAlertPressed}
+        i18n={props.i18n}
       />
     </Modal>
   )
@@ -141,6 +142,7 @@ const mapStateToProps = state => {
     alerts: state.home.config.alerts,
     showModal: state.alert.showModal,
     notificationCreated: state.notification.notificationCreated,
+    i18n: state.home.translations,
   }
 }
 
