@@ -40,6 +40,9 @@
       "createAlertTitle": "Notify an Alert",
       "cancel": "Cancel",
       "sureOnCreateAlert": "Are you sure you want to issue this alert?",
+      "swipe": "Swipe!",
+      "incompleteSwipe": "Incomplete swipe!",
+      "call": "Call",
       "boatDamage": {
         "name": "Damaged Boat",
         "title": "Damaged Boat!",
@@ -118,6 +121,9 @@
       "createAlertTitle": "Notificar una Alerta",
       "cancel": "Cancelar",
       "sureOnCreateAlert": "¿Estás segura/o de publicar esta alerta?",
+      "swipe": "Swipe!",
+      "incompleteSwipe": "Incomplete swipe!",
+      "call": "Call",
       "boatDamage": {
         "name": "Barco dañado",
         "title": "¡Barco dañado!",
@@ -196,6 +202,9 @@
       "createAlertTitle": "Alerte à la communauté",
       "cancel": "Annuler",
       "sureOnCreateAlert": "Êtes-vous sûr de vouloir publier cette alerte?",
+      "swipe": "Swipe!",
+      "incompleteSwipe": "Incomplete swipe!",
+      "call": "Call",
       "boatDamage": {
         "name": "Navire endommagé",
         "title": "Bateau endommagé",

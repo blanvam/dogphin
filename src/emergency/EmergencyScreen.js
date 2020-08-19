@@ -100,19 +100,19 @@ const EmergencyScreen = props => {
       onBackdropPress={cancelEmergencyCreation}
     >
       <View style={styles.container}>
-        <Title style={styles.title}> {props.emergency.title} </Title>
-        <Text>¿Estás segura/o de publicar esta emergencia?</Text>
+        <Title style={styles.title}> {props.i18n[props.emergency.title]} </Title>
+        <Text>{props.i18n.sureOnCreateAlert}</Text>
         <SwipeButton
           railBackgroundColor='#C0C0C0'
           railFillBackgroundColor={props.emergency.backgroundColor}
           containerStyles={{marginTop: 30, backgroundColor: props.emergency.backgroundColor }} 
           thumbIconBackgroundColor={props.emergency.backgroundColor}
-          title='Desliza!'
+          title={props.i18n.swipe}
           titleColor={props.emergency.fontColor}
           width={'90%'} 
           thumbIconComponent={emergencyIcon}
           onSwipeStart={() => setErrorMessage('')}
-          onSwipeFail={() => setErrorMessage('Incomplete swipe!')}
+          onSwipeFail={() => setErrorMessage(props.i18n.incompleteSwipe)}
           onSwipeSuccess={createEmergencyPressed}
         />
         <TextError error={errorMessage}/>
@@ -121,7 +121,7 @@ const EmergencyScreen = props => {
             title="Cancel" 
             onPress={cancelEmergencyCreation}
           >
-            <Text>Cancelar</Text>
+            <Text>{props.i18n.cancel}</Text>
           </Button>
         </View>
       </View>

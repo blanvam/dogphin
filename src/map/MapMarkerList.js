@@ -49,7 +49,7 @@ const MapMarkerList = props => {
     Toast.show({
       text: 'Debe logearse para poder ver el número!',
       type: "warning",
-      buttonText: "Vale",
+      buttonText: "OK",
       duration: 6000,
       position: "top"
     })
