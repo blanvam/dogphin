@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Platform } from 'react-native'
 import { Container, Header, Right, Content } from 'native-base'
 import { Icon, Button } from 'native-base'
+import * as RNLocalize from 'react-native-localize'
 
 import PermissionExitModal from '../permission/PermissionExitModal'
 import EmergencyScreen from '../emergency/EmergencyScreen'
@@ -16,7 +17,7 @@ import NotificationBar from '../notification/NotificationBar'
 import * as homeActions from '../home/home.actions'
 import * as userActions from '../user/user.actions'
 import userServices from '../user/user.services'
-import * as RNLocalize from "react-native-localize";
+
 
 const HomeScreen = props => {
 

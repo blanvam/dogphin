@@ -51,7 +51,7 @@ const NotificationBar = props => {
             scrollSpeed={5000}
             bounceSpeed={5000}
           >
-            {props.i18n[config.title]} - {props.i18n[config.message] }
+            {props.i18n[config.id+'Title']} - {props.i18n[config.id+'Description'] }
           </TextTicker>
         </View>
         <Icon

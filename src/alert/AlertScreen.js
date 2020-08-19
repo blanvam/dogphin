@@ -97,7 +97,7 @@ const AlertScreen = props => {
             name={item.iconName} 
           />
         </View>
-        <Text style={{...styles.itemText, color: item.fontColor}}>{props.i18n[item.name]}</Text>
+        <Text style={{...styles.itemText, color: item.fontColor}}>{props.i18n[item.id+'Name']}</Text>
       </Button>
     )
   }

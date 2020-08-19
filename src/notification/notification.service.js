@@ -30,20 +30,5 @@ export default {
     notificationsFirestoreServices.collectionRef()
       .where('user', '==', userId)
       .get().then(querySnapshot => raw(querySnapshot, updateNotification))
-  },
-  timeAgo: (date) => {
-    let secAgo = (new Date().getTime() - date.toDate().getTime()) / 1000
-    let minAgo, hoursAgo, daysAgo;
-    if ((minAgo = secAgo/60) < 1) {
-      return `${parseInt(secAgo)} ${props.i18n.seconds}`;
-    } else if ((hoursAgo = minAgo/60) < 1) {
-      return `${parseInt(minAgo)} ${props.i18n.minutes}`;
-    } else if ((daysAgo = hoursAgo/24) < 1) {
-      return `${parseInt(hoursAgo)} ${props.i18n.hours}`;
-    } else if ((daysAgo/30) < 1) {
-      return `${parseInt(daysAgo)} ${props.i18n.days}`;
-    } else {
-      return date.toDate().toDateString();
-    }
   }
 }

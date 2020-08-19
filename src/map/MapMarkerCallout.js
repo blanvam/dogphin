@@ -17,21 +17,21 @@ const styles = StyleSheet.create({
 
 export default MapMarkerCallout = props => {
   getDescription = () => {
-    if (props.description) { return <Text style={{marginBottom: 10}}> {props.i18n[props.description]} </Text> }
+    if (props.description) { return <Text style={{marginBottom: 10}}> {props.description} </Text> }
   }
 
   if (props.callout) {
     return (
-      <Callout style={{ width: props.i18n[props.title].length * 10, ...styles.container, ...props.style}} onPress={props.callout} >
-        <Text style={styles.title}>{props.i18n[props.title]}</Text>
+      <Callout style={{ width: props.title.length * 10, ...styles.container, ...props.style}} onPress={props.callout} >
+        <Text style={styles.title}>{props.title}</Text>
         {getDescription()}
         <Text style={{color: 'blue'}} > {props.i18n.call} </Text>
       </Callout>
     )
   } else {
     return (
-      <Callout style={{ width: props.i18n[props.title].length * 10, ...styles.container, ...props.style}} >
-        <Text style={styles.title}>{props.i18n[props.title]}</Text>
+      <Callout style={{ width: props.title.length * 10, ...styles.container, ...props.style}} >
+        <Text style={styles.title}>{props.title}</Text>
         {getDescription()}
       </Callout>
     )

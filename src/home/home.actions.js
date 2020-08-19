@@ -2,23 +2,27 @@ import actionTypes from './home.action-types'
 import configurationService from '../services/configuration.service'
 import translations from './translations.json'
 
-    //configurationService.set('android', getState().home.config, () => {console.log('SAVED')}})
+    //configurationService.set('android', getState().home.config, () => {console.log('SAVED')})
     //configurationService.set('default', getState().home.config, () => {console.log('SAVED')})
     //configurationService.set('ios', getState().home.config, () => {console.log('SAVED')})
     //configurationService.set('native', getState().home.config, () => {console.log('SAVED')})
 
 export const getConfiguration = (id, usedLanguages) => {
-  return dispatch => {    
+  return (dispatch, getState) => {    
+    configurationService.set('android', getState().home.config, () => {console.log('SAVED')})
+    configurationService.set('default', getState().home.config, () => {console.log('SAVED')})
+    configurationService.set('ios', getState().home.config, () => {console.log('SAVED')})
+    configurationService.set('native', getState().home.config, () => {console.log('SAVED')})
     return configurationService.get(
       id,
       configuration => {
         if (configuration) {
           dispatch(getConfigurationSuccess(configuration))
-          let i18n = configuration.translations || []
+          let i18n = configuration.translations || translations
           let allLanguages = Object.keys(i18n)
           let languages = usedLanguages.map(e => e.languageCode)
           let lenguage = languages.filter(e => allLanguages.includes(e))[0] || 'en'
-          let currentTranslations = i18n[lenguage] || translations[lenguage]
+          let currentTranslations = i18n[lenguage]
           dispatch(setTranslations(currentTranslations.translation))
         }
         return configuration

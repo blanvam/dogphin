@@ -57,6 +57,22 @@ const NotificationScreen = props => {
     props.navigation.navigate("Home")
   }
 
+  timeAgo = (date) => {
+    let secAgo = (new Date().getTime() - date.toDate().getTime()) / 1000
+    let minAgo, hoursAgo, daysAgo;
+    if ((minAgo = secAgo/60) < 1) {
+      return `${parseInt(secAgo)} ${props.i18n.seconds}`;
+    } else if ((hoursAgo = minAgo/60) < 1) {
+      return `${parseInt(minAgo)} ${props.i18n.minutes}`;
+    } else if ((daysAgo = hoursAgo/24) < 1) {
+      return `${parseInt(hoursAgo)} ${props.i18n.hours}`;
+    } else if ((daysAgo/30) < 1) {
+      return `${parseInt(daysAgo)} ${props.i18n.days}`;
+    } else {
+      return date.toDate().toDateString();
+    }
+  }
+
   renderItem = ({ item }) => {
     let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
     return (
@@ -65,11 +81,11 @@ const NotificationScreen = props => {
           <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
         </Left>
         <Body>
-          <Text style={styles.listItemTitle}>{props.i18n[config.title]}</Text>
-          <Text note>{props.i18n[config.message]}</Text>
+          <Text style={styles.listItemTitle}>{props.i18n[config.id+'Title']}</Text>
+          <Text note>{props.i18n[config.id+'Description']}</Text>
         </Body>
         <Right>
-          <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
+          <Text note>{timeAgo(item.createdAt)}</Text>
           <Button transparent iconLeft style={styles.listItemButton} onPress={() => moveToNotification(item)}>
             <Icon type="MaterialIcons" name="my-location" style={{...styles.listItemIconButton, color: 'green'}} />
           </Button>
@@ -90,7 +106,7 @@ const NotificationScreen = props => {
           <Text note>{props.i18n[config.message]}</Text>
         </Body>
         <Right>
-          <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
+          <Text note>{timeAgo(item.createdAt)}</Text>
           <View style={styles.listItemInlineButtons}>
             <Button transparent iconLeft style={styles.listItemButton} onPress={() => props.deleteNotification(item.id)}>
               <Icon type="FontAwesome" name="trash-o" style={{...styles.listItemIconButton, color: 'red'}} />
