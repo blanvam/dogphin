@@ -6,6 +6,7 @@ export default translations = {
       weather: "Weather",
       createAlertTitle: "Notify an Alert",
       cancel: "Cancel",
+      sureOnCreateAlert: "Are you sure you want to issue this alert?",
       boatDamage: {
         name: "Damaged Boat",
         title: "Damaged Boat!",
@@ -20,27 +21,27 @@ export default translations = {
       badWeather: {
         name: "Bad Weather",
         title: "Bad weather",
-        description: ""
+        description: "It seems there's a swell or bad weather forecast. Take precautions!"
       },
       floatingObject: {
         name: "Floating Object",
         title: "Floating object",
-        description: ""
+        description: "You have a floating object nearby that could be dangerous!"
       },
       mechanicFailure: {
         name: "Mechanical Failure",
         title: "Mechanical failure",
-        description: ""
+        description: "There's someone nearby with a mechanical failure"
       },
       healthSos: {
         name: "Health SOS",
         title: "Health SOS!",
-        description: ""
+        description: "Someone's having health problems! Can you help him?"
       },
       emergency: {
         name: "Emergency! SOS!!",
         title: "Emergency! SOS!!",
-        description: ""
+        description: "Urgent help is needed!"
       }
     }
   },
@@ -51,6 +52,7 @@ export default translations = {
       weather: "Tiempo",
       createAlertTitle: "Notificar una Alerta",
       cancel: "Cancelar",
+      sureOnCreateAlert: "¿Estás segura/o de publicar esta alerta?",
       boatDamage: {
         name: "Barco dañado",
         title: "¡Barco dañado!",
@@ -76,7 +78,7 @@ export default translations = {
       mechanicFailure: {
         name: "Fallo mecánico",
         title: "Fallo mecánico",
-        description: "Cerca hay alguien con un fallo de motor o eléctrico"
+        description: "Cerca hay alguien con un fallo mecánico"
       },
       healthSos: {
         name: "Ayuda sanitaria",
@@ -97,6 +99,7 @@ export default translations = {
       weather: "Alertes en cours",
       createAlertTitle: "Alerte à la communauté",
       cancel: "Annuler",
+      sureOnCreateAlert: "Êtes-vous sûr de vouloir publier cette alerte?",
       boatDamage: {
         name: "Navire endommagé",
         title: "Bateau endommagé",
@@ -108,29 +111,29 @@ export default translations = {
         description: "Un membre est en panne de carburant sur cette zone"
       },
       badWeather: {
-        name: "",
-        title: "",
-        description: ""
+        name: "Alerte météo",
+        title: "Alerte météo",
+        description: "Un membre a déclaré une alerte météo sur cette zone"
       },
       floatingObject: {
-        name: "",
-        title: "",
-        description: ""
+        name: "Objet flottant",
+        title: "Objet flottant / Dangereux",
+        description: "Un objet flottant / dangereux a été déclaré sur cette zone"
       },
       mechanicFailure: {
-        name: "",
-        title: "",
-        description: ""
+        name: "Panne mécanique",
+        title: "Panne mécanique",
+        description: "Un membre a un problème mécanique sur cette zone"
       },
       healthSos: {
-        name: "",
-        title: "",
-        description: ""
+        name: "Alerte médicale",
+        title: "SOS – Alerte médicale",
+        description: "Un membre a un problème de santé sur cette zone"
       },
       emergency: {
-        name: "",
-        title: "",
-        description: ""
+        name: "Urgence",
+        title: "SOS – Urgence absolue!",
+        description: "Un membre a urgemment besoin d’assistance"
       }
     }
   }
