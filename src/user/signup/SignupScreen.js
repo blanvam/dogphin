@@ -69,26 +69,26 @@ class SignupScreen extends Component {
     let errorFields = []
     if (emailFormat.test(this.state.email) === false) {
       errorFields.push('email')
-      errorMessage += 'Introduce un email válido'
+      errorMessage += props.i18n.emailValidation
     }
     if (phoneFormat.test(this._cleanedPhoneNumber()) === false) {
       errorFields.push('phoneNumber')
-      let msg = 'Introduce un teléfono válido'
+      let msg = props.i18n.phoneNumberValidation
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if(this.state.password === ''){
       errorFields.push('password')
-      let msg = 'Introduce una contraseña'
+      let msg = props.i18n.passwordValidation
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if(this.state.firstname === '') {
       errorFields.push('firstname')
-      let msg = 'Introduce tu nombre'
+      let msg = props.i18n.firstnameValidation
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if(!this.state.privacyPolicy) {
       errorFields.push('privacyPolicy')
-      let msg = 'Debe aceptar la política de privacidad'
+      let msg = props.i18n.privacyPolicyValidation
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if (errorFields.length === 0) {
@@ -188,7 +188,11 @@ class SignupScreen extends Component {
                 <Text>{this.props.i18n.login}</Text>
             </Button>
           </Form>
-          <PrivacyModal showModal={this.state.showPolicyModal} toggleModal={() => this.setState({showPolicyModal: false})}/>
+          <PrivacyModal 
+            showModal={this.state.showPolicyModal} 
+            toggleModal={() => this.setState({showPolicyModal: false})}
+            i18n={this.props.i18n}
+          />
         </Content>
       </Container>
     )
