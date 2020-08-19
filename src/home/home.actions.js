@@ -8,11 +8,7 @@ import translations from './translations.json'
     //configurationService.set('native', getState().home.config, () => {console.log('SAVED')})
 
 export const getConfiguration = (id, usedLanguages) => {
-  return (dispatch, getState) => {    
-    configurationService.set('android', getState().home.config, () => {console.log('SAVED')})
-    configurationService.set('default', getState().home.config, () => {console.log('SAVED')})
-    configurationService.set('ios', getState().home.config, () => {console.log('SAVED')})
-    configurationService.set('native', getState().home.config, () => {console.log('SAVED')})
+  return dispatch => {
     return configurationService.get(
       id,
       configuration => {
