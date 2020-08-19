@@ -97,7 +97,7 @@ const AlertScreen = props => {
             name={item.iconName} 
           />
         </View>
-        <Text style={{...styles.itemText, color: item.fontColor}}>{item.name}</Text>
+        <Text style={{...styles.itemText, color: item.fontColor}}>{props.i18n[item.name]}</Text>
       </Button>
     )
   }
@@ -112,7 +112,7 @@ const AlertScreen = props => {
       onBackdropPress={() => props.toggleAlertModal(false)}
     >
       <View style={styles.container}>
-        <Title style={styles.title}>Notificar una Alerta</Title>
+        <Title style={styles.title}>{props.i18n.createAlertTitle}</Title>
         <FlatList
           data={props.alerts}
           numColumns={2}
@@ -123,7 +123,7 @@ const AlertScreen = props => {
           title="Aceptar y salir de Dogphin" 
           onPress={() => props.toggleAlertModal(false)}
         >
-          <Text>Cancelar</Text>
+          <Text>{props.i18n.cancel}</Text>
         </Button>
       </View>
       < CreateAlertScreen 

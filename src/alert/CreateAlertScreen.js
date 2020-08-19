@@ -49,23 +49,23 @@ export default CreateAlertScreen = props => {
       onBackdropPress={() => props.setShowModal(false)}
       >
       <View style={styles.container}>
-        <Title style={styles.title}> {props.alert.title}</Title>
-        <Text style={{marginTop: 10, marginBottom: 20}}>{props.alert.message}</Text>
-        <Text>¿Estás segura/o de publicar esta alerta?</Text>
+        <Title style={styles.title}> {props.i18n[props.alert.title]}</Title>
+        <Text style={{marginTop: 10, marginBottom: 20}}>{props.i18n[props.alert.message]}</Text>
+        <Text>{props.i18n.sureOnCreateAlert}</Text>
         <View style={styles.buttonContainer}>
           <Button bordered transparent
             title="Cancel"
             onPress={() => props.setShowModal(false)}
             style={styles.button}
           >
-            <Text>Cancelar</Text>
+            <Text>{props.i18n.cancel}</Text>
           </Button>
           <Button bordered transparent
             title="Agree" 
             onPress={props.createAlertPressed}
             style={styles.button}
           >
-            <Text>Aceptar</Text>
+            <Text>{props.i18n.agree} </Text>
           </Button>
         </View>
       </View>
