@@ -27,7 +27,7 @@ const MapBar = props => {
       text: msg,
       //textStyle: { color: "red" },
       type: "warning",
-      buttonText: "Vale",
+      buttonText: "OK",
       duration: 6000,
       position: "top"
     })
@@ -38,7 +38,7 @@ const MapBar = props => {
     if (props.user.email) {
       props.toggleEmergencyModal(true)
     } else {
-      showErrorAndGoLogin('Debe logearse para crear una emergencia!') 
+      showErrorAndGoLogin(props.i18n.mustLoginCreateEmergency) 
     }
   }
 
@@ -46,7 +46,7 @@ const MapBar = props => {
     if (props.user.email) {
       props.toggleAlertModal(true)
     } else {
-      showErrorAndGoLogin('Debe logearse para crear una alerta!')
+      showErrorAndGoLogin(props.i18n.mustLoginCreateAlert)
     }
   }
 
