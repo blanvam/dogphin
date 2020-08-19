@@ -102,8 +102,8 @@ const NotificationScreen = props => {
           <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
         </Left>
         <Body style={{minHeight: 70}}>
-          <Text style={styles.listItemTitle}>{props.i18n[config.title]}</Text>
-          <Text note>{props.i18n[config.message]}</Text>
+          <Text style={styles.listItemTitle}>{props.i18n[config.id+'Title']}</Text>
+          <Text note>{props.i18n[config.id+'Description']}</Text>
         </Body>
         <Right>
           <Text note>{timeAgo(item.createdAt)}</Text>
