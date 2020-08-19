@@ -1,4 +1,4 @@
-export default translations = {
+{
   en: {
     translation: {
       map: "Map",
