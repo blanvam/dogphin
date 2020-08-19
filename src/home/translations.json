@@ -1,6 +1,7 @@
 {
   "en": {
     "translation": {
+      "password": "Password",
       "update": "Update",
       "map": "Map",
       "notifications": "Notifications",
@@ -23,6 +24,12 @@
       "contactPhoneNumber": "Contact phone number",
       "firstnameRequired": "First name is required!",
       "unableAccessYourAccount": "Unable to access your account at this time, please try again later",
+      "loginDataRequired": "Email and password is required to access!",
+      "incorrectEmailPassword": "Incorrect email or password.",
+      "incorrectEmail": "Incorrect email.",
+      "accountDisabled": "Account is disabled.",
+      "emailBadlyFormatted": "The email address is badly formatted.",
+      "pleaseCheckEmail": "Please, check your email...",
       "general": "General",
       "myAlerts": "My alerts",
       "weather": "Weather",
@@ -68,6 +75,7 @@
   },
   "es": {
     "translation": {
+      "password": "Password",
       "update": "Actualizar",
       "map": "Mapa",
       "notifications": "Notificaciones",
@@ -90,6 +98,12 @@
       "contactPhoneNumber": "Contacto de emergencias (Móvil)",
       "firstnameRequired": "First name is required!",
       "unableAccessYourAccount": "Unable to access your account at this time, please try again later",
+      "loginDataRequired": "¡Introduzca los datos para acceder!",
+      "incorrectEmailPassword": "Incorrect email or password.",
+      "incorrectEmail": "Incorrect email.",
+      "accountDisabled": "Account is disabled.",
+      "emailBadlyFormatted": "The email address is badly formatted.",
+      "pleaseCheckEmail": "Por favor, revise su email...",
       "general": "General",
       "myAlerts": "Mis alertas",
       "weather": "Tiempo",
@@ -135,6 +149,7 @@
   },
   "fr": {
     "translation": {
+      "password": "Password",
       "update": "Update",
       "map": "Carte",
       "notifications": "Alertes en cours",
@@ -157,6 +172,12 @@
       "contactPhoneNumber": "Contact phone number",
       "firstnameRequired": "First name is required!",
       "unableAccessYourAccount": "Unable to access your account at this time, please try again later",
+      "loginDataRequired": "Email and password is required to access!",
+      "incorrectEmailPassword": "Incorrect email or password.",
+      "incorrectEmail": "Incorrect email.",
+      "accountDisabled": "Account is disabled.",
+      "emailBadlyFormatted": "The email address is badly formatted.",
+      "pleaseCheckEmail": "Veuillez vérifier votre courriel...",
       "general": "General",
       "myAlerts": "Mes alertes",
       "weather": "Météo",
