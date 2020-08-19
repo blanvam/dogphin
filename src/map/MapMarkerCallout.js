@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Linking } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { Text } from 'native-base'
 import { Callout } from 'react-native-maps'
 
@@ -25,7 +25,7 @@ export default MapMarkerCallout = props => {
       <Callout style={{ width: props.title.length * 10, ...styles.container, ...props.style}} onPress={props.callout} >
         <Text style={styles.title}>{props.title}</Text>
         {getDescription()}
-        <Text style={{color: 'blue'}} > Llamar </Text>
+        <Text style={{color: 'blue'}} > {props.i18n.call} </Text>
       </Callout>
     )
   } else {

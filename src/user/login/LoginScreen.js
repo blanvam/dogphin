@@ -38,28 +38,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 })
-const authErrors = {
-  'auth/invalid-email': {
-    'fields': ['email'],
-    'message': 'The email address is badly formatted.'
-  },
-  'auth/user-disabled': {
-    'fields': ['email'],
-    'message': 'Account is disabled.'
-  },
-  'auth/user-not-found': {
-    'fields': ['email'],
-    'message': 'Incorrect email.'
-  },
-  'auth/wrong-password': {
-    'fields': ['email', 'password'],
-    'message': 'Incorrect email or password.'
-  },
-  'default': {
-    'fields': ['email', 'password'],
-    'message': 'Unable to access your account at this time, please try again later'
-  } 
-}
+
 const TextError = props => {
   if (props.error) {
     return (<Text style={styles.loginError}>* {props.error}</Text>)
@@ -78,11 +57,33 @@ class LoginScreen extends Component {
       errorFields: [],
       errorMessage: ''
     }
+    this.authErrors = {
+      'auth/invalid-email': {
+        'fields': ['email'],
+        'message': this.props.i18n.emailBadlyFormatted
+      },
+      'auth/user-disabled': {
+        'fields': ['email'],
+        'message': this.props.i18n.accountDisabled
+      },
+      'auth/user-not-found': {
+        'fields': ['email'],
+        'message': this.props.i18n.incorrectEmail
+      },
+      'auth/wrong-password': {
+        'fields': ['email', 'password'],
+        'message': this.props.i18n.incorrectEmailPassword
+      },
+      'default': {
+        'fields': ['email', 'password'],
+        'message': this.props.i18n.unableAccessYourAccount
+      }
+    }
   }
 
   userLogin = () => {
     if(this.state.email === '' || this.state.password === '') {
-      Alert.alert('¡Introduzca los datos para acceder!')
+      Alert.alert(this.props.i18n.loginDataRequired)
     } else {
       this.setState({errorFields: [], errorMessage: '', isLoading: true})
       userServices.signInWithEmail(
@@ -94,7 +95,7 @@ class LoginScreen extends Component {
           this.props.navigation.navigate('Home')
         },
         (error) => {
-          let e = (authErrors[error.code] || authErrors['default'])
+          let e = (this.authErrors[error.code] || this.authErrors['default'])
           this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
         }
       )
@@ -106,10 +107,10 @@ class LoginScreen extends Component {
       email,
       () => { 
         this.setState({isLoading: false, email: '', password: ''})
-        alert(`Por favor, revise su email...`)
+        alert(props.i18n.pleaseCheckEmail)
       },
       (error) => {
-        let e = (authErrors[error.code] || authErrors['auth/user-not-found'])
+        let e = (this.authErrors[error.code] || this.authErrors['auth/user-not-found'])
         this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
       }
     )
@@ -130,13 +131,13 @@ class LoginScreen extends Component {
           <Form style={styles.loginForm}>
             <FormItem 
               error={this.state.errorFields.includes('email')}
-              label='Email'
+              label={this.props.i18n.email}
               value={this.state.email}
               onChangeText={(v) => this.setState({email: v})} 
             />
             <FormItem 
               error={this.state.errorFields.includes('password')}
-              label='Contraseña'
+              label={this.props.i18n.password}
               value={this.state.password}
               onChangeText={(v) => this.setState({password: v})}
               secureTextEntry={true} 
@@ -144,11 +145,11 @@ class LoginScreen extends Component {
             <TextError error={this.state.errorMessage}/>
             <RecoverPassword onPress={() => this.forgotPassword(this.state.email)} />
             <Button block style={styles.loginButton} onPress={() => this.userLogin()}>
-              <Text> Acceder </Text>
+              <Text> {this.props.i18n.login} </Text>
             </Button>
             <Text style={styles.loginText}>or</Text>
             <Button block warning bordered onPress={() => this.props.navigation.navigate('Signup')}>
-                <Text> Registrarse </Text>
+                <Text> {this.props.i18n.signup} </Text>
             </Button>
           </Form>
         </Content>
@@ -157,8 +158,10 @@ class LoginScreen extends Component {
   }
 }
 
-const mapStateToProps = _ => {
-  return { }
+const mapStateToProps = state => {
+  return { 
+    i18n: state.home.translations,
+  }
 }
 
 const mapDispatchToProps = dispatch => {

@@ -100,7 +100,7 @@ const ProfileScreen = props => {
   updateProfileUser = () => {
     if(firstname == '') {
       setErrorFields(['firstname'])
-      setErrorMessage('Name is obligatory!')
+      setErrorMessage(props.i18n.firstnameRequired)
     } else {
       setErrorFields([])
       setErrorMessage('')
@@ -123,7 +123,7 @@ const ProfileScreen = props => {
         },
         () => {
           setErrorFields([Object.keys(userData)])
-          setErrorMessage('Unable to access your account at this time, please try again later')
+          setErrorMessage(props.i18n.unableAccessYourAccount)
           setLoading(false)
         }
       )
@@ -139,67 +139,67 @@ const ProfileScreen = props => {
         <Form style={styles.profileForm}>
           <FormItem 
             disabled={true}
-            label='Email'
+            label={props.i18n.email}
             value={email}
             placeholder='Disabled field'
             obligatory={true}
           />
           <FormItem 
             disabled={true}
-            label='Teléfono'
+            label={props.i18n.phone}
             value={phoneNumber}
             placeholder='Disabled field'
             obligatory={true}
           />
           <FormItem 
             error={errorFields.includes('firstname')}
-            label='Nombre'
+            label={props.i18n.firstname}
             value={firstname}
             onChangeText={(v) => setFirstname(v)}
             obligatory={true}
           />
           <FormItem 
             error={errorFields.includes('surname')}
-            label='Apellidos'
+            label={props.i18n.surname}
             value={surname}
             onChangeText={(v) => setSurname(v)} 
           />
           <FormItem 
             error={errorFields.includes('portNumber')}
-            label='Telefóno del puerto'
+            label={props.i18n.portNumber}
             value={portNumber}
             onChangeText={(v) => setPortNumber(v)}
             keyboardType='number-pad'
           />
           <FormItem 
             error={errorFields.includes('insuranceName')}
-            label='Empresa aseguradora'
+            label={props.i18n.insuranceName}
             value={insuranceName}
             onChangeText={(v) => setInsuranceName(v)} 
           />
           <FormItem 
             error={errorFields.includes('insurancePhoneNumber')}
-            label='Teléfono de la aseguradora'
+            label={props.i18n.insurancePhoneNumber}
             value={insurancePhoneNumber}
             onChangeText={(v) => setInsurancePhoneNumber(v)}
             keyboardType='number-pad'
           />
           <FormItem 
             error={errorFields.includes('insuranceIdNumber')}
-            label='Número de póliza'
+            label={props.i18n.insuranceIdNumber}
             value={insuranceIdNumber}
             onChangeText={(v) => setInsuranceIdNumber(v)} 
           />
           <FormItem 
             error={errorFields.includes('contactPhoneNumber')}
-            label='Contacto de emergencias (Móvil)'
+            label={props.i18n.contactPhoneNumber}
             value={contactPhoneNumber}
             onChangeText={(v) => setContactPhoneNumber(v)}
             keyboardType='number-pad'
           />
           <TextError error={errorMessage}/>
           <Button warning block style={styles.profileButton} onPress={updateProfileUser}>
-            <Text> Actualizar </Text>
+            <Text> {props.i18n.update} </Text>
           </Button>
         </Form>  
       </Content>
@@ -210,6 +210,7 @@ const ProfileScreen = props => {
 const mapStateToProps = state => {
   return {
     user: state.user.user,
+    i18n: state.home.translations,
   }
 }
 
