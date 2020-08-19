@@ -16,12 +16,13 @@ import NotificationBar from '../notification/NotificationBar'
 import * as homeActions from '../home/home.actions'
 import * as userActions from '../user/user.actions'
 import userServices from '../user/user.services'
+import * as RNLocalize from "react-native-localize";
 
 const HomeScreen = props => {
 
   useEffect(() => {
     props.updateUser({uid: userServices.currentUser.uid, email: userServices.currentUser.email})
-    props.getConfiguration(Platform.OS)
+    props.getConfiguration(Platform.OS, RNLocalize.getLocales())
   }, [])
 
   return (
@@ -54,7 +55,7 @@ const mapStateToProps = _ => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getConfiguration: (id) => dispatch(homeActions.getConfiguration(id)),
+    getConfiguration: (id, locales) => dispatch(homeActions.getConfiguration(id, locales)),
     updateUser: (user) => dispatch(userActions.update(user)),
   }
 }
