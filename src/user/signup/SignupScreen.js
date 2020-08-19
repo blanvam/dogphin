@@ -19,8 +19,8 @@ const TextError = props => {
 
 
 class SignupScreen extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props)
     this.state = { 
       firstname: '',
       email: '', 
@@ -119,7 +119,7 @@ class SignupScreen extends Component {
           this.props.navigation.navigate('Home')
         },
         (error) => {
-          let e = (authErrors[error.code] || authErrors['default'])
+          let e = (this.authErrors[error.code] || this.authErrors['default'])
           this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
         }
       )
@@ -141,21 +141,21 @@ class SignupScreen extends Component {
           <Form style={styles.loginForm}>
             <FormItem
               error={this.state.errorFields.includes('firstname')}
-              label='Nombre'
+              label={this.props.i18n.firstname}
               value={this.state.firstname}
               onChangeText={(v) => this.setState({firstname: v})}
               obligatory={true}
             />
             <FormItem 
               error={this.state.errorFields.includes('email')}
-              label='Email'
+              label={this.props.i18n.email}
               value={this.state.email}
               onChangeText={(v) => this.setState({email: v})} 
               obligatory={true}
             />
             <FormItem 
               error={this.state.errorFields.includes('phoneNumber')}
-              label='Teléfono'
+              label={this.props.i18n.phone}
               value={this.state.phoneNumber}
               onChangeText={(v) => this.setState({phoneNumber: v})}
               obligatory={true}
@@ -163,7 +163,7 @@ class SignupScreen extends Component {
             />
             <FormItem 
               error={this.state.errorFields.includes('password')}
-              label='Contraseña'
+              label={this.props.i18n.password}
               value={this.state.password}
               onChangeText={(v) => this.setState({password: v})}
               obligatory={true}
@@ -176,16 +176,16 @@ class SignupScreen extends Component {
                 onPress={() => this.setState({privacyPolicy: !this.state.privacyPolicy})} 
               />
               <Body style={{flexDirection:'row', flexWrap:'wrap'}}>
-                <Text style={{marginRight: 0}}>Acepto la </Text>
-                <Text style={{marginLeft: 0, color: 'blue'}} onPress={() => this.setState({showPolicyModal: true})}>polticia de privacidad</Text>
+                <Text style={{marginRight: 0}}>{this.props.i18n.accept} </Text>
+                <Text style={{marginLeft: 0, color: 'blue'}} onPress={() => this.setState({showPolicyModal: true})}>{this.props.i18n.privacyPolicy}</Text>
               </Body>
             </ListItem>
             <Button block style={styles.loginButton} onPress={() => this.registerUser()}>
-              <Text> Signup </Text>
+              <Text>{this.props.i18n.signup}</Text>
             </Button>
-            <Text style={styles.loginText}>Already Registered?</Text>
+            <Text style={styles.loginText}>{this.props.i18n.alreadyRegistered}</Text>
             <Button block warning bordered onPress={() => this.props.navigation.navigate('Login')}>
-                <Text> Login </Text>
+                <Text>{this.props.i18n.login}</Text>
             </Button>
           </Form>
           <PrivacyModal showModal={this.state.showPolicyModal} toggleModal={() => this.setState({showPolicyModal: false})}/>
@@ -225,8 +225,10 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = _ => {
-  return {}
+const mapStateToProps = state => {
+  return {
+    i18n: state.home.translations,
+  }
 }
 
 const mapDispatchToProps = dispatch => {

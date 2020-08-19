@@ -9,7 +9,7 @@ export default RecoverPassword = props => {
     if (showButton) {
       return (
         <Button dark primary onPress={props.onPress}>
-          <Text> Recurperar </Text>
+          <Text>{props.textForgot}</Text>
         </Button>
       )
     }
@@ -19,7 +19,7 @@ export default RecoverPassword = props => {
     <ListItem style={{borderBottomWidth: 0, minHeight: 100}}>
       <CheckBox checked={showButton} onPress={() => setButton(!showButton)} />
       <Body>
-        <Text>Olvidé contraseña</Text>
+        <Text>{props.textRecover}</Text>
       </Body>
       {getButton()}
     </ListItem>

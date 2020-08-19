@@ -143,7 +143,11 @@ class LoginScreen extends Component {
               secureTextEntry={true} 
             />
             <TextError error={this.state.errorMessage}/>
-            <RecoverPassword onPress={() => this.forgotPassword(this.state.email)} />
+            <RecoverPassword 
+              onPress={() => this.forgotPassword(this.state.email)} 
+              textForgot={this.props.i18n.forgotPassword}
+              textRecover={this.props.i18n.recoverPassword}
+            />
             <Button block style={styles.loginButton} onPress={() => this.userLogin()}>
               <Text> {this.props.i18n.login} </Text>
             </Button>
