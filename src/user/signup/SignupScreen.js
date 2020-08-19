@@ -10,28 +10,6 @@ import PrivacyModal from './PrivacyModal'
 import * as userActions from '../user.actions'
 import userServices from '../user.services'
 
-const authErrors = {
-  'auth/email-already-in-use': {
-    'fields': ['email'],
-    'message': 'Already exists an account with the given email address.'
-  },
-  'auth/invalid-email': {
-    'fields': ['email'],
-    'message': 'The email address is badly formatted.'
-  },
-  'auth/operation-not-allowed': {
-    'fields': ['email', 'password'],
-    'message': 'Unable to access your account at this time, please try again in a few minutes'
-  },
-  'auth/weak-password': {
-    'fields': ['password'],
-    'message': 'Password is not strong enough. Should be at least 6 characters'
-  },
-  'default': {
-    'fields': ['email', 'password'],
-    'message': 'Unable to access your account at this time, please try again later'
-  } 
-}
 const TextError = props => {
   if (props.error) {
     return (<Text style={styles.loginError}>* {props.error}</Text>)
@@ -53,6 +31,28 @@ class SignupScreen extends Component {
       errorMessage: '',
       privacyPolicy: false,
       showPolicyModal: false,
+    }
+    this.authErrors = {
+      'auth/email-already-in-use': {
+        'fields': ['email'],
+        'message': props.i18n.alreadyInUse
+      },
+      'auth/invalid-email': {
+        'fields': ['email'],
+        'message': props.i18n.emailBadlyFormatted
+      },
+      'auth/operation-not-allowed': {
+        'fields': ['email', 'password'],
+        'message': props.i18n.operationNotAllowed
+      },
+      'auth/weak-password': {
+        'fields': ['password'],
+        'message': props.i18n.weakPassword
+      },
+      'default': {
+        'fields': ['email', 'password'],
+        'message': props.i18n.unableAccessYourAccount
+      } 
     }
   }
 
