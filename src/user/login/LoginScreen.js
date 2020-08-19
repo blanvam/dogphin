@@ -57,29 +57,28 @@ class LoginScreen extends Component {
       errorFields: [],
       errorMessage: ''
     }
-  }
-
-  authErrors = {
-    'auth/invalid-email': {
-      'fields': ['email'],
-      'message': this.props.i18n.emailBadlyFormatted
-    },
-    'auth/user-disabled': {
-      'fields': ['email'],
-      'message': this.props.i18n.accountDisabled
-    },
-    'auth/user-not-found': {
-      'fields': ['email'],
-      'message': this.props.i18n.incorrectEmail
-    },
-    'auth/wrong-password': {
-      'fields': ['email', 'password'],
-      'message': this.props.i18n.incorrectEmailPassword
-    },
-    'default': {
-      'fields': ['email', 'password'],
-      'message': this.props.i18n.unableAccessYourAccount
-    } 
+    this.authErrors = {
+      'auth/invalid-email': {
+        'fields': ['email'],
+        'message': this.props.i18n.emailBadlyFormatted
+      },
+      'auth/user-disabled': {
+        'fields': ['email'],
+        'message': this.props.i18n.accountDisabled
+      },
+      'auth/user-not-found': {
+        'fields': ['email'],
+        'message': this.props.i18n.incorrectEmail
+      },
+      'auth/wrong-password': {
+        'fields': ['email', 'password'],
+        'message': this.props.i18n.incorrectEmailPassword
+      },
+      'default': {
+        'fields': ['email', 'password'],
+        'message': this.props.i18n.unableAccessYourAccount
+      }
+    }
   }
 
   userLogin = () => {
@@ -96,7 +95,7 @@ class LoginScreen extends Component {
           this.props.navigation.navigate('Home')
         },
         (error) => {
-          let e = (authErrors[error.code] || authErrors['default'])
+          let e = (this.authErrors[error.code] || this.authErrors['default'])
           this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
         }
       )
@@ -111,7 +110,7 @@ class LoginScreen extends Component {
         alert(props.i18n.pleaseCheckEmail)
       },
       (error) => {
-        let e = (authErrors[error.code] || authErrors['auth/user-not-found'])
+        let e = (this.authErrors[error.code] || this.authErrors['auth/user-not-found'])
         this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
       }
     )
