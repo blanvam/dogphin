@@ -65,8 +65,8 @@ const NotificationScreen = props => {
           <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
         </Left>
         <Body>
-          <Text style={styles.listItemTitle}>{config.title}</Text>
-          <Text note>{config.message}</Text>
+          <Text style={styles.listItemTitle}>{props.i18n[config.title]}</Text>
+          <Text note>{props.i18n[config.message]}</Text>
         </Body>
         <Right>
           <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
@@ -86,8 +86,8 @@ const NotificationScreen = props => {
           <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
         </Left>
         <Body style={{minHeight: 70}}>
-          <Text style={styles.listItemTitle}>{config.title}</Text>
-          <Text note>{config.message}</Text>
+          <Text style={styles.listItemTitle}>{props.i18n[config.title]}</Text>
+          <Text note>{props.i18n[config.message]}</Text>
         </Body>
         <Right>
           <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
@@ -118,14 +118,14 @@ const NotificationScreen = props => {
     <Container>
       {showLoader()}
       <Tabs>
-        <Tab heading="General">
+        <Tab heading={props.i18n.general}>
             <FlatList
               data={props.notifications.filter(item => props.user.uid != item.user)}
               keyExtractor={(item) => item.id }
               renderItem={renderItem}
             />
         </Tab>
-        <Tab heading="Mis alertas">
+        <Tab heading={props.i18n.myAlerts}>
             <FlatList
               data={props.notifications.filter(item => props.user.uid == item.user)}
               keyExtractor={(item) => item.id }

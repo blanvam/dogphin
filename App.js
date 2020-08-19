@@ -44,7 +44,7 @@ const navigationAuthOptions = ({ navigation }) => {
 }
 const navigationProfileOptions = ({ navigation }) => {
   return {
-    title: 'Perfil',
+    title: props.i18n.profile,
     headerStyle: {
       backgroundColor: '#00576a',
     },
@@ -68,8 +68,8 @@ export default class App extends Component {
           <Provider store={store}>
             <NavigationContainer initialRouteName="Home">
               <Stack.Navigator>
-                <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Mapa', header: () => {} }} />
-                <Stack.Screen name="Notifications" options={{ title: 'Notificaciones'}} >
+                <Stack.Screen name="Home" component={HomeScreen} options={{ title: props.i18n.map, header: () => {} }} />
+                <Stack.Screen name="Notifications" options={{ title: props.i18n.notifications}} >
                   {props => <NotificationScreen {...props} />}
                 </Stack.Screen>
                 <Stack.Screen name="Profile" component={ProfileScreen} options={navigationProfileOptions} />

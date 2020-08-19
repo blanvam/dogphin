@@ -51,7 +51,7 @@ const NotificationBar = props => {
             scrollSpeed={5000}
             bounceSpeed={5000}
           >
-            {config.title} - {config.message }
+            {props.i18n[config.title]} - {props.i18n[config.message] }
           </TextTicker>
         </View>
         <Icon
@@ -72,7 +72,7 @@ const NotificationBar = props => {
           <TextTicker style={{ color: 'black' }} scrollSpeed={5000} bounceSpeed={5000} 
             onPress={() => props.navigation.navigate("Notifications")}
           >
-            Hola! Hoy es un buen día para navegar ...
+            {props.i18n.hello}
           </TextTicker>
         </View>
       </Item>
