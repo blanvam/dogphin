@@ -210,6 +210,7 @@ const ProfileScreen = props => {
 const mapStateToProps = state => {
   return {
     user: state.user.user,
+    i18n: state.home.translations,
   }
 }
 

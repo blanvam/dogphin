@@ -85,7 +85,8 @@ const PermissionExitModal = props => {
 
 const mapStateToProps = state => {
   return {
-    permissionsGranted: state.user.permissions
+    permissionsGranted: state.user.permissions,
+    i18n: state.home.translations,
   }
 }
 

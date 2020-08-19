@@ -85,6 +85,7 @@ const MapMarkerList = props => {
         iconMarkerStyle={styles.iconMarker}
         zIndex={(config.id == 'emergency') ? 99 : 98 }
         callout={getCallout(item.phoneNumber)}
+        i18n={props.i18n}
       />
     })
     let nearUsers = props.nearUsers.map(item => {
@@ -97,6 +98,7 @@ const MapMarkerList = props => {
         iconMarkerStyle={styles.userIconMarker}
         zIndex={97}
         callout={getCallout(item.phoneNumber)}
+        i18n={props.i18n}
       />
     })
     return markers.concat(nearUsers)
@@ -117,6 +119,7 @@ const mapStateToProps = state => {
     nearUsers: state.user.nearUsers,
     notifications: state.notification.notifications,
     markersRef: state.map.markersRef,
+    i18n: state.home.translations,
   }
 }
 

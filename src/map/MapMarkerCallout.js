@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Linking } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { Text } from 'native-base'
 import { Callout } from 'react-native-maps'
 

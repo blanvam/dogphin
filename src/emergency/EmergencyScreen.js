@@ -135,6 +135,7 @@ const mapStateToProps = state => {
     showEmergencyModal: state.emergency.showEmergencyModal,
     notificationCreated: state.notification.notificationCreated,
     notificationCreatedName: state.notification.notificationCreatedName,
+    i18n: state.home.translations,
   }
 }
 

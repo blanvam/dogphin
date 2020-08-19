@@ -36,6 +36,7 @@ export default MapMarker = props => (
       callout={props.callout}
       title={props.i18n[props.config.title]}
       description={props.i18n[props.config.message]}
+      i18n={props.i18n}
     />
   </Marker>
 )

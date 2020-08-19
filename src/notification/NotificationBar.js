@@ -86,6 +86,7 @@ const mapStateToProps = state => {
     config: state.home.config,
     notifications: state.notification.notificationsBar,
     markers: state.map.markers,
+    i18n: state.home.translations,
   }
 }
 

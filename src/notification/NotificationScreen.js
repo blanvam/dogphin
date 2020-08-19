@@ -147,6 +147,7 @@ const mapStateToProps = state => {
     notifications: state.notification.notifications,
     markers: state.map.markers,
     user: state.user.user,
+    i18n: state.home.translations,
   }
 }
 

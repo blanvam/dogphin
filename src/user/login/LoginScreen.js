@@ -38,28 +38,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 })
-const authErrors = {
-  'auth/invalid-email': {
-    'fields': ['email'],
-    'message': props.i18n.emailBadlyFormatted
-  },
-  'auth/user-disabled': {
-    'fields': ['email'],
-    'message': props.i18n.accountDisabled
-  },
-  'auth/user-not-found': {
-    'fields': ['email'],
-    'message': props.i18n.incorrectEmail
-  },
-  'auth/wrong-password': {
-    'fields': ['email', 'password'],
-    'message': props.i18n.incorrectEmailPassword
-  },
-  'default': {
-    'fields': ['email', 'password'],
-    'message': props.i18n.unableAccessYourAccount
-  } 
-}
+
 const TextError = props => {
   if (props.error) {
     return (<Text style={styles.loginError}>* {props.error}</Text>)
@@ -78,6 +57,29 @@ class LoginScreen extends Component {
       errorFields: [],
       errorMessage: ''
     }
+  }
+
+  authErrors = {
+    'auth/invalid-email': {
+      'fields': ['email'],
+      'message': this.props.i18n.emailBadlyFormatted
+    },
+    'auth/user-disabled': {
+      'fields': ['email'],
+      'message': this.props.i18n.accountDisabled
+    },
+    'auth/user-not-found': {
+      'fields': ['email'],
+      'message': this.props.i18n.incorrectEmail
+    },
+    'auth/wrong-password': {
+      'fields': ['email', 'password'],
+      'message': this.props.i18n.incorrectEmailPassword
+    },
+    'default': {
+      'fields': ['email', 'password'],
+      'message': this.props.i18n.unableAccessYourAccount
+    } 
   }
 
   userLogin = () => {
@@ -157,8 +159,10 @@ class LoginScreen extends Component {
   }
 }
 
-const mapStateToProps = _ => {
-  return { }
+const mapStateToProps = state => {
+  return { 
+    i18n: state.home.translations,
+  }
 }
 
 const mapDispatchToProps = dispatch => {
