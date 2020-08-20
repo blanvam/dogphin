@@ -78,7 +78,11 @@
       "health_sosDescription": "Someone's having health problems! Can you help him?",
       "emergencyName": "Emergency! SOS!!",
       "emergencyTitle": "Emergency! SOS!!",
-      "emergencyDescription": "Urgent help is needed!"
+      "emergencyDescription": "Urgent help is needed!",
+      "pushedNewAlertTitle": "New alert nearby",
+      "pushedNewAlertMsg": "Someone needs help or there's a warning",
+      "pushedNewAlertTitlePlural": "New alerts nearby",
+      "pushedNewAlertMsgPlural": "new notifications on the map"
     }
   },
   "es": {
@@ -160,7 +164,11 @@
       "health_sosDescription": "¡Alguien está teniendo problemas de salud! ¿Puedes ayudarle?",
       "emergencyName": "Emergencia",
       "emergencyTitle": "¡Emergencia! ¡¡SOS!!",
-      "emergencyDescription": "Se necesita ayuda urgente!"
+      "emergencyDescription": "Se necesita ayuda urgente!",
+      "pushedNewAlertTitle": "Nueva alerta cercana",
+      "pushedNewAlertMsg": "Alguien necesita ayuda o hay un aviso",
+      "pushedNewAlertTitlePlural": "Nuevas alertas cercanas",
+      "pushedNewAlertMsgPlural": "nuevas notificaciones en el mapa"
     }
   },
   "fr": {
@@ -198,19 +206,19 @@
       "incorrectEmail": "Email incorrect",
       "accountDisabled": "Le compte est désactivé.",
       "emailBadlyFormatted": "L'Email est mal formaté.",
-      "alreadyInUse": "Already exists an account with the given email address.",
-      "operationNotAllowed": "Unable to access your account at this time, please try again in a few minutes",
-      "weakPassword": "Password is not strong enough. Should be at least 6 characters",
+      "alreadyInUse": "Il existe déjà un compte avec l'Email donnée.",
+      "operationNotAllowed": "Impossible d'accéder à votre compte pour le moment, veuillez réessayer dans quelques minutes",
+      "weakPassword": "Le mot de passe n'est pas assez fort. Il doit comporter au moins 6 caractères",
       "pleaseCheckEmail": "Veuillez vérifier votre Email...",
       "locationPermissionRequired": "Dogphin a besoin d'une autorisation de géolocalisation pour travailler !",
       "setLocationPermission": "Veuillez accepter les autorisations nécessaires au bon fonctionnement de Dogphin",
       "mustLoginCreateAlert": "Vous devez vous connecter pour créer une alerte !",
       "mustLoginCreateEmergency": "Vous devez vous connecter pour créer une urgence !",
-      "emailValidation": "Please enter a valid email",
-      "phoneNumberValidation": "Please enter a valid phone number",
-      "passwordValidation": "Please enter a password",
-      "firstnameValidation": "Enter your name",
-      "privacyPolicyValidation": "You must accept the privacy policy",
+      "emailValidation": "Veuillez entrer une Email valide",
+      "phoneNumberValidation": "Veuillez entrer un numéro de téléphone valide",
+      "passwordValidation": "Veuillez entrer un mot de passe",
+      "firstnameValidation": "Entrez votre prénom",
+      "privacyPolicyValidation": "Vous devez accepter la politique de confidentialité",
       "general": "Général",
       "myAlerts": "Mes alertes",
       "weather": "Météo",
@@ -242,7 +250,11 @@
       "health_sosDescription": "Un membre a un problème de santé sur cette zone",
       "emergencyName": "Urgence",
       "emergencyTitle": "SOS – Urgence absolue!",
-      "emergencyDescription": "Un membre a urgemment besoin d’assistance"
+      "emergencyDescription": "Un membre a urgemment besoin d’assistance",
+      "pushedNewAlertTitle": "Nouvelle alerte à proximité",
+      "pushedNewAlertMsg": "Quelqu'un a besoin d'aide ou il y a un avertissement",
+      "pushedNewAlertTitlePlural": "Nouvelles alertes à proximité",
+      "pushedNewAlertMsgPlural": "nouvelles notifications sur la carte"
     }
   }
 }
