@@ -1,7 +1,15 @@
 import actionTypes from './notification.action-types'
 import notificationService from './notification.service'
 import firestore from '@react-native-firebase/firestore'
+import * as RNLocalize from 'react-native-localize'
+import translations from '../home/translations.json'
 
+const usedLanguages = RNLocalize.getLocales()
+
+let allLanguages = Object.keys(translations)
+let languages = usedLanguages.map(e => e.languageCode)
+let lenguage = languages.filter(e => allLanguages.includes(e))[0] || 'en'
+let i18n = (translations[lenguage]).translation
 
 export const toggleNotificationsLoader = status => {
   return {
@@ -41,6 +49,20 @@ export const getNotifications = dblocation => {
         dispatch(getNotificationsBarSuccess(notifications.slice(0, getState().home.config.notificationsBarShow)))
         dispatch(toggleNotificationsLoader(false))
         return notifications
+      },
+      changes => {
+        let notifAddedLen = changes['added'].length
+        let title, message
+        if (notifAddedLen == 1) {
+          title = i18n.pushedNewAlertTitle
+          message = `${i18n.pushedNewAlertMsg}`
+        } else if (notifAddedLen > 1) {
+          title = i18n.pushedNewAlertTitlePlural
+          message = `${notifAddedLen} ${i18n.pushedNewAlertMsgPlural}`
+        }
+        if (title) {
+          getState().push.notifier.localNotif(title, message)
+        }
       }
     )
   }
