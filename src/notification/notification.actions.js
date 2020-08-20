@@ -45,8 +45,9 @@ export const getNotifications = dblocation => {
       dblocation,
       getState().home.config.queryDistance,
       notifications => {
+        const userId = getState().user.user.uid
         const oldIds = getState().notification.notifications.map(e => e.id)
-        const toNotify = notifications.filter(e => !oldIds.includes(e.id))
+        const toNotify = notifications.filter(e => (e.user != userId && !oldIds.includes(e.id)))
         dispatch(getNotificationsSuccess(notifications))
         dispatch(getNotificationsBarSuccess(notifications.slice(0, getState().home.config.notificationsBarShow)))
         dispatch(toggleNotificationsLoader(false))
