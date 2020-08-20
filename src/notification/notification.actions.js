@@ -47,6 +47,9 @@ export const getNotifications = dblocation => {
       notifications => {
         const oldIds = getState().notification.notifications.map(e => e.id)
         const toNotify = notifications.filter(e => !oldIds.includes(e.id))
+        dispatch(getNotificationsSuccess(notifications))
+        dispatch(getNotificationsBarSuccess(notifications.slice(0, getState().home.config.notificationsBarShow)))
+        dispatch(toggleNotificationsLoader(false))
         let title, message
         if (toNotify.length == 1) {
           title = i18n.pushedNewAlertTitle
@@ -58,9 +61,6 @@ export const getNotifications = dblocation => {
         if (title) {
           getState().push.notifier.localNotif(title, message)
         }
-        dispatch(getNotificationsSuccess(notifications))
-        dispatch(getNotificationsBarSuccess(notifications.slice(0, getState().home.config.notificationsBarShow)))
-        dispatch(toggleNotificationsLoader(false))
         return notifications
       }
     )
