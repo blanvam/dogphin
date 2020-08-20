@@ -2,6 +2,7 @@ import actionsTypes from './home.action-types'
 import user from '../user/user.json'
 import emergency from '../emergency/emergency.json'
 import alerts from '../alert/alerts.json'
+import translations from './translations.json'
 
 const INITIAL_STATE = {
   config: {
@@ -13,13 +14,17 @@ const INITIAL_STATE = {
     user: user,
     emergency: emergency,
     alerts: alerts,
-  }
+    translations: translations,
+  },
+  translations: translations['en']
 }
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case actionsTypes.INIT_CONFIG:
       return { ...state, config: action.config }
+      case actionsTypes.SET_TRANSLATIONS:
+        return { ...state, translations: action.translations }
     default:
       return state;
   }

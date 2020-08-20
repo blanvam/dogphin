@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Platform, Alert } from 'react-native'
 import { Container, Header, Right, Content } from 'native-base'
 import { Icon, Button } from 'native-base'
+import * as RNLocalize from 'react-native-localize'
 
 import PermissionExitModal from '../permission/PermissionExitModal'
 import EmergencyScreen from '../emergency/EmergencyScreen'
@@ -19,6 +20,7 @@ import * as pushActions from '../push/push.actions'
 import userServices from '../user/user.services'
 import PushService from '../push/PushService'
 
+
 const HomeScreen = props => {
 
   const onRegister = (token) => {
@@ -31,7 +33,7 @@ const HomeScreen = props => {
 
   useEffect(() => {
     props.updateUser({uid: userServices.currentUser.uid, email: userServices.currentUser.email})
-    props.getConfiguration(Platform.OS)
+    props.getConfiguration(Platform.OS, RNLocalize.getLocales())
     props.setNotificationPush(new PushService(onRegister.bind(this), onNotif.bind(this)))
   }, [])
 
@@ -65,7 +67,7 @@ const mapStateToProps = _ => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getConfiguration: (id) => dispatch(homeActions.getConfiguration(id)),
+    getConfiguration: (id, locales) => dispatch(homeActions.getConfiguration(id, locales)),
     updateUser: (user) => dispatch(userActions.update(user)),
     setNotificationPush: (notifier) => dispatch(pushActions.setPushNotification(notifier))
   }

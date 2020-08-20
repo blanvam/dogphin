@@ -24,15 +24,15 @@ const FooterBar = props => {
         <FooterTab>
           <Button active={props.active=="Home"} onPress={() => props.navigation.navigate("Home")} >
             <Icon type="MaterialIcons" name="explore" />
-            <Text>Mapa</Text>
+            <Text>{props.i18n.map}</Text>
           </Button>
           <Button active={props.active=="Weather"} onPress={() => openURL(`http://windy.com/?${props.location.latitude},${props.location.longitude},${zoom}`)}>
             <Icon type="MaterialCommunityIcons" name="weather-partlycloudy" />
-            <Text>Tiempo</Text>
+            <Text>{props.i18n.weather}</Text>
           </Button>
           <Button active={props.active=="Notifications"} onPress={() => props.navigation.navigate("Notifications")} >
             <Icon type="MaterialCommunityIcons" name="bell-outline" />
-            <Text>Notificaciones</Text>
+            <Text>{props.i18n.notifications}</Text>
           </Button>
         </FooterTab>
       </Footer>
@@ -41,7 +41,8 @@ const FooterBar = props => {
 
 const mapStateToProps = state => {
   return {
-    location: state.user.location
+    location: state.user.location,
+    i18n: state.home.translations,
   }
 }
 

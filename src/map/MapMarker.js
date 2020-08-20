@@ -12,8 +12,8 @@ export default MapMarker = props => (
       latitude: props.item.coordinates.latitude,
       longitude: props.item.coordinates.longitude,
     }}
-    title={props.config.title}
-    description={props.config.message}
+    title={props.i18n[props.config.id+'Title']}
+    description={props.i18n[props.config.id+'Description']}
     zIndex={props.zIndex}
     pointerEvents="auto"
     tracksViewChanges={false} // Due to https://github.com/react-native-community/react-native-maps/issues/2658
@@ -34,8 +34,9 @@ export default MapMarker = props => (
     </View>
     <MapMarkerCallout
       callout={props.callout}
-      title={props.config.title}
-      description={props.config.message}
+      title={props.i18n[props.config.id+'Title']}
+      description={props.i18n[props.config.id+'Description']}
+      i18n={props.i18n}
     />
   </Marker>
 )

@@ -4,7 +4,6 @@ import { ActivityIndicator, FlatList, StyleSheet } from 'react-native'
 import { Container, View, Text, Icon, ListItem, Left, Body, Right, Button, Tab, Tabs } from 'native-base'
 
 import FooterBar from '../components/FooterBar'
-import notificationService from './notification.service'
 import * as mapActions from '../map/map.actions'
 import * as notificationActions from './notification.actions'
 
@@ -57,6 +56,22 @@ const NotificationScreen = props => {
     props.navigation.navigate("Home")
   }
 
+  timeAgo = (date) => {
+    let secAgo = (new Date().getTime() - date.toDate().getTime()) / 1000
+    let minAgo, hoursAgo, daysAgo;
+    if ((minAgo = secAgo/60) < 1) {
+      return `${parseInt(secAgo)} ${props.i18n.seconds}`;
+    } else if ((hoursAgo = minAgo/60) < 1) {
+      return `${parseInt(minAgo)} ${props.i18n.minutes}`;
+    } else if ((daysAgo = hoursAgo/24) < 1) {
+      return `${parseInt(hoursAgo)} ${props.i18n.hours}`;
+    } else if ((daysAgo/30) < 1) {
+      return `${parseInt(daysAgo)} ${props.i18n.days}`;
+    } else {
+      return date.toDate().toDateString();
+    }
+  }
+
   renderItem = ({ item }) => {
     let config = props.config.alerts.concat([props.config.emergency]).find(i => i.id === item.type)
     return (
@@ -65,11 +80,11 @@ const NotificationScreen = props => {
           <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
         </Left>
         <Body>
-          <Text style={styles.listItemTitle}>{config.title}</Text>
-          <Text note>{config.message}</Text>
+          <Text style={styles.listItemTitle}>{props.i18n[config.id+'Title']}</Text>
+          <Text note>{props.i18n[config.id+'Description']}</Text>
         </Body>
         <Right>
-          <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
+          <Text note>{timeAgo(item.createdAt)}</Text>
           <Button transparent iconLeft style={styles.listItemButton} onPress={() => moveToNotification(item)}>
             <Icon type="MaterialIcons" name="my-location" style={{...styles.listItemIconButton, color: 'green'}} />
           </Button>
@@ -86,11 +101,11 @@ const NotificationScreen = props => {
           <Icon type={config.iconFont} name={config.iconName} style={styles.listItemIcon} />
         </Left>
         <Body style={{minHeight: 70}}>
-          <Text style={styles.listItemTitle}>{config.title}</Text>
-          <Text note>{config.message}</Text>
+          <Text style={styles.listItemTitle}>{props.i18n[config.id+'Title']}</Text>
+          <Text note>{props.i18n[config.id+'Description']}</Text>
         </Body>
         <Right>
-          <Text note>{notificationService.timeAgo(item.createdAt)}</Text>
+          <Text note>{timeAgo(item.createdAt)}</Text>
           <View style={styles.listItemInlineButtons}>
             <Button transparent iconLeft style={styles.listItemButton} onPress={() => props.deleteNotification(item.id)}>
               <Icon type="FontAwesome" name="trash-o" style={{...styles.listItemIconButton, color: 'red'}} />
@@ -118,14 +133,14 @@ const NotificationScreen = props => {
     <Container>
       {showLoader()}
       <Tabs>
-        <Tab heading="General">
+        <Tab heading={props.i18n.general}>
             <FlatList
               data={props.notifications.filter(item => props.user.uid != item.user)}
               keyExtractor={(item) => item.id }
               renderItem={renderItem}
             />
         </Tab>
-        <Tab heading="Mis alertas">
+        <Tab heading={props.i18n.myAlerts}>
             <FlatList
               data={props.notifications.filter(item => props.user.uid == item.user)}
               keyExtractor={(item) => item.id }
@@ -147,6 +162,7 @@ const mapStateToProps = state => {
     notifications: state.notification.notifications,
     markers: state.map.markers,
     user: state.user.user,
+    i18n: state.home.translations,
   }
 }
 
