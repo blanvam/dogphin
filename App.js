@@ -37,7 +37,7 @@ const usedLanguages = RNLocalize.getLocales()
 let allLanguages = Object.keys(translations)
 let languages = usedLanguages.map(e => e.languageCode)
 let lenguage = languages.filter(e => allLanguages.includes(e))[0] || 'en'
-let currentTranslations = translations[lenguage]
+let currentTranslations = (translations[lenguage]).translation
 
 const Stack = createStackNavigator()
 const navigationAuthOptions = ({ navigation }) => {

@@ -4,7 +4,6 @@ import { ActivityIndicator, FlatList, StyleSheet } from 'react-native'
 import { Container, View, Text, Icon, ListItem, Left, Body, Right, Button, Tab, Tabs } from 'native-base'
 
 import FooterBar from '../components/FooterBar'
-import notificationService from './notification.service'
 import * as mapActions from '../map/map.actions'
 import * as notificationActions from './notification.actions'
 

@@ -60,23 +60,23 @@ class LoginScreen extends Component {
     this.authErrors = {
       'auth/invalid-email': {
         'fields': ['email'],
-        'message': this.props.i18n.emailBadlyFormatted
+        'message': props.i18n.emailBadlyFormatted
       },
       'auth/user-disabled': {
         'fields': ['email'],
-        'message': this.props.i18n.accountDisabled
+        'message': props.i18n.accountDisabled
       },
       'auth/user-not-found': {
         'fields': ['email'],
-        'message': this.props.i18n.incorrectEmail
+        'message': props.i18n.incorrectEmail
       },
       'auth/wrong-password': {
         'fields': ['email', 'password'],
-        'message': this.props.i18n.incorrectEmailPassword
+        'message': props.i18n.incorrectEmailPassword
       },
       'default': {
         'fields': ['email', 'password'],
-        'message': this.props.i18n.unableAccessYourAccount
+        'message': props.i18n.unableAccessYourAccount
       }
     }
   }
@@ -143,7 +143,11 @@ class LoginScreen extends Component {
               secureTextEntry={true} 
             />
             <TextError error={this.state.errorMessage}/>
-            <RecoverPassword onPress={() => this.forgotPassword(this.state.email)} />
+            <RecoverPassword 
+              onPress={() => this.forgotPassword(this.state.email)} 
+              textForgot={this.props.i18n.forgotPassword}
+              textRecover={this.props.i18n.recoverPassword}
+            />
             <Button block style={styles.loginButton} onPress={() => this.userLogin()}>
               <Text> {this.props.i18n.login} </Text>
             </Button>

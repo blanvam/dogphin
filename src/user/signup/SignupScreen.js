@@ -10,28 +10,6 @@ import PrivacyModal from './PrivacyModal'
 import * as userActions from '../user.actions'
 import userServices from '../user.services'
 
-const authErrors = {
-  'auth/email-already-in-use': {
-    'fields': ['email'],
-    'message': 'Already exists an account with the given email address.'
-  },
-  'auth/invalid-email': {
-    'fields': ['email'],
-    'message': 'The email address is badly formatted.'
-  },
-  'auth/operation-not-allowed': {
-    'fields': ['email', 'password'],
-    'message': 'Unable to access your account at this time, please try again in a few minutes'
-  },
-  'auth/weak-password': {
-    'fields': ['password'],
-    'message': 'Password is not strong enough. Should be at least 6 characters'
-  },
-  'default': {
-    'fields': ['email', 'password'],
-    'message': 'Unable to access your account at this time, please try again later'
-  } 
-}
 const TextError = props => {
   if (props.error) {
     return (<Text style={styles.loginError}>* {props.error}</Text>)
@@ -41,8 +19,8 @@ const TextError = props => {
 
 
 class SignupScreen extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props)
     this.state = { 
       firstname: '',
       email: '', 
@@ -53,6 +31,28 @@ class SignupScreen extends Component {
       errorMessage: '',
       privacyPolicy: false,
       showPolicyModal: false,
+    }
+    this.authErrors = {
+      'auth/email-already-in-use': {
+        'fields': ['email'],
+        'message': props.i18n.alreadyInUse
+      },
+      'auth/invalid-email': {
+        'fields': ['email'],
+        'message': props.i18n.emailBadlyFormatted
+      },
+      'auth/operation-not-allowed': {
+        'fields': ['email', 'password'],
+        'message': props.i18n.operationNotAllowed
+      },
+      'auth/weak-password': {
+        'fields': ['password'],
+        'message': props.i18n.weakPassword
+      },
+      'default': {
+        'fields': ['email', 'password'],
+        'message': props.i18n.unableAccessYourAccount
+      } 
     }
   }
 
@@ -69,26 +69,26 @@ class SignupScreen extends Component {
     let errorFields = []
     if (emailFormat.test(this.state.email) === false) {
       errorFields.push('email')
-      errorMessage += 'Introduce un email válido'
+      errorMessage += props.i18n.emailValidation
     }
     if (phoneFormat.test(this._cleanedPhoneNumber()) === false) {
       errorFields.push('phoneNumber')
-      let msg = 'Introduce un teléfono válido'
+      let msg = props.i18n.phoneNumberValidation
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if(this.state.password === ''){
       errorFields.push('password')
-      let msg = 'Introduce una contraseña'
+      let msg = props.i18n.passwordValidation
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if(this.state.firstname === '') {
       errorFields.push('firstname')
-      let msg = 'Introduce tu nombre'
+      let msg = props.i18n.firstnameValidation
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if(!this.state.privacyPolicy) {
       errorFields.push('privacyPolicy')
-      let msg = 'Debe aceptar la política de privacidad'
+      let msg = props.i18n.privacyPolicyValidation
       errorMessage += errorMessage  ? `\n   ${msg}` : msg
     }
     if (errorFields.length === 0) {
@@ -119,7 +119,7 @@ class SignupScreen extends Component {
           this.props.navigation.navigate('Home')
         },
         (error) => {
-          let e = (authErrors[error.code] || authErrors['default'])
+          let e = (this.authErrors[error.code] || this.authErrors['default'])
           this.setState({ errorFields: e.fields, errorMessage: e.message, isLoading: false })
         }
       )
@@ -141,21 +141,21 @@ class SignupScreen extends Component {
           <Form style={styles.loginForm}>
             <FormItem
               error={this.state.errorFields.includes('firstname')}
-              label='Nombre'
+              label={this.props.i18n.firstname}
               value={this.state.firstname}
               onChangeText={(v) => this.setState({firstname: v})}
               obligatory={true}
             />
             <FormItem 
               error={this.state.errorFields.includes('email')}
-              label='Email'
+              label={this.props.i18n.email}
               value={this.state.email}
               onChangeText={(v) => this.setState({email: v})} 
               obligatory={true}
             />
             <FormItem 
               error={this.state.errorFields.includes('phoneNumber')}
-              label='Teléfono'
+              label={this.props.i18n.phone}
               value={this.state.phoneNumber}
               onChangeText={(v) => this.setState({phoneNumber: v})}
               obligatory={true}
@@ -163,7 +163,7 @@ class SignupScreen extends Component {
             />
             <FormItem 
               error={this.state.errorFields.includes('password')}
-              label='Contraseña'
+              label={this.props.i18n.password}
               value={this.state.password}
               onChangeText={(v) => this.setState({password: v})}
               obligatory={true}
@@ -176,19 +176,23 @@ class SignupScreen extends Component {
                 onPress={() => this.setState({privacyPolicy: !this.state.privacyPolicy})} 
               />
               <Body style={{flexDirection:'row', flexWrap:'wrap'}}>
-                <Text style={{marginRight: 0}}>Acepto la </Text>
-                <Text style={{marginLeft: 0, color: 'blue'}} onPress={() => this.setState({showPolicyModal: true})}>polticia de privacidad</Text>
+                <Text style={{marginRight: 0}}>{this.props.i18n.accept} </Text>
+                <Text style={{marginLeft: 0, color: 'blue'}} onPress={() => this.setState({showPolicyModal: true})}>{this.props.i18n.privacyPolicy}</Text>
               </Body>
             </ListItem>
             <Button block style={styles.loginButton} onPress={() => this.registerUser()}>
-              <Text> Signup </Text>
+              <Text>{this.props.i18n.signup}</Text>
             </Button>
-            <Text style={styles.loginText}>Already Registered?</Text>
+            <Text style={styles.loginText}>{this.props.i18n.alreadyRegistered}</Text>
             <Button block warning bordered onPress={() => this.props.navigation.navigate('Login')}>
-                <Text> Login </Text>
+                <Text>{this.props.i18n.login}</Text>
             </Button>
           </Form>
-          <PrivacyModal showModal={this.state.showPolicyModal} toggleModal={() => this.setState({showPolicyModal: false})}/>
+          <PrivacyModal 
+            showModal={this.state.showPolicyModal} 
+            toggleModal={() => this.setState({showPolicyModal: false})}
+            i18n={this.props.i18n}
+          />
         </Content>
       </Container>
     )
@@ -225,8 +229,10 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = _ => {
-  return {}
+const mapStateToProps = state => {
+  return {
+    i18n: state.home.translations,
+  }
 }
 
 const mapDispatchToProps = dispatch => {
