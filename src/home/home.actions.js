@@ -18,8 +18,8 @@ export const getConfiguration = (id, usedLanguages) => {
           let allLanguages = Object.keys(i18n)
           let languages = usedLanguages.map(e => e.languageCode)
           let lenguage = languages.filter(e => allLanguages.includes(e))[0] || 'en'
-          let currentTranslations = i18n[lenguage]
-          dispatch(setTranslations(currentTranslations.translation))
+          let currentTranslations = (i18n[lenguage]).translation
+          dispatch(setTranslations(currentTranslations))
         }
         return configuration
       }
