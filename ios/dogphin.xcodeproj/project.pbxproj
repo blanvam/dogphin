@@ -701,7 +701,7 @@
 				CODE_SIGN_ENTITLEMENTS = dogphin/dogphin.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 53F8XB9QT5;
 				INFOPLIST_FILE = dogphin/Info.plist;
@@ -726,7 +726,7 @@
 				CODE_SIGN_ENTITLEMENTS = dogphin/dogphin.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 53F8XB9QT5;
 				INFOPLIST_FILE = dogphin/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
