@@ -11,18 +11,6 @@ const listElements = (querySnapshot) => {
   return elements
 }
 
-const listChangedElements = (querySnapshot) => {
-  let elements = {
-    'added': [],
-    'modified': [],
-    'removed': [],
-  }
-  querySnapshot.docChanges().forEach((change) => {
-    elements[change.type].push({id: change.doc.id, ...change.doc.data()})
-  })
-  return elements
-}
-
 export default (collection) => {
   const dbRef = GeoFirestore.collection(collection)
   return {
@@ -43,8 +31,8 @@ export default (collection) => {
       return dbRef.doc(id).update({updatedAt: timeStamp, ...data}).then(onSuccess).catch(onError) 
     },
     delete: (id, onSuccess=(_ => {}), onError=(_ => {})) => (dbRef.doc(id).delete().then(onSuccess).catch(onError) ),
-    near: (center, radius, onResult, onResultChanges=(_ => {}), onError=(_ => {})) =>
-      (dbRef.near({center, radius}).onSnapshot(querySnapshot => { onResult(listElements(querySnapshot)); onResultChanges(listChangedElements(querySnapshot))}, onError)),
+    near: (center, radius, onResult, onError=(_ => {})) =>
+      (dbRef.near({center, radius}).onSnapshot(querySnapshot => onResult(listElements(querySnapshot)), onError)),
     listElements: listElements,
   }
 }
