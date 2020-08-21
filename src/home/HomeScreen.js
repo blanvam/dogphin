@@ -23,18 +23,10 @@ import PushService from '../push/PushService'
 
 const HomeScreen = props => {
 
-  const onRegister = (token) => {
-    this.setState({registerToken: token.token, fcmRegistered: true});
-  }
-  
-  const onNotif = (notif) => {
-    Alert.alert(notif.title, notif.message);
-  }
-
   useEffect(() => {
     props.updateUser({uid: userServices.currentUser.uid, email: userServices.currentUser.email})
     props.getConfiguration(Platform.OS, RNLocalize.getLocales())
-    props.setNotificationPush(new PushService(onRegister.bind(this), onNotif.bind(this)))
+    props.setNotificationPush(new PushService())
   }, [])
 
   return (

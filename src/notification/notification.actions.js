@@ -45,24 +45,24 @@ export const getNotifications = dblocation => {
       dblocation,
       getState().home.config.queryDistance,
       notifications => {
+        const userId = getState().user.user.uid
+        const oldIds = getState().notification.notifications.map(e => e.id)
+        const toNotify = notifications.filter(e => (e.user != userId && !oldIds.includes(e.id)))
         dispatch(getNotificationsSuccess(notifications))
         dispatch(getNotificationsBarSuccess(notifications.slice(0, getState().home.config.notificationsBarShow)))
         dispatch(toggleNotificationsLoader(false))
-        return notifications
-      },
-      changes => {
-        let notifAddedLen = changes['added'].length
         let title, message
-        if (notifAddedLen == 1) {
+        if (toNotify.length == 1) {
           title = i18n.pushedNewAlertTitle
           message = `${i18n.pushedNewAlertMsg}`
-        } else if (notifAddedLen > 1) {
+        } else if (toNotify.length > 1) {
           title = i18n.pushedNewAlertTitlePlural
-          message = `${notifAddedLen} ${i18n.pushedNewAlertMsgPlural}`
+          message = `${toNotify.length} ${i18n.pushedNewAlertMsgPlural}`
         }
         if (title) {
           getState().push.notifier.localNotif(title, message)
         }
+        return notifications
       }
     )
   }
